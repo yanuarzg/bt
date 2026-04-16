@@ -1,85 +1,830 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Saya | Powered by Google Sheets</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50 text-gray-900 font-sans">
-
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-blue-600">SheetBlog.</h1>
-            <nav class="space-x-6 text-gray-600 font-medium">
-                <a href="#" class="hover:text-blue-600">Beranda</a>
-                <a href="#posts" class="hover:text-blue-600">Artikel</a>
-            </nav>
-        </div>
-    </header>
-
-    <section class="py-16 bg-gradient-to-br from-blue-500 to-indigo-700 text-white text-center px-6">
-        <h2 class="text-4xl md:text-5xl font-extrabold mb-4">Blog Dinamis dari Google Sheets</h2>
-        <p class="text-lg opacity-90">Mengelola konten semudah mengisi tabel spreadsheet.</p>
-    </section>
-
-    <main id="posts" class="max-w-5xl mx-auto px-6 py-12">
-        <div id="loading" class="text-center py-10 text-gray-500">Memuat artikel...</div>
-        <div id="blog-container" class="grid md:grid-cols-2 gap-8">
-            </div>
-    </main>
-
-    <footer class="py-10 text-center border-t border-gray-200 text-gray-500">
-        <p>&copy; 2026 - Dibuat dengan Google Sheets API & Tailwind CSS</p>
-    </footer>
-
-    <script>
-        // KONFIGURASI: Ganti dengan ID Sheet Anda
-        const SHEET_ID = '1WPjL-4BZqfziNmwyf9mEKUisbaJ1D1Bsq-67UD5838s'; 
-        const SHEET_NAME = 'Sheet1'; // Nama tab di spreadsheet Anda
-        
-        // Menggunakan URL Gviz untuk mengambil data dalam format JSON
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
-
-        async function fetchBlogPosts() {
-            try {
-                const response = await fetch(url);
-                const text = await response.text();
-                
-                // Membersihkan respon JSON dari Google (karena ada teks tambahan di awal)
-                const jsonData = JSON.parse(text.substring(47).slice(0, -2));
-                const rows = jsonData.table.rows;
-                const container = document.getElementById('blog-container');
-                const loading = document.getElementById('loading');
-
-                loading.classList.add('hidden');
-
-                rows.forEach(row => {
-                    const judul = row.c[0] ? row.c[0].v : 'Tanpa Judul';
-                    const kategori = row.c[1] ? row.c[1].v : 'Umum';
-                    const ringkasan = row.c[2] ? row.c[2].v : '';
-                    const tanggal = row.c[3] ? row.c[3].v : '';
-
-                    const card = `
-                        <article class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition">
-                            <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">${kategori}</span>
-                            <h3 class="text-2xl font-bold mt-4 mb-2 text-gray-800">${judul}</h3>
-                            <p class="text-gray-600 mb-4">${ringkasan}</p>
-                            <div class="flex justify-between items-center mt-6 border-t pt-4 text-sm text-gray-400 font-medium">
-                                <span>${tanggal}</span>
-                                <a href="#" class="text-blue-600 hover:underline">Baca Selengkapnya &rarr;</a>
-                            </div>
-                        </article>
-                    `;
-                    container.innerHTML += card;
-                });
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                document.getElementById('loading').innerText = 'Gagal memuat artikel. Pastikan Spreadsheet sudah di-publish ke web.';
-            }
+    <title>SheetBlog — Blog dari Google Sheets</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f6f1;
+            --bg2: #ffffff;
+            --bg3: #f0ede6;
+            --text: #1a1814;
+            --text2: #6b6660;
+            --text3: #9e9890;
+            --accent: #c8460e;
+            --accent2: #e8f0fe;
+            --border: rgba(26,24,20,0.1);
+            --border2: rgba(26,24,20,0.06);
+            --card-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            --radius: 4px;
+            --radius-lg: 8px;
+        }
+        [data-theme="dark"] {
+            --bg: #111010;
+            --bg2: #1c1b1a;
+            --bg3: #242322;
+            --text: #f0ede6;
+            --text2: #a09890;
+            --text3: #6b6660;
+            --accent: #e86030;
+            --accent2: #1a2030;
+            --border: rgba(240,237,230,0.1);
+            --border2: rgba(240,237,230,0.06);
+            --card-shadow: 0 1px 4px rgba(0,0,0,0.4);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
         }
 
-        fetchBlogPosts();
-    </script>
+        /* HEADER */
+        header {
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--text);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+        .logo span { color: var(--accent); }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .theme-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--bg3);
+            color: var(--text2);
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .theme-btn:hover { background: var(--border); color: var(--text); }
+
+        /* HERO */
+        .hero {
+            background: var(--text);
+            color: var(--bg);
+            padding: 80px 24px 72px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at 20% 50%, rgba(200,70,14,0.15) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 20%, rgba(200,70,14,0.1) 0%, transparent 40%);
+        }
+        .hero-eyebrow {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .hero h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            position: relative;
+            max-width: 700px;
+            margin: 0 auto 20px;
+        }
+        .hero p {
+            font-size: 16px;
+            font-weight: 300;
+            opacity: 0.65;
+            position: relative;
+            max-width: 440px;
+            margin: 0 auto 36px;
+            line-height: 1.6;
+        }
+
+        /* SEARCH BAR */
+        .search-wrap {
+            max-width: 520px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .search-input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            border-radius: 100px;
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            background: rgba(255,255,255,0.12);
+            color: #fff;
+            outline: none;
+            backdrop-filter: blur(10px);
+            transition: background 0.2s;
+        }
+        .search-input::placeholder { color: rgba(255,255,255,0.45); }
+        .search-input:focus { background: rgba(255,255,255,0.2); }
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* TOOLBAR */
+        .toolbar {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 28px 24px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .categories {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .cat-btn {
+            padding: 7px 16px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text2);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .cat-btn:hover { border-color: var(--text2); color: var(--text); }
+        .cat-btn.active {
+            background: var(--text);
+            color: var(--bg);
+            border-color: var(--text);
+        }
+        [data-theme="dark"] .cat-btn.active { background: var(--bg); color: var(--text); }
+        .sort-select {
+            padding: 7px 14px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--bg2);
+            color: var(--text2);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+            outline: none;
+        }
+        .result-count {
+            font-size: 13px;
+            color: var(--text3);
+            padding: 0 24px;
+            max-width: 1100px;
+            margin: 14px auto 0;
+        }
+
+        /* GRID */
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px 24px 60px;
+        }
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* CARD */
+        .card {
+            background: var(--bg2);
+            border: 1px solid var(--border2);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            cursor: pointer;
+            transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover {
+            border-color: var(--border);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        .card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .cat-badge {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 100px;
+            background: var(--accent2);
+            color: var(--accent);
+        }
+        .card-date {
+            font-size: 12px;
+            color: var(--text3);
+        }
+        .card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.25;
+            color: var(--text);
+            margin-bottom: 10px;
+            letter-spacing: -0.3px;
+        }
+        .card p {
+            font-size: 14px;
+            color: var(--text2);
+            line-height: 1.65;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border2);
+        }
+        .author-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .author-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--bg3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--text2);
+        }
+        .author-name {
+            font-size: 12px;
+            color: var(--text3);
+            font-weight: 500;
+        }
+        .read-link {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .card:hover .read-link { gap: 6px; }
+
+        /* EMPTY / LOADING */
+        .state-box {
+            grid-column: 1/-1;
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--text3);
+        }
+        .state-box .icon { font-size: 40px; margin-bottom: 12px; }
+        .state-box p { font-size: 15px; line-height: 1.6; max-width: 340px; margin: 0 auto; }
+
+        /* SKELETON */
+        @keyframes shimmer {
+            0% { background-position: -600px 0; }
+            100% { background-position: 600px 0; }
+        }
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg3) 25%, var(--border2) 50%, var(--bg3) 75%);
+            background-size: 1200px 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: var(--radius);
+        }
+        .skeleton-card {
+            background: var(--bg2);
+            border: 1px solid var(--border2);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+        .sk-line { height: 12px; margin-bottom: 10px; }
+        .sk-title { height: 20px; width: 80%; margin-bottom: 8px; }
+        .sk-title2 { height: 20px; width: 55%; margin-bottom: 16px; }
+        .sk-p { height: 10px; width: 100%; margin-bottom: 7px; }
+        .sk-p2 { height: 10px; width: 75%; }
+
+        /* PAGINATION */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 0 24px 60px;
+        }
+        .page-btn {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 10px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--bg2);
+            color: var(--text2);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .page-btn:hover:not(:disabled) { border-color: var(--text2); color: var(--text); }
+        .page-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+        .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(3px);
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: var(--bg2);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 680px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modal-in 0.2s ease;
+        }
+        @keyframes modal-in {
+            from { opacity: 0; transform: scale(0.96) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-header {
+            padding: 32px 36px 24px;
+            border-bottom: 1px solid var(--border2);
+            position: sticky;
+            top: 0;
+            background: var(--bg2);
+            z-index: 1;
+        }
+        .modal-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+            color: var(--text);
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--bg3);
+            color: var(--text2);
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: all 0.15s;
+        }
+        .modal-close:hover { background: var(--border); color: var(--text); }
+        .modal-body {
+            padding: 28px 36px 36px;
+            font-size: 16px;
+            color: var(--text2);
+            line-height: 1.75;
+        }
+        .modal-body h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: var(--text);
+            margin: 24px 0 10px;
+        }
+        .modal-body p { margin-bottom: 14px; }
+
+        /* STATS BAR */
+        .stats-bar {
+            background: var(--bg2);
+            border-top: 1px solid var(--border2);
+            border-bottom: 1px solid var(--border2);
+        }
+        .stats-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            gap: 0;
+        }
+        .stat-item {
+            padding: 18px 32px 18px 0;
+            margin-right: 32px;
+            border-right: 1px solid var(--border2);
+        }
+        .stat-item:last-child { border-right: none; }
+        .stat-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .stat-label {
+            font-size: 12px;
+            color: var(--text3);
+            margin-top: 2px;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--text);
+            color: var(--bg);
+            text-align: center;
+            padding: 32px 24px;
+        }
+        footer p { font-size: 13px; opacity: 0.5; }
+        footer strong { opacity: 0.9; font-weight: 500; }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .hero { padding: 56px 20px 48px; }
+            .modal-header { padding: 24px 20px 18px; }
+            .modal-body { padding: 20px 20px 28px; }
+            .modal-title { font-size: 22px; }
+            .stats-inner { flex-wrap: wrap; }
+            .stat-item { border-right: none; margin: 0; padding: 14px 0; border-bottom: 1px solid var(--border2); }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <a href="#" class="logo">Sheet<span>Blog</span></a>
+        <div class="header-right">
+            <button class="theme-btn" id="themeBtn" title="Toggle tema">🌙</button>
+        </div>
+    </div>
+</header>
+
+<section class="hero">
+    <p class="hero-eyebrow">✦ Powered by Google Sheets</p>
+    <h2>Blog yang hidup dari spreadsheet</h2>
+    <p>Tambah artikel baru cukup dengan mengisi baris baru di Google Sheets. Sesederhana itu.</p>
+    <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input class="search-input" type="text" id="searchInput" placeholder="Cari artikel...">
+    </div>
+</section>
+
+<div class="stats-bar">
+    <div class="stats-inner">
+        <div class="stat-item">
+            <div class="stat-num" id="statTotal">—</div>
+            <div class="stat-label">Total artikel</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num" id="statCats">—</div>
+            <div class="stat-label">Kategori</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num" id="statNewest">—</div>
+            <div class="stat-label">Artikel terbaru</div>
+        </div>
+    </div>
+</div>
+
+<div class="toolbar">
+    <div class="categories" id="categories">
+        <button class="cat-btn active" data-cat="Semua">Semua</button>
+    </div>
+    <select class="sort-select" id="sortSelect">
+        <option value="newest">Terbaru</option>
+        <option value="oldest">Terlama</option>
+        <option value="alpha">A–Z</option>
+    </select>
+</div>
+<div class="result-count" id="resultCount"></div>
+
+<main>
+    <div class="blog-grid" id="blogGrid">
+        <!-- skeleton loading -->
+        <div class="skeleton-card">
+            <div class="skeleton sk-line" style="width:60px;height:18px;border-radius:100px;margin-bottom:16px;"></div>
+            <div class="skeleton sk-title"></div>
+            <div class="skeleton sk-title2"></div>
+            <div class="skeleton sk-p"></div>
+            <div class="skeleton sk-p"></div>
+            <div class="skeleton sk-p2"></div>
+        </div>
+        <div class="skeleton-card">
+            <div class="skeleton sk-line" style="width:60px;height:18px;border-radius:100px;margin-bottom:16px;"></div>
+            <div class="skeleton sk-title" style="width:70%;"></div>
+            <div class="skeleton sk-title2" style="width:45%;"></div>
+            <div class="skeleton sk-p"></div>
+            <div class="skeleton sk-p2" style="width:85%;"></div>
+        </div>
+        <div class="skeleton-card">
+            <div class="skeleton sk-line" style="width:60px;height:18px;border-radius:100px;margin-bottom:16px;"></div>
+            <div class="skeleton sk-title" style="width:90%;"></div>
+            <div class="skeleton sk-title2" style="width:60%;"></div>
+            <div class="skeleton sk-p"></div>
+            <div class="skeleton sk-p"></div>
+            <div class="skeleton sk-p2" style="width:50%;"></div>
+        </div>
+    </div>
+</main>
+
+<div class="pagination" id="pagination"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+        <div class="modal-header">
+            <button class="modal-close" id="modalClose">✕</button>
+            <div class="modal-meta" id="modalMeta"></div>
+            <h2 class="modal-title" id="modalTitle"></h2>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
+</div>
+
+<footer>
+    <strong>SheetBlog</strong>
+    <p style="margin-top:6px;">© 2026 — Dibuat dengan Google Sheets API &amp; vanilla JS</p>
+</footer>
+
+<script>
+    // ============================================================
+    // KONFIGURASI — Ganti dengan ID Spreadsheet Anda
+    // ============================================================
+    const SHEET_ID = '1WPjL-4BZqfziNmwyf9mEKUisbaJ1D1Bsq-67UD5838s';
+    const SHEET_NAME = 'Sheet1';
+    // Kolom yang diharapkan: [Judul, Kategori, Ringkasan, Tanggal, Penulis, Konten]
+    // ============================================================
+
+    const POSTS_PER_PAGE = 6;
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
+
+    let allPosts = [];
+    let filteredPosts = [];
+    let currentPage = 1;
+    let activeCategory = 'Semua';
+
+    // — Theme —
+    const themeBtn = document.getElementById('themeBtn');
+    const saved = localStorage.getItem('sb-theme') || 'light';
+    if (saved === 'dark') { document.documentElement.setAttribute('data-theme','dark'); themeBtn.textContent = '☀️'; }
+    themeBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        themeBtn.textContent = isDark ? '🌙' : '☀️';
+        localStorage.setItem('sb-theme', isDark ? 'light' : 'dark');
+    });
+
+    // — Fetch —
+    async function fetchPosts() {
+        try {
+            const res = await fetch(url);
+            const text = await res.text();
+            const json = JSON.parse(text.substring(47).slice(0, -2));
+            const rows = json.table.rows;
+
+            allPosts = rows.map((row, i) => ({
+                id: i,
+                judul:    row.c[0] ? String(row.c[0].v) : 'Tanpa Judul',
+                kategori: row.c[1] ? String(row.c[1].v) : 'Umum',
+                ringkasan:row.c[2] ? String(row.c[2].v) : '',
+                tanggal:  row.c[3] ? (row.c[3].f || String(row.c[3].v)) : '',
+                penulis:  row.c[4] ? String(row.c[4].v) : 'Admin',
+                konten:   row.c[5] ? String(row.c[5].v) : ''
+            }));
+
+            updateStats();
+            buildCategories();
+            applyFilters();
+        } catch (err) {
+            document.getElementById('blogGrid').innerHTML = `
+                <div class="state-box">
+                    <div class="icon">⚠️</div>
+                    <p>Gagal memuat artikel. Pastikan Spreadsheet sudah di-<strong>publish ke web</strong> dan SHEET_ID sudah benar.</p>
+                </div>`;
+        }
+    }
+
+    function updateStats() {
+        const cats = [...new Set(allPosts.map(p => p.kategori))];
+        document.getElementById('statTotal').textContent = allPosts.length;
+        document.getElementById('statCats').textContent = cats.length;
+        document.getElementById('statNewest').textContent = allPosts[0]?.judul?.slice(0,20) + '…' || '—';
+    }
+
+    function buildCategories() {
+        const cats = ['Semua', ...new Set(allPosts.map(p => p.kategori))];
+        const wrap = document.getElementById('categories');
+        wrap.innerHTML = cats.map(cat =>
+            `<button class="cat-btn ${cat === activeCategory ? 'active' : ''}" data-cat="${cat}">${cat}</button>`
+        ).join('');
+        wrap.querySelectorAll('.cat-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                activeCategory = btn.dataset.cat;
+                currentPage = 1;
+                wrap.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                applyFilters();
+            });
+        });
+    }
+
+    function applyFilters() {
+        const q = document.getElementById('searchInput').value.toLowerCase().trim();
+        const sort = document.getElementById('sortSelect').value;
+
+        filteredPosts = allPosts.filter(p => {
+            const matchCat = activeCategory === 'Semua' || p.kategori === activeCategory;
+            const matchQ = !q || p.judul.toLowerCase().includes(q) || p.ringkasan.toLowerCase().includes(q);
+            return matchCat && matchQ;
+        });
+
+        if (sort === 'alpha') {
+            filteredPosts.sort((a,b) => a.judul.localeCompare(b.judul, 'id'));
+        } else if (sort === 'oldest') {
+            filteredPosts.reverse();
+        }
+
+        renderGrid();
+        renderPagination();
+    }
+
+    function renderGrid() {
+        const grid = document.getElementById('blogGrid');
+        const start = (currentPage - 1) * POSTS_PER_PAGE;
+        const page = filteredPosts.slice(start, start + POSTS_PER_PAGE);
+
+        const count = document.getElementById('resultCount');
+        count.textContent = filteredPosts.length
+            ? `Menampilkan ${start + 1}–${Math.min(start + page.length, filteredPosts.length)} dari ${filteredPosts.length} artikel`
+            : '';
+
+        if (!page.length) {
+            grid.innerHTML = `<div class="state-box"><div class="icon">🔍</div><p>Tidak ada artikel yang cocok dengan pencarian ini.</p></div>`;
+            return;
+        }
+
+        grid.innerHTML = page.map(post => {
+            const initials = post.penulis.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+            return `
+            <article class="card" data-id="${post.id}">
+                <div class="card-top">
+                    <span class="cat-badge">${post.kategori}</span>
+                    <span class="card-date">${post.tanggal}</span>
+                </div>
+                <h3>${post.judul}</h3>
+                <p>${post.ringkasan}</p>
+                <div class="card-footer">
+                    <div class="author-row">
+                        <div class="author-avatar">${initials}</div>
+                        <span class="author-name">${post.penulis}</span>
+                    </div>
+                    <span class="read-link">Baca <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                </div>
+            </article>`;
+        }).join('');
+
+        grid.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', () => openModal(parseInt(card.dataset.id)));
+        });
+    }
+
+    function renderPagination() {
+        const total = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+        const pg = document.getElementById('pagination');
+        if (total <= 1) { pg.innerHTML = ''; return; }
+
+        let html = `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
+        for (let i = 1; i <= total; i++) {
+            if (total > 7 && i > 2 && i < total - 1 && Math.abs(i - currentPage) > 1) {
+                if (i === 3 || i === total - 2) html += `<span style="color:var(--text3);padding:0 4px;">…</span>`;
+                continue;
+            }
+            html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+        }
+        html += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===total?'disabled':''}>›</button>`;
+        pg.innerHTML = html;
+    }
+
+    window.goPage = (n) => {
+        currentPage = n;
+        renderGrid();
+        renderPagination();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    // — Modal —
+    function openModal(id) {
+        const post = allPosts.find(p => p.id === id);
+        if (!post) return;
+        document.getElementById('modalMeta').innerHTML = `
+            <span class="cat-badge">${post.kategori}</span>
+            <span style="font-size:13px;color:var(--text3);">${post.tanggal}</span>
+            <span style="font-size:13px;color:var(--text3);">· oleh ${post.penulis}</span>`;
+        document.getElementById('modalTitle').textContent = post.judul;
+
+        const bodyContent = post.konten
+            ? post.konten.split('\n').filter(l=>l.trim()).map(l => `<p>${l}</p>`).join('')
+            : `<p>${post.ringkasan}</p><p style="color:var(--text3);font-size:13px;margin-top:20px;">Kolom "Konten" tidak diisi di Spreadsheet. Tambahkan kolom ke-6 untuk artikel lengkap.</p>`;
+
+        document.getElementById('modalBody').innerHTML = bodyContent;
+        document.getElementById('modalOverlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modalOverlay').addEventListener('click', e => {
+        if (e.target === document.getElementById('modalOverlay')) closeModal();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // — Events —
+    let searchTimer;
+    document.getElementById('searchInput').addEventListener('input', () => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => { currentPage = 1; applyFilters(); }, 280);
+    });
+    document.getElementById('sortSelect').addEventListener('change', () => { currentPage = 1; applyFilters(); });
+
+    // — Init —
+    fetchPosts();
+</script>
 </body>
 </html>
