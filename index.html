@@ -1,37 +1,60 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Saya di Cloudflare Pages</title>
+    <title>Website Saya | Cloudflare Pages</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom animation for the hero text */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
+    </style>
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans">
 
-    <header class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-800 text-white px-6">
-        <div class="text-center">
+    <header class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-900 text-white px-6">
+        <div class="text-center animate-fade-in">
             <h1 class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight">Halo, Dunia!</h1>
-            <p class="text-xl md:text-2xl mb-8 opacity-90">Website ini dihosting secara gratis di Cloudflare Pages.</p>
-            <a href="#about" class="bg-white text-blue-700 px-8 py-3 rounded-full font-bold shadow-lg hover:bg-opacity-90 transition">Mulai Jelajah</a>
+            <p class="text-xl md:text-2xl mb-8 opacity-90 max-w-2xl mx-auto">
+                Website ini dihosting secara gratis dan aman menggunakan teknologi Cloudflare Pages.
+            </p>
+            <a href="#about" class="inline-block bg-white text-blue-700 px-8 py-3 rounded-full font-bold shadow-lg hover:bg-blue-50 hover:scale-105 transition-all duration-300">
+                Mulai Jelajah
+            </a>
         </div>
     </header>
 
-    <section id="about" class="py-20 px-6 max-w-4xl mx-auto">
-        <h2 class="text-3xl font-bold mb-6 text-center">Mengapa Cloudflare Pages?</h2>
+    <section id="about" class="py-24 px-6 max-w-5xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Mengapa Cloudflare Pages?</h2>
         <div class="grid md:grid-cols-2 gap-8">
-            <div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100">
-                <h3 class="font-bold text-xl mb-2 text-blue-600">Super Cepat</h3>
-                <p>Menggunakan jaringan CDN global Cloudflare yang tersebar di ratusan kota.</p>
+            <div class="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <h3 class="font-bold text-xl mb-2 text-gray-800">Super Cepat</h3>
+                <p class="text-gray-600">Menggunakan jaringan CDN global Cloudflare yang menyajikan konten dari lokasi terdekat dengan pengunjung Anda.</p>
             </div>
-            <div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100">
-                <h3 class="font-bold text-xl mb-2 text-blue-600">SSL Gratis</h3>
-                <p>Otomatis mendapatkan HTTPS tanpa perlu setting manual.</p>
+            
+            <div class="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </div>
+                <h3 class="font-bold text-xl mb-2 text-gray-800">SSL Otomatis</h3>
+                <p class="text-gray-600">Keamanan adalah prioritas. Nikmati enkripsi HTTPS secara otomatis tanpa konfigurasi rumit.</p>
             </div>
         </div>
     </section>
 
-    <footer class="py-10 text-center border-t border-gray-200">
-        <p class="text-gray-500">&copy; 2026 - Dibuat dengan Tailwind CSS</p>
+    <footer class="py-12 text-center border-t border-gray-200 bg-white">
+        <p class="text-gray-400 text-sm uppercase tracking-widest font-semibold">&copy; 2026 • Dibuat dengan Tailwind CSS</p>
     </footer>
 
 </body>
