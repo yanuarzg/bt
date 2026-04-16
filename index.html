@@ -12,10 +12,25 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
+        
+        /* Stagger animation for cards */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-up {
+            opacity: 0;
+            animation: slideUp 0.6s ease-out forwards;
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans">
 
+    <!-- Hero Section -->
     <header class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-900 text-white px-6">
         <div class="text-center animate-fade-in">
             <h1 class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight">Halo, Dunia!</h1>
@@ -28,10 +43,14 @@
         </div>
     </header>
 
-    <section id="about" class="py-24 px-6 max-w-5xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Mengapa Cloudflare Pages?</h2>
-        <div class="grid md:grid-cols-2 gap-8">
-            <div class="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+    <!-- About Cloudflare Section -->
+    <section id="about" class="py-24 px-6 max-w-6xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center">Mengapa Cloudflare Pages?</h2>
+        <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">Platform modern untuk website statis dengan performa tinggi dan keamanan terbaik</p>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-slide-up delay-100">
                 <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -41,7 +60,8 @@
                 <p class="text-gray-600">Menggunakan jaringan CDN global Cloudflare yang menyajikan konten dari lokasi terdekat dengan pengunjung Anda.</p>
             </div>
             
-            <div class="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <!-- Card 2 -->
+            <div class="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-slide-up delay-200">
                 <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -50,11 +70,246 @@
                 <h3 class="font-bold text-xl mb-2 text-gray-800">SSL Otomatis</h3>
                 <p class="text-gray-600">Keamanan adalah prioritas. Nikmati enkripsi HTTPS secara otomatis tanpa konfigurasi rumit.</p>
             </div>
+
+            <!-- Card 3 -->
+            <div class="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-slide-up delay-300">
+                <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                    </svg>
+                </div>
+                <h3 class="font-bold text-xl mb-2 text-gray-800">Gratis Selamanya</h3>
+                <p class="text-gray-600">Paket gratis mencakup bandwidth tak terbatas, 500 build per bulan, dan hosting untuk proyek tak terbatas.</p>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-slide-up delay-100">
+                <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                    </svg>
+                </div>
+                <h3 class="font-bold text-xl mb-2 text-gray-800">Deploy Otomatis</h3>
+                <p class="text-gray-600">Integrasi langsung dengan GitHub/GitLab. Setiap push ke repository akan otomatis membangun dan deploy website.</p>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-slide-up delay-200">
+                <div class="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+                <h3 class="font-bold text-xl mb-2 text-gray-800">Proteksi DDoS</h3>
+                <p class="text-gray-600">Dilindungi oleh sistem keamanan Cloudflare yang mampu menangani serangan DDoS skala besar.</p>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-slide-up delay-300">
+                <div class="w-12 h-12 bg-teal-100 text-teal-600 rounded-lg flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                    </svg>
+                </div>
+                <h3 class="font-bold text-xl mb-2 text-gray-800">Jaringan Global</h3>
+                <p class="text-gray-600">300+ data center di seluruh dunia memastikan website Anda selalu cepat diakses dari mana saja.</p>
+            </div>
         </div>
     </section>
 
-    <footer class="py-12 text-center border-t border-gray-200 bg-white">
-        <p class="text-gray-400 text-sm uppercase tracking-widest font-semibold">&copy; 2026 • Dibuat dengan Tailwind CSS</p>
+    <!-- Technology Stack Section -->
+    <section id="tech" class="py-24 px-6 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center">Teknologi yang Digunakan</h2>
+            <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">Stack modern untuk pengembangan website yang cepat, responsif, dan mudah dikelola</p>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- HTML5 -->
+                <div class="p-6 bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl border border-orange-200 hover:shadow-lg transition-all duration-300 group">
+                    <div class="w-14 h-14 bg-orange-500 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.565-2.438L1.5 0zm17.09 4.413L5.41 4.41l.213 2.622 10.125.002-.255 2.716h-9.75l.24 2.573h6.182l-.366 3.523-2.91.804-2.956-.81-.188-2.11h-2.61l.29 3.855L12 19.288l5.373-1.53L18.59 4.414z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1 text-gray-800">HTML5</h3>
+                    <p class="text-sm text-gray-600">Struktur semantic modern untuk SEO yang lebih baik</p>
+                </div>
+
+                <!-- Tailwind CSS -->
+                <div class="p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-2xl border border-cyan-200 hover:shadow-lg transition-all duration-300 group">
+                    <div class="w-14 h-14 bg-cyan-500 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1 text-gray-800">Tailwind CSS</h3>
+                    <p class="text-sm text-gray-600">Utility-first CSS framework untuk styling cepat</p>
+                </div>
+
+                <!-- Cloudflare -->
+                <div class="p-6 bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl border border-orange-200 hover:shadow-lg transition-all duration-300 group">
+                    <div class="w-14 h-14 bg-orange-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16.508 16.844c.147-.226.226-.493.226-.762 0-.666-.543-1.209-1.21-1.209-.178 0-.355.039-.517.118l-5.646 2.559c-.413.186-.886.186-1.299 0L2.417 14.99c-.162-.079-.339-.118-.517-.118-.666 0-1.209.543-1.209 1.209 0 .269.079.536.226.762l7.043 10.905c.227.35.615.555 1.033.555s.806-.205 1.033-.555l6.088-9.406zM22.583 9.01c-.162-.079-.339-.118-.517-.118-.666 0-1.209.543-1.209 1.209 0 .269.079.536.226.762l.003.004c.147.226.226.493.226.762 0 .666-.543 1.209-1.21 1.209-.178 0-.355-.039-.517-.118l-5.646-2.559c-.413-.186-.886-.186-1.299 0l-5.646 2.559c-.162.079-.339.118-.517.118-.666 0-1.209-.543-1.209-1.209 0-.269.079-.536.226-.762l7.043-10.905c.227-.35.615-.555 1.033-.555s.806.205 1.033.555l6.088 9.406z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1 text-gray-800">Cloudflare</h3>
+                    <p class="text-sm text-gray-600">CDN & hosting global dengan keamanan terbaik</p>
+                </div>
+
+                <!-- Git -->
+                <div class="p-6 bg-gradient-to-br from-red-50 to-red-100 rounded-2xl border border-red-200 hover:shadow-lg transition-all duration-300 group">
+                    <div class="w-14 h-14 bg-red-500 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.379-.07 1.889.441.516.515.658 1.258.438 1.9l2.652 2.66c.645-.223 1.387-.078 1.9.435.721.72.721 1.884 0 2.604-.719.719-1.881.719-2.6 0-.539-.541-.674-1.337-.404-1.996L12.86 8.955v6.525c.176.086.342.203.488.348.713.721.713 1.883 0 2.6-.719.721-1.889.721-2.609 0-.719-.719-.719-1.879 0-2.598.182-.18.387-.316.605-.406V8.835c-.217-.091-.424-.222-.6-.401-.545-.545-.678-1.342-.396-2.009L7.611 3.527 4.645 6.491c-.603.605-.603 1.585 0 2.189l10.48 10.477c.604.604 1.582.604 2.186 0l6.232-6.227c.605-.603.605-1.582 0-2.187z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-1 text-gray-800">Git</h3>
+                    <p class="text-sm text-gray-600">Version control untuk tracking perubahan kode</p>
+                </div>
+            </div>
+
+            <!-- Additional Tech Info -->
+            <div class="mt-12 p-8 bg-gray-50 rounded-2xl border border-gray-200">
+                <h3 class="font-bold text-xl mb-6 text-gray-800 text-center">Fitur Teknis Lengkap</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Responsive Design</h4>
+                            <p class="text-sm text-gray-600">Tampilan optimal di desktop, tablet, dan mobile</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">SEO Friendly</h4>
+                            <p class="text-sm text-gray-600">Struktur HTML semantic untuk mesin pencari</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Fast Loading</h4>
+                            <p class="text-sm text-gray-600">Optimasi performa dengan CDN global</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Custom Domain</h4>
+                            <p class="text-sm text-gray-600">Gunakan domain sendiri secara gratis</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Analytics</h4>
+                            <p class="text-sm text-gray-600">Pantau traffic website secara real-time</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Form Handling</h4>
+                            <p class="text-sm text-gray-600">Integrasi form kontak tanpa backend</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA Section -->
+    <section id="contact" class="py-24 px-6 bg-gradient-to-br from-indigo-900 to-blue-800 text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-5xl font-bold mb-6">Ingin Website Seperti Ini?</h2>
+            <p class="text-xl md:text-2xl mb-4 opacity-90">Pesan website profesional untuk bisnis atau personal Anda</p>
+            <p class="text-lg mb-10 opacity-80 max-w-2xl mx-auto">
+                Kami menyediakan layanan pembuatan website modern, cepat, dan teroptimasi dengan teknologi terbaik. 
+                Cocok untuk company profile, landing page, portfolio, dan berbagai kebutuhan lainnya.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                <a href="https://wa.me/6289507785333" target="_blank" rel="noopener noreferrer" 
+                   class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    Pesan via WhatsApp
+                </a>
+                <a href="tel:+6289507785333" 
+                   class="inline-flex items-center bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-full font-bold border border-white/30 hover:border-white/50 transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    Hubungi Kami
+                </a>
+            </div>
+
+            <!-- Features List -->
+            <div class="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+                    <div class="text-3xl font-bold text-green-400 mb-1">Harga</div>
+                    <div class="text-sm opacity-80">Terjangkau & Transparan</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+                    <div class="text-3xl font-bold text-green-400 mb-1">Cepat</div>
+                    <div class="text-sm opacity-80">Pengerjaan 1-3 Hari</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+                    <div class="text-3xl font-bold text-green-400 mb-1">Support</div>
+                    <div class="text-sm opacity-80">Gratis Revisi</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 bg-gray-900 text-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="text-center md:text-left">
+                    <h3 class="font-bold text-xl mb-2">Website Saya</h3>
+                    <p class="text-gray-400 text-sm">Dibuat dengan penuh dedikasi menggunakan teknologi modern</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="https://wa.me/6289507785333" target="_blank" rel="noopener noreferrer" 
+                       class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-500 text-sm">&copy; 2026 • Dibuat dengan HTML5 & Tailwind CSS • Dihosting di Cloudflare Pages</p>
+            </div>
+        </div>
     </footer>
 
 </body>
