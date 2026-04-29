@@ -1,96 +1,445 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Google Trends Indonesia (Realtime)</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f7fa;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-    }
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-    }
-    button {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 8px;
-      background: #4285f4;
-      color: white;
-      cursor: pointer;
-      margin-bottom: 15px;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      padding: 10px;
-      border-bottom: 1px solid #eee;
-    }
-    .time {
-      font-size: 12px;
-      color: gray;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Trends Indonesia - Real-Time</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .status-bar {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .dot.active {
+            background: #4CAF50;
+        }
+        
+        .dot.inactive {
+            background: #f44336;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        
+        .update-time {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .trends-list {
+            padding: 20px 30px;
+        }
+        
+        .trend-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .trend-item:hover {
+            background: #e3e8ff;
+            transform: translateX(5px);
+            border-left-color: #667eea;
+        }
+        
+        .rank {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-right: 20px;
+            min-width: 40px;
+        }
+        
+        .rank.top-3 {
+            color: #f44336;
+        }
+        
+        .keyword-container {
+            flex: 1;
+        }
+        
+        .keyword {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .keyword a {
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .keyword a:hover {
+            color: #667eea;
+        }
+        
+        .volume-info {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .news-preview {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+        
+        .loading i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error {
+            background: #fff3f3;
+            color: #f44336;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #f44336;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .trend-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .rank {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 Google Trends Indonesia</h1>
+            <p>Trending Topics Real-Time (Refresh setiap 5 menit)</p>
+        </div>
+        
+        <div class="status-bar">
+            <div class="status-indicator">
+                <div class="dot active" id="statusDot"></div>
+                <span id="statusText">Connected</span>
+            </div>
+            <div class="controls">
+                <button onclick="refreshNow()" id="refreshBtn">Refresh Sekarang</button>
+            </div>
+        </div>
+        
+        <div class="trends-list" id="trendsList">
+            <div class="loading">
+                Mengambil data trending...
+            </div>
+        </div>
+        
+        <div class="footer">
+            Data diperbarui: <span id="lastUpdate">Belum ada data</span> | 
+            Auto-refresh setiap 5 menit
+        </div>
+    </div>
 
-<div class="container">
-  <h1>🔥 Google Trends Indonesia</h1>
-  <button onclick="getTrends()">Ambil Data Sekarang</button>
-  <ul id="trendList"></ul>
-</div>
-
-<script>
-async function getTrends() {
-  const list = document.getElementById("trendList");
-  list.innerHTML = "Loading...";
-
-  try {
-    // RSS Google Trends Indonesia
-    const url = "https://trends.google.com/trends/trendingsearches/daily/rss?geo=ID";
-
-    // pakai proxy biar bisa fetch (CORS)
-    const proxy = "https://api.allorigins.win/get?url=" + encodeURIComponent(url);
-
-    const res = await fetch(proxy);
-    const data = await res.json();
-
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data.contents, "text/xml");
-
-    const items = xml.querySelectorAll("item");
-
-    list.innerHTML = "";
-
-    items.forEach(item => {
-      const title = item.querySelector("title").textContent;
-      const pubDate = item.querySelector("pubDate").textContent;
-
-      const li = document.createElement("li");
-      li.innerHTML = `
-        <strong>${title}</strong>
-        <div class="time">${pubDate}</div>
-      `;
-      list.appendChild(li);
-    });
-
-  } catch (err) {
-    list.innerHTML = "Gagal ambil data 😢";
-    console.error(err);
-  }
-}
-</script>
-
+    <script>
+        // Fungsi utama untuk mengambil data dari Google Trends
+        async function fetchGoogleTrends() {
+            const trendsList = document.getElementById('trendsList');
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            
+            // Tampilkan loading
+            trendsList.innerHTML = '<div class="loading">🔄 Mengambil data trending terkini...</div>';
+            
+            try {
+                // Menggunakan RSS feed Google Trends Indonesia
+                // Ini adalah RSS resmi dari Google Trends
+                const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                const trendsUrl = 'https://trends.google.com/trending/rss?geo=ID';
+                
+                const response = await fetch(proxyUrl + encodeURIComponent(trendsUrl));
+                
+                if (!response.ok) {
+                    throw new Error('Gagal mengambil data');
+                }
+                
+                const xmlText = await response.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+                
+                // Parse item dari RSS
+                const items = xmlDoc.querySelectorAll('item');
+                
+                if (items.length === 0) {
+                    throw new Error('Tidak ada data trending ditemukan');
+                }
+                
+                let html = '';
+                items.forEach((item, index) => {
+                    const title = item.querySelector('title').textContent;
+                    const description = item.querySelector('description').textContent;
+                    const newsItems = item.querySelectorAll('news_item');
+                    
+                    // Ambil berita pertama jika ada
+                    let newsPreview = '';
+                    if (newsItems.length > 0) {
+                        newsPreview = newsItems[0].querySelector('description').textContent;
+                        // Batasi panjang preview
+                        if (newsPreview.length > 100) {
+                            newsPreview = newsPreview.substring(0, 100) + '...';
+                        }
+                    }
+                    
+                    // Parse volume (biasanya ada di description)
+                    const volumeMatch = description.match(/(\d+K?\+?\s*(?:pencarian)?)/i);
+                    const volume = volumeMatch ? volumeMatch[1] : '';
+                    
+                    const rankClass = index < 3 ? 'top-3' : '';
+                    
+                    html += `
+                        <div class="trend-item">
+                            <div class="rank ${rankClass}">#${index + 1}</div>
+                            <div class="keyword-container">
+                                <div class="keyword">
+                                    <a href="https://www.google.com/search?q=${encodeURIComponent(title)}" target="_blank">
+                                        ${title}
+                                    </a>
+                                </div>
+                                ${volume ? `<div class="volume-info">📊 ${volume} pencarian</div>` : ''}
+                                ${newsPreview ? `<div class="news-preview">📰 ${newsPreview}</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                trendsList.innerHTML = html;
+                
+                // Update status
+                statusDot.classList.remove('inactive');
+                statusDot.classList.add('active');
+                statusText.textContent = 'Connected';
+                
+                // Update waktu
+                const now = new Date();
+                document.getElementById('lastUpdate').textContent = 
+                    now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                
+            } catch (error) {
+                console.error('Error:', error);
+                
+                // Jika gagal, coba metode alternatif
+                tryAlternativeMethod();
+                
+                statusDot.classList.remove('active');
+                statusDot.classList.add('inactive');
+                statusText.textContent = 'Limited Access';
+            }
+        }
+        
+        // Metode alternatif: gunakan simulated data + link asli
+        async function tryAlternativeMethod() {
+            const trendsList = document.getElementById('trendsList');
+            
+            try {
+                // Coba ambil dari halaman Google Trends Explore
+                const response = await fetch('https://trends.google.com/trends/trendingsearches/daily?geo=ID');
+                const text = await response.text();
+                
+                // Parse JSON dari halaman
+                const dataMatch = text.match(/trendingSearchesDaily\["ID"\]\s*=\s*(\[[\s\S]*?\]);/);
+                
+                if (dataMatch && dataMatch[1]) {
+                    const trends = JSON.parse(dataMatch[1]);
+                    
+                    if (trends.length > 0 && trends[0].trendingSearches) {
+                        const todayTrends = trends[0].trendingSearches.slice(0, 20);
+                        
+                        let html = '';
+                        todayTrends.forEach((trend, index) => {
+                            const rankClass = index < 3 ? 'top-3' : '';
+                            const formattedTraffic = trend.formattedTraffic || '';
+                            
+                            // Ambil berita terkait jika ada
+                            let newsHTML = '';
+                            if (trend.articles && trend.articles.length > 0) {
+                                const article = trend.articles[0];
+                                newsHTML = `<div class="news-preview">📰 ${article.title}</div>`;
+                            }
+                            
+                            html += `
+                                <div class="trend-item">
+                                    <div class="rank ${rankClass}">#${index + 1}</div>
+                                    <div class="keyword-container">
+                                        <div class="keyword">
+                                            <a href="https://www.google.com/search?q=${encodeURIComponent(trend.title.query)}" target="_blank">
+                                                ${trend.title.query}
+                                            </a>
+                                        </div>
+                                        ${formattedTraffic ? `<div class="volume-info">📊 ${formattedTraffic}</div>` : ''}
+                                        ${newsHTML}
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        
+                        trendsList.innerHTML = html || '<div class="loading">Tidak ada data tersedia saat ini</div>';
+                        return;
+                    }
+                }
+                
+                throw new Error('Tidak bisa parse data');
+                
+            } catch (err) {
+                console.error('Metode alternatif gagal:', err);
+                trendsList.innerHTML = `
+                    <div class="error">
+                        ⚠️ Gagal mengambil data dari Google Trends.<br>
+                        <small>Kemungkinan karena pembatasan CORS atau rate limiting. 
+                        Coba buka langsung di: 
+                        <a href="https://trends.google.com/trends/trendingsearches/daily?geo=ID" target="_blank">
+                            Google Trends Indonesia
+                        </a></small>
+                    </div>
+                `;
+            }
+        }
+        
+        function refreshNow() {
+            const btn = document.getElementById('refreshBtn');
+            btn.disabled = true;
+            btn.textContent = 'Refreshing...';
+            
+            fetchGoogleTrends().finally(() => {
+                btn.disabled = false;
+                btn.textContent = 'Refresh Sekarang';
+            });
+        }
+        
+        // Auto refresh setiap 5 menit
+        setInterval(fetchGoogleTrends, 300000);
+        
+        // Load pertama kali
+        fetchGoogleTrends();
+    </script>
 </body>
 </html>
