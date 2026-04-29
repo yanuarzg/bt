@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Google Trends Indonesia (Realtime)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      background: #4285f4;
+      color: white;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    .time {
+      font-size: 12px;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🔥 Google Trends Indonesia</h1>
+  <button onclick="getTrends()">Ambil Data Sekarang</button>
+  <ul id="trendList"></ul>
+</div>
+
+<script>
+async function getTrends() {
+  const list = document.getElementById("trendList");
+  list.innerHTML = "Loading...";
+
+  try {
+    // RSS Google Trends Indonesia
+    const url = "https://trends.google.com/trends/trendingsearches/daily/rss?geo=ID";
+
+    // pakai proxy biar bisa fetch (CORS)
+    const proxy = "https://api.allorigins.win/get?url=" + encodeURIComponent(url);
+
+    const res = await fetch(proxy);
+    const data = await res.json();
+
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(data.contents, "text/xml");
+
+    const items = xml.querySelectorAll("item");
+
+    list.innerHTML = "";
+
+    items.forEach(item => {
+      const title = item.querySelector("title").textContent;
+      const pubDate = item.querySelector("pubDate").textContent;
+
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <strong>${title}</strong>
+        <div class="time">${pubDate}</div>
+      `;
+      list.appendChild(li);
+    });
+
+  } catch (err) {
+    list.innerHTML = "Gagal ambil data 😢";
+    console.error(err);
+  }
+}
+</script>
+
+</body>
+</html>
