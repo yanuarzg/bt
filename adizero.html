@@ -2388,40 +2388,6 @@
 </div>
 
 <script>
-  // --- CUSTOM CURSOR ---
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-
-  document.addEventListener('mousemove', e => {
-    mouseX = e.clientX; mouseY = e.clientY;
-    cursor.style.left = mouseX + 'px';
-    cursor.style.top = mouseY + 'px';
-  });
-
-  function animateRing() {
-    ringX += (mouseX - ringX) * 0.12;
-    ringY += (mouseY - ringY) * 0.12;
-    ring.style.left = ringX + 'px';
-    ring.style.top = ringY + 'px';
-    requestAnimationFrame(animateRing);
-  }
-  animateRing();
-
-  function attachCursorHover() {
-    document.querySelectorAll('a, button, input, textarea, .product-card, .gallery-item, .tech-card, .shop-card').forEach(el => {
-      // Prevent duplicate listeners
-      el.removeEventListener('mouseenter', hoverIn);
-      el.removeEventListener('mouseleave', hoverOut);
-      el.addEventListener('mouseenter', hoverIn);
-      el.addEventListener('mouseleave', hoverOut);
-    });
-  }
-  
-  function hoverIn() { ring.classList.add('hovered'); }
-  function hoverOut() { ring.classList.remove('hovered'); }
-  attachCursorHover();
-
   // --- TABS ---
   const tabBtns = document.querySelectorAll('.tab-btn');
   const tabGrids = document.querySelectorAll('.products-grid');
