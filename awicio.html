@@ -1,1188 +1,818 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <!-- PRIMARY SEO -->
-  <title>Dimsum &amp; Cireng Awicio - Dimsum Ayam &amp; Cireng Isi Premium Bikin Nagih | Pamulang, Tangerang Selatan</title>
-  <meta name="description" content="Dimsum &amp; Cireng Awicio di Pamulang, Tangerang Selatan. Dimsum ayam juicy, cireng isi banyak, pangsit chili oil nagih. 100% halal, rasa autentik, pesan via WhatsApp. Buka Sabtu &amp; Minggu.">
-  <meta name="keywords" content="dimsum pamulang, cireng pamulang, dimsum tangerang selatan, cireng isi ayam, pangsit chili oil, dimsum halal tangsel, catering dimsum pamulang">
-  <meta name="author" content="Dimsum &amp; Cireng Awicio">
+  <!-- Primary SEO -->
+  <title>Dimsum & Cireng Awicio — Cireng Premium & Dimsum Halal | Tangerang Selatan</title>
+  <meta name="description" content="Menyediakan Cireng isi beragam varian rasa dan Dimsum kaya urat daging. Dibuat dengan bahan premium, higienis, 1000% halal, dan chili oil juara di Tangerang Selatan.">
+  <meta name="keywords" content="cireng isi Tangerang Selatan, dimsum halal pamulang, cireng kuah keju, Dimsum & Cireng Awicio">
+  <meta name="author" content="Dimsum & Cireng Awicio">
   <meta name="robots" content="index, follow, max-image-preview:large">
-  <link rel="canonical" href="https://dimsumawicio.com/">
+  <link rel="canonical" href="https://dimsum-cireng-awicio.com/">
 
-  <!-- GEO / LOCAL ENTITY -->
+  <!-- GEO / Local Entity -->
   <meta name="geo.region" content="ID-BT">
-  <meta name="geo.placename" content="Pamulang, Tangerang Selatan, Banten">
-  <meta name="DC.subject" content="Kuliner, Dimsum, Cireng, Pamulang, Tangerang Selatan">
+  <meta name="geo.placename" content="Tangerang Selatan, Indonesia">
+  <meta name="geo.position" content="-6.3537525;106.7495778">
+  <meta name="ICBM" content="-6.3537525, 106.7495778">
   <meta name="language" content="id-ID">
 
-  <!-- OPEN GRAPH -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Dimsum &amp; Cireng Awicio - Dimsum &amp; Cireng Enak Bikin Nagih di Pamulang">
-  <meta property="og:description" content="Dimsum ayam premium, cireng isi juicy, pangsit chili oil yang bikin ketagihan. 100% halal. Pesan mudah via WhatsApp di Tangerang Selatan.">
-  <meta property="og:image" content="https://placehold.co/1200x630/FF6B35/FFFFFF?text=Dimsum+%26+Cireng+Awicio">
+  <meta property="og:title" content="Dimsum & Cireng Awicio — Cireng Premium & Dimsum Halal">
+  <meta property="og:description" content="Menyediakan Cireng isi beragam varian rasa dan Dimsum kaya urat daging. Dibuat dengan bahan premium, higienis, dan chili oil juara.[cite: 1]">
+  <meta property="og:image" content="https://dimsum-cireng-awicio.com/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:url" content="https://dimsumawicio.com/">
+  <meta property="og:url" content="https://dimsum-cireng-awicio.com/">
   <meta property="og:locale" content="id_ID">
-  <meta property="og:site_name" content="Dimsum &amp; Cireng Awicio">
+  <meta property="og:site_name" content="Dimsum & Cireng Awicio">
 
-  <!-- TWITTER CARD -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Dimsum &amp; Cireng Awicio - Dimsum &amp; Cireng Premium di Tangsel">
-  <meta name="twitter:description" content="Rasa yang bikin nagih. Dimsum ayam &amp; cireng isi di Pamulang, Tangerang Selatan.">
-  <meta name="twitter:image" content="https://placehold.co/1200x630/FF6B35/FFFFFF?text=Dimsum+%26+Cireng+Awicio">
-
-  <!-- PERFORMANCE -->
+  <!-- Performance Hints -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&amp;family=Lato:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
+  <!-- Fonts (Kuliner Preset) -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Lato:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind v4 Browser -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-  <!-- Bootstrap Icons -->
+  <!-- Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
   <!-- LazyLoad -->
   <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19/dist/lazyload.min.js"></script>
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23FF6B35'/%3E%3Cpath d='M30 45 Q50 30 70 45 Q50 60 30 45' fill='white'/%3E%3C/svg%3E">
-
+  <!-- Critical CSS & Tailwind Theme Config -->
   <style type="text/tailwindcss">
     @theme {
-      --color-brand: #FF6B35;
-      --color-brand-dark: #C2410F;
-      --color-accent: #1A1A2E;
-      --font-heading: 'Merriweather', serif;
-      --font-body: 'Lato', system_ui, sans-serif;
+      --color-brand: #008080;
+      --color-brand-dark: #006666;
+      --color-brand-light: #e0f2f1;
+      --color-accent: #FF8C00;
+      --font-heading: "Merriweather", serif;
+      --font-body: "Lato", sans-serif;
     }
     
     body {
       font-family: var(--font-body);
+      color: #0f172a;
+      background-color: #f8fafc;
+      overflow-x: hidden;
     }
-    
-    h1, h2, h3, .font-heading {
+    h1, h2, h3, h4, h5, h6 {
       font-family: var(--font-heading);
-      font-weight: 700;
     }
-
-    .section-header {
-      font-size: 2.25rem;
-      line-height: 2.5rem;
-      font-weight: 900;
-      color: #1A1A2E;
+    .revealed {
+      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-
-    .menu-card {
-      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
     }
-    
-    .menu-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-
-    .nav-active {
-      color: #FF6B35;
-      font-weight: 600;
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
     }
-
-    .wa-pulse {
-      animation: wa-pulse-anim 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    /* Cart Sidebar Overlay transition */
+    #cart-sidebar {
+      transition: transform 0.3s ease-in-out;
     }
-
-    @keyframes wa-pulse-anim {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-      70% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
-    }
-
-    .food-gradient {
-      background: linear-gradient(135deg, #FF6B35 0%, #C2410F 100%);
-    }
-
-    .nav-scrolled {
-      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-      background-color: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(12px);
-    }
-
-    .step-number {
-      background-color: #FF6B35;
-      color: white;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 9999px;
-      font-weight: 700;
-      font-size: 1.125rem;
-    }
-
-    details summary {
-      cursor: pointer;
-      list-style: none;
-    }
-    
-    details summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .testimonial-card {
-      transition: all 0.3s ease;
-    }
-
-    .filter-btn {
-      transition: all 0.2s ease;
-    }
-    
-    .filter-btn.active {
-      background-color: #FF6B35;
-      color: white;
-      border-color: #FF6B35;
-    }
-
-    .cart-sidebar {
-      transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
-    }
-
-    .product-img {
-      background-size: cover;
-      background-position: center;
-      transition: transform 0.4s ease;
-    }
-    
-    .menu-card:hover .product-img {
-      transform: scale(1.05);
+    #cart-overlay {
+      transition: opacity 0.3s ease-in-out;
     }
   </style>
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "FoodService",
+        "@id": "https://dimsum-cireng-awicio.com/#business",
+        "name": "Dimsum & Cireng Awicio",
+        "description": "Menyediakan Cireng isi dengan beragam varian rasa. Dibuat dengan bahan-bahan premium, higienis dan penuh cinta.",
+        "url": "https://dimsum-cireng-awicio.com/",
+        "telephone": "+6287889932247",
+        "priceRange": "Rp",
+        "image": "https://dimsum-cireng-awicio.com/og-image.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Jl. RE Martadinata, Pd. Cabe Udik, Kec. Pamulang",
+          "addressLocality": "Kota Tangerang Selatan",
+          "addressRegion": "Banten",
+          "addressCountry": "ID"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "-6.3537525",
+          "longitude": "106.7495778"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "5.0",
+          "reviewCount": "10"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+            "opens": "09:00",
+            "closes": "21:00"
+          }
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Menu Cireng & Dimsum",
+          "itemListElement": [
+            { "@type": "Offer", "name": "Cireng Jumbo", "price": "10000", "priceCurrency": "IDR" },
+            { "@type": "Offer", "name": "Cireng Mini", "price": "5000", "priceCurrency": "IDR" },
+            { "@type": "Offer", "name": "Cireng Ayam Chili Oil", "price": "10000", "priceCurrency": "IDR" },
+            { "@type": "Offer", "name": "Cireng Kuah Keju Creamy", "price": "15000", "priceCurrency": "IDR" }
+          ]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://dimsum-cireng-awicio.com/#website",
+        "url": "https://dimsum-cireng-awicio.com/",
+        "name": "Dimsum & Cireng Awicio",
+        "inLanguage": "id-ID"
+      }
+    ]
+  }
+  </script>
 </head>
-<body class="bg-white text-[#1A1A2E] antialiased">
-  <!-- NAVBAR -->
-  <nav id="navbar" class="bg-white sticky top-0 z-50 transition-all duration-300">
-    <div class="max-w-screen-xl mx-auto px-6">
-      <div class="flex items-center justify-between h-20">
-        <!-- Logo -->
-        <div class="flex items-center gap-x-3">
-          <div class="w-10 h-10 bg-[#FF6B35] rounded-2xl flex items-center justify-center">
-            <i class="bi bi-egg-fried text-white text-3xl"></i>
-          </div>
-          <div>
-            <div class="font-heading text-2xl font-black tracking-tighter">Awicio</div>
-            <div class="text-[10px] text-gray-500 -mt-1">DIMSUM &amp; CIRENG</div>
-          </div>
-        </div>
+<body>
 
-        <!-- Desktop Menu -->
-        <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
-          <a href="#menu" class="hover:text-[#FF6B35] transition-colors">Menu</a>
-          <a href="#tentang" class="hover:text-[#FF6B35] transition-colors">Tentang</a>
-          <a href="#testimoni" class="hover:text-[#FF6B35] transition-colors">Testimoni</a>
-          <a href="#faq" class="hover:text-[#FF6B35] transition-colors">FAQ</a>
-          <a href="#kontak" class="hover:text-[#FF6B35] transition-colors">Kontak</a>
-        </div>
+  <!-- Promo Bar -->
+  <div id="promo-bar" class="fixed top-0 left-0 right-0 z-50 bg-accent text-white text-center py-2 text-sm font-medium flex justify-center items-center gap-2 shadow-md">
+    <span>Cobain varian baru kami: Cireng Kuah Keju Creamy! 🧀</span>
+    <button onclick="this.parentElement.remove()" aria-label="Tutup promo" class="ml-4 hover:text-gray-200 text-lg leading-none">&times;</button>
+  </div>
 
-        <div class="hidden md:flex items-center gap-x-3">
-          <a href="https://wa.me/6287898932247?text=Halo%20Awicio%2C%20saya%20ingin%20bertanya%20tentang%20menu%20hari%20ini" 
-             target="_blank" rel="noopener"
-             class="px-5 py-2.5 bg-[#FF6B35] hover:bg-[#C2410F] text-white text-sm font-semibold rounded-3xl flex items-center gap-x-2 transition-all active:scale-[0.985]">
-            <i class="bi bi-whatsapp"></i>
-            <span>Chat WhatsApp</span>
-          </a>
-        </div>
+  <!-- Navbar -->
+  <nav id="navbar" class="fixed top-[36px] left-0 right-0 z-40 bg-white/95 backdrop-blur-sm transition-all duration-300">
+    <div class="container mx-auto px-4 max-w-7xl h-16 flex items-center justify-between">
+      <a href="#" class="text-xl md:text-2xl font-bold font-heading text-brand flex items-center gap-2">
+        <i class="bi bi-shop"></i> Awicio
+      </a>
+      
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center gap-8 font-medium text-gray-600">
+        <a href="#katalog" class="hover:text-brand transition-colors">Menu</a>
+        <a href="#tentang" class="hover:text-brand transition-colors">Tentang Kami</a>
+        <a href="#testimoni" class="hover:text-brand transition-colors">Testimoni</a>
+        <a href="#faq" class="hover:text-brand transition-colors">FAQ</a>
+      </div>
 
-        <!-- Mobile Menu Button -->
-        <button id="mobile-menu-btn" 
-                class="md:hidden w-11 h-11 flex items-center justify-center text-2xl text-[#1A1A2E]"
-                aria-label="Buka menu">
-          <i class="bi bi-list"></i>
+      <div class="flex items-center gap-4">
+        <button onclick="toggleCart(true)" class="relative p-2 text-gray-700 hover:text-brand transition-colors" aria-label="Buka Keranjang">
+          <i class="bi bi-cart3 text-2xl"></i>
+          <span id="nav-cart-count" class="absolute top-0 right-0 bg-accent text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-white">0</span>
+        </button>
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-700" aria-label="Menu Mobile">
+          <i class="bi bi-list text-2xl"></i>
         </button>
       </div>
     </div>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden border-t bg-white">
-      <div class="px-6 py-6 flex flex-col gap-y-4 text-sm font-medium">
-        <a href="#menu" class="py-1 mobile-nav-link">Menu Pilihan</a>
-        <a href="#tentang" class="py-1 mobile-nav-link">Tentang Kami</a>
-        <a href="#testimoni" class="py-1 mobile-nav-link">Testimoni</a>
-        <a href="#faq" class="py-1 mobile-nav-link">FAQ</a>
-        <a href="#kontak" class="py-1 mobile-nav-link">Kontak &amp; Lokasi</a>
-        
-        <div class="pt-4 border-t">
-          <a href="https://wa.me/6287898932247?text=Halo%20Awicio%2C%20saya%20ingin%20pesan%20dimsum%20dan%20cireng" 
-             target="_blank" rel="noopener"
-             class="flex items-center justify-center gap-x-2 w-full py-3.5 bg-[#FF6B35] text-white font-semibold rounded-3xl">
-            <i class="bi bi-whatsapp text-lg"></i>
-            <span>Langsung Chat WhatsApp</span>
-          </a>
-        </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+      <div class="flex flex-col px-4 py-4 gap-4 font-medium text-gray-600">
+        <a href="#katalog" onclick="toggleMobileMenu()" class="hover:text-brand">Menu</a>
+        <a href="#tentang" onclick="toggleMobileMenu()" class="hover:text-brand">Tentang Kami</a>
+        <a href="#testimoni" onclick="toggleMobileMenu()" class="hover:text-brand">Testimoni</a>
+        <a href="#faq" onclick="toggleMobileMenu()" class="hover:text-brand">FAQ</a>
       </div>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="max-w-screen-xl mx-auto px-6 pt-12 pb-16 md:pt-16 md:pb-20">
-    <div class="grid md:grid-cols-12 gap-x-8 items-center">
-      <div class="md:col-span-7">
-        <div class="inline-flex items-center gap-x-2 bg-orange-100 text-[#C2410F] text-xs font-semibold tracking-[1px] px-4 h-8 rounded-3xl mb-6">
-          <div class="w-2 h-2 bg-[#FF6B35] rounded-full animate-pulse"></div>
-          <span>PAMULANG • TANGERANG SELATAN</span>
+  <!-- Hero Section -->
+  <section id="hero" class="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden bg-brand-light">
+    <div class="container mx-auto px-4 max-w-7xl flex flex-col md:flex-row items-center gap-12">
+      <div class="flex-1 space-y-6 z-10 reveal">
+        <div class="inline-block bg-white text-brand font-bold px-4 py-1.5 rounded-full text-sm shadow-sm">
+          🌟 Rating 5.0 di Google Maps[cite: 1]
         </div>
-
-        <h1 class="font-heading text-5xl md:text-6xl leading-[1.05] tracking-tighter font-black mb-6">
-          Dimsum &amp; Cireng<br>Awicio
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-tight">
+          Cireng Enak & Dimsum Premium Tanpa Ribet di <span class="text-brand">Tangerang Selatan</span>[cite: 1]
         </h1>
-        
-        <p class="max-w-lg text-xl text-gray-600 mb-8">
-          Dimsum ayam juicy dengan tekstur autentik, cireng isi melimpah, dan pangsit chili oil yang bikin nagih. 
-          100% halal. Dibuat fresh setiap hari di Pamulang.
+        <p class="text-lg text-slate-600 leading-relaxed max-w-xl">
+          Menyediakan Cireng isi dengan beragam varian rasa dan Dimsum yang kaya urat daging. Dibuat dengan bahan-bahan premium, higienis, dan penuh cinta.[cite: 1]
         </p>
-
-        <div class="flex flex-col sm:flex-row gap-3">
-          <a href="#menu" 
-             class="inline-flex items-center justify-center gap-x-3 bg-[#1A1A2E] hover:bg-black text-white font-semibold px-8 h-14 rounded-3xl text-base transition-all active:scale-[0.985]">
-            Lihat Menu &amp; Pesan
+        <div class="flex flex-wrap gap-4 pt-4">
+          <a href="#katalog" class="bg-accent hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+            Lihat Menu
           </a>
-          <a href="https://wa.me/6287898932247?text=Halo%20Awicio%2C%20saya%20mau%20tanya%20menu%20hari%20ini%20dong" 
-             target="_blank" rel="noopener"
-             class="inline-flex items-center justify-center gap-x-3 border border-gray-300 hover:bg-gray-50 font-semibold px-8 h-14 rounded-3xl text-base transition-all">
-            <i class="bi bi-whatsapp text-xl"></i>
-            <span>Chat via WhatsApp</span>
+          <a href="https://wa.me/6287889932247?text=Halo%20Awicio,%20saya%20mau%20pesan%20cireng/dimsum" target="_blank" rel="noopener" class="bg-white text-brand hover:bg-gray-50 font-bold py-3 px-8 rounded-lg shadow-md border border-gray-100 transition-all flex items-center gap-2">
+            <i class="bi bi-whatsapp text-green-500"></i> Hubungi Kami[cite: 1]
           </a>
         </div>
-
-        <div class="flex items-center gap-x-6 mt-8 text-sm">
-          <div class="flex items-center -space-x-2">
-            <div class="w-7 h-7 bg-gray-200 rounded-full ring-2 ring-white overflow-hidden"><img src="https://i.pravatar.cc/28?img=28" class="w-full h-full object-cover"></div>
-            <div class="w-7 h-7 bg-gray-200 rounded-full ring-2 ring-white overflow-hidden"><img src="https://i.pravatar.cc/28?img=47" class="w-full h-full object-cover"></div>
-            <div class="w-7 h-7 bg-gray-200 rounded-full ring-2 ring-white overflow-hidden"><img src="https://i.pravatar.cc/28?img=32" class="w-full h-full object-cover"></div>
-          </div>
-          <div class="text-gray-500 text-sm">
-            <span class="font-semibold text-[#1A1A2E]">10+ pelanggan</span> puas minggu ini
-          </div>
-        </div>
       </div>
-
-      <!-- Hero Visual -->
-      <div class="md:col-span-5 mt-10 md:mt-0">
-        <div class="relative bg-[#FFF4EC] rounded-[3rem] p-3 shadow-xl">
-          <div class="aspect-[4/3] rounded-[2.25rem] overflow-hidden bg-gradient-to-br from-orange-400 to-[#FF6B35] flex items-center justify-center relative">
-            <div class="text-center text-white px-8">
-              <div class="text-7xl mb-3">🥟</div>
-              <div class="font-heading text-4xl font-black tracking-tighter">Fresh Every Day</div>
-              <div class="text-orange-100 mt-1 text-lg">Dimsum &amp; Cireng Premium</div>
-            </div>
-            <!-- Badge -->
-            <div class="absolute top-6 right-6 bg-white text-[#C2410F] text-xs font-bold px-4 h-9 flex items-center rounded-3xl shadow">
-              5.0 ★ Google
-            </div>
+      <div class="flex-1 relative z-10 reveal">
+        <!-- Placeholder for Hero Image, you can replace the src with actual product photo -->
+        <div class="aspect-square bg-white rounded-3xl p-4 shadow-2xl transform rotate-2">
+          <div class="w-full h-full bg-slate-200 rounded-2xl overflow-hidden relative">
+            <img data-src="https://images.unsplash.com/photo-1496116218417-1a781b1c416c?q=80&w=800&auto=format&fit=crop" alt="Dimsum & Cireng Awicio" class="w-full h-full object-cover lazy" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+            <div class="absolute bottom-6 left-6 text-white font-bold text-xl">1000% Halal[cite: 1]</div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- TRUST BAR -->
-  <div class="bg-[#1A1A2E] py-5">
-    <div class="max-w-screen-xl mx-auto px-6">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-y-6 text-center text-white text-sm">
-        <div class="flex flex-col items-center gap-y-1">
-          <div class="font-black text-3xl tracking-tighter">5.0</div>
-          <div class="text-orange-300 text-xs tracking-widest">GOOGLE REVIEWS</div>
-          <div class="text-[10px] text-gray-400">dari 10+ pelanggan</div>
+  <!-- Trust Bar -->
+  <section class="bg-white border-b py-8">
+    <div class="container mx-auto px-4 max-w-7xl reveal">
+      <div class="flex flex-wrap justify-center gap-8 md:gap-16 items-center text-center">
+        <div class="flex flex-col items-center">
+          <i class="bi bi-star-fill text-yellow-400 text-3xl mb-2"></i>
+          <span class="font-bold text-slate-800">5.0 / 5.0 Rating[cite: 1]</span>
+          <span class="text-sm text-slate-500">Ulasan Google Maps[cite: 1]</span>
         </div>
-        <div class="flex flex-col items-center gap-y-1">
-          <div class="font-black text-3xl tracking-tighter">100%</div>
-          <div class="text-orange-300 text-xs tracking-widest">HALAL</div>
-          <div class="text-[10px] text-gray-400">Bahan &amp; proses</div>
+        <div class="flex flex-col items-center">
+          <i class="bi bi-shield-check text-green-500 text-3xl mb-2"></i>
+          <span class="font-bold text-slate-800">1000% Halal[cite: 1]</span>
+          <span class="text-sm text-slate-500">Terjamin Bersih</span>
         </div>
-        <div class="flex flex-col items-center gap-y-1">
-          <div class="font-black text-3xl tracking-tighter">&lt;5</div>
-          <div class="text-orange-300 text-xs tracking-widest">MENIT</div>
-          <div class="text-[10px] text-gray-400">Respon WhatsApp</div>
-        </div>
-        <div class="flex flex-col items-center gap-y-1">
-          <div class="font-black text-3xl tracking-tighter">3</div>
-          <div class="text-orange-300 text-xs tracking-widest">TAHUN</div>
-          <div class="text-[10px] text-gray-400">Melayani pelanggan</div>
+        <div class="flex flex-col items-center">
+          <i class="bi bi-award text-accent text-3xl mb-2"></i>
+          <span class="font-bold text-slate-800">Bahan Premium</span>
+          <span class="text-sm text-slate-500">Kualitas Terbaik</span>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- USP / FEATURES -->
-  <section class="max-w-screen-xl mx-auto px-6 pt-16 pb-12">
-    <div class="text-center mb-10">
-      <div class="uppercase text-[#FF6B35] text-xs tracking-[2px] font-bold mb-2">KENAPA BANYAK YANG NAGIH</div>
-      <h2 class="section-header">Rasa yang Bikin Orang Balik Lagi</h2>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-6">
-      <div class="bg-white border border-gray-100 rounded-3xl p-8">
-        <div class="w-12 h-12 bg-orange-100 text-[#FF6B35] rounded-2xl flex items-center justify-center mb-6">
-          <i class="bi bi-egg text-3xl"></i>
-        </div>
-        <h3 class="font-heading text-2xl font-bold mb-3">Isi Juicy &amp; Banyak</h3>
-        <p class="text-gray-600 leading-relaxed">Dimsum ayam kami punya tekstur urat yang khas dan isi yang terasa banget. Cireng isi ayam cincang melimpah, bukan cuma kulit doang.</p>
+  <!-- Fitur / Tentang Kami -->
+  <section id="tentang" class="py-16 md:py-24 bg-slate-50" aria-labelledby="tentang-title">
+    <div class="container mx-auto px-4 max-w-7xl">
+      <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <h2 id="tentang-title" class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Mengapa Memilih Awicio?</h2>
+        <p class="text-slate-600">Dimsum & Cireng Awicio adalah rumah kuliner di Tangerang Selatan yang menyajikan kelezatan tanpa kompromi. Kepuasan Anda adalah prioritas kami.[cite: 1]</p>
       </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow reveal">
+          <div class="w-14 h-14 bg-brand-light text-brand rounded-xl flex items-center justify-center text-2xl mb-6">
+            <i class="bi bi-fire"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-3">Chili Oil Bikin Nagih[cite: 1]</h3>
+          <p class="text-slate-600">Pangsit dan dimsum kami dilengkapi dengan chili oil khas yang pedasnya pas dan dijamin bikin Anda ketagihan.[cite: 1]</p>
+        </div>
+        
+        <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow reveal">
+          <div class="w-14 h-14 bg-brand-light text-brand rounded-xl flex items-center justify-center text-2xl mb-6">
+            <i class="bi bi-heart-fill"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-3">Tekstur Kaya Urat[cite: 1]</h3>
+          <p class="text-slate-600">Dimsum kami tidak banyak sagunya, ayamnya sangat terasa, dan memiliki tekstur kaya urat yang nikmat di setiap gigitan.[cite: 1]</p>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow reveal">
+          <div class="w-14 h-14 bg-brand-light text-brand rounded-xl flex items-center justify-center text-2xl mb-6">
+            <i class="bi bi-box-seam"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-3">Varian & Isi Banyak[cite: 1]</h3>
+          <p class="text-slate-600">Dari Cireng Jumbo hingga Kuah Keju Creamy, porsi kami mengenyangkan dengan pilihan rasa Ati, Ayam, dan Keju.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Katalog Produk -->
+  <section id="katalog" class="py-16 md:py-24 bg-white border-t" aria-labelledby="katalog-title">
+    <div class="container mx-auto px-4 max-w-7xl">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 reveal">
+        <div class="max-w-2xl">
+          <h2 id="katalog-title" class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Pesan Favoritmu Sekarang</h2>
+          <p class="text-slate-600">Tersedia pilihan matang atau frozen untuk menemani santai Anda di rumah.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="product-grid">
+        <!-- Products will be injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Proses / Cara Pesan -->
+  <section class="py-16 md:py-24 bg-brand-light" aria-labelledby="proses-title">
+    <div class="container mx-auto px-4 max-w-7xl text-center">
+      <h2 id="proses-title" class="text-3xl md:text-4xl font-bold text-slate-900 mb-12 reveal">Cara Pemesanan Mudah</h2>
       
-      <div class="bg-white border border-gray-100 rounded-3xl p-8">
-        <div class="w-12 h-12 bg-orange-100 text-[#FF6B35] rounded-2xl flex items-center justify-center mb-6">
-          <i class="bi bi-fire text-3xl"></i>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+        <!-- Connector Line for Desktop -->
+        <div class="hidden md:block absolute top-1/2 left-[12%] right-[12%] h-1 bg-brand/20 -translate-y-1/2 z-0"></div>
+        
+        <div class="relative z-10 flex flex-col items-center reveal">
+          <div class="w-16 h-16 bg-brand text-white rounded-full flex items-center justify-center text-2xl font-bold mb-4 shadow-lg">1</div>
+          <h3 class="font-bold text-lg mb-2">Pilih Menu</h3>
+          <p class="text-slate-600 text-sm">Tambahkan varian cireng atau dimsum ke keranjang.</p>
         </div>
-        <h3 class="font-heading text-2xl font-bold mb-3">Chili Oil Bikin Nagih</h3>
-        <p class="text-gray-600 leading-relaxed">Pangsit chili oil kami pakai resep spesial. Pedasnya pas, gurihnya nendang, dan bikin pengen nambah terus. Banyak yang bilang ini yang terbaik.</p>
-      </div>
-      
-      <div class="bg-white border border-gray-100 rounded-3xl p-8">
-        <div class="w-12 h-12 bg-orange-100 text-[#FF6B35] rounded-2xl flex items-center justify-center mb-6">
-          <i class="bi bi-shield-check text-3xl"></i>
+        <div class="relative z-10 flex flex-col items-center reveal">
+          <div class="w-16 h-16 bg-brand text-white rounded-full flex items-center justify-center text-2xl font-bold mb-4 shadow-lg">2</div>
+          <h3 class="font-bold text-lg mb-2">Checkout ke WA</h3>
+          <p class="text-slate-600 text-sm">Klik kirim pesanan, sistem otomatis membuka WhatsApp.</p>
         </div>
-        <h3 class="font-heading text-2xl font-bold mb-3">100% Halal &amp; Higienis</h3>
-        <p class="text-gray-600 leading-relaxed">Semua bahan kami pilih yang terbaik dan diproses dengan standar kebersihan tinggi. Aman untuk keluarga dan anak-anak.</p>
+        <div class="relative z-10 flex flex-col items-center reveal">
+          <div class="w-16 h-16 bg-brand text-white rounded-full flex items-center justify-center text-2xl font-bold mb-4 shadow-lg">3</div>
+          <h3 class="font-bold text-lg mb-2">Konfirmasi & Bayar</h3>
+          <p class="text-slate-600 text-sm">Admin Awicio akan membalas detail total dan ongkir.</p>
+        </div>
+        <div class="relative z-10 flex flex-col items-center reveal">
+          <div class="w-16 h-16 bg-brand text-white rounded-full flex items-center justify-center text-2xl font-bold mb-4 shadow-lg">4</div>
+          <h3 class="font-bold text-lg mb-2">Pesanan Tiba</h3>
+          <p class="text-slate-600 text-sm">Santap cireng dan dimsum hangat di rumah Anda!</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- MENU / PRODUK -->
-  <section id="menu" class="bg-[#FFF4EC] py-16">
-    <div class="max-w-screen-xl mx-auto px-6">
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-10">
-        <div>
-          <div class="text-[#FF6B35] text-xs tracking-[2px] font-bold mb-1">PILIHAN TERBAIK KAMI</div>
-          <h2 class="section-header">Menu Dimsum &amp; Cireng</h2>
-        </div>
-        <p class="text-gray-600 max-w-xs mt-3 md:mt-0">Semua menu dibuat fresh. Harga sudah termasuk bumbu spesial.</p>
+  <!-- Testimoni -->
+  <section id="testimoni" class="py-16 md:py-24 bg-white border-t" aria-labelledby="testimoni-title">
+    <div class="container mx-auto px-4 max-w-7xl">
+      <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <h2 id="testimoni-title" class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Apa Kata Pelanggan Kami?</h2>
+        <p class="text-slate-600">Ratusan porsi terjual. Inilah bukti rasa otentik Awicio dari pelanggan setia.[cite: 1]</p>
       </div>
 
-      <!-- Filter -->
-      <div class="flex flex-wrap gap-2 mb-8" id="category-filters">
-        <button onclick="filterProducts('all')" class="filter-btn active px-5 py-2 text-sm font-medium border border-gray-300 rounded-3xl bg-white" data-category="all">Semua</button>
-        <button onclick="filterProducts('Dimsum')" class="filter-btn px-5 py-2 text-sm font-medium border border-gray-300 rounded-3xl bg-white" data-category="Dimsum">Dimsum</button>
-        <button onclick="filterProducts('Cireng')" class="filter-btn px-5 py-2 text-sm font-medium border border-gray-300 rounded-3xl bg-white" data-category="Cireng">Cireng</button>
-        <button onclick="filterProducts('Pangsit')" class="filter-btn px-5 py-2 text-sm font-medium border border-gray-300 rounded-3xl bg-white" data-category="Pangsit">Pangsit</button>
-        <button onclick="filterProducts('Paket')" class="filter-btn px-5 py-2 text-sm font-medium border border-gray-300 rounded-3xl bg-white" data-category="Paket">Paket Hemat</button>
-      </div>
-
-      <!-- Product Grid -->
-      <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <!-- Populated by JavaScript -->
-      </div>
-
-      <div class="text-center mt-10">
-        <p class="text-sm text-gray-500">Ingin menu lain atau paket untuk acara? Langsung chat admin via WhatsApp.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- TENTANG KAMI -->
-  <section id="tentang" class="max-w-screen-xl mx-auto px-6 py-16">
-    <div class="grid md:grid-cols-12 gap-x-12 items-center">
-      <div class="md:col-span-5 mb-10 md:mb-0">
-        <div class="sticky top-24">
-          <div class="text-[#FF6B35] text-xs tracking-[2px] font-bold mb-2">CERITA KAMI</div>
-          <h2 class="section-header leading-none">Dari Dapur Rumah<br>ke Meja Pelanggan</h2>
-        </div>
-      </div>
-      
-      <div class="md:col-span-7 text-[15px] leading-relaxed text-gray-600 space-y-5">
-        <p><strong>Dimsum &amp; Cireng Awicio</strong> adalah usaha kuliner rumahan di Pondok Cabe Udik, Pamulang, Tangerang Selatan. Kami mulai dari hobi bikin dimsum dan cireng untuk keluarga, lalu banyak teman yang minta dibuatkan.</p>
-        
-        <p>Sekarang kami sudah melayani puluhan pelanggan setiap minggu. Semua dimsum dan cireng kami buat fresh setiap hari pakai ayam pilihan dan bumbu racikan sendiri. Tidak pakai pengawet atau bahan instan.</p>
-        
-        <div class="pt-4 flex flex-wrap gap-x-8 gap-y-4 text-sm">
-          <div>
-            <div class="font-bold text-[#1A1A2E]">Lokasi</div>
-            <div>Pondok Cabe Udik, Pamulang</div>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 reveal">
+          <div class="flex text-yellow-400 mb-4">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
           </div>
-          <div>
-            <div class="font-bold text-[#1A1A2E]">Mulai</div>
-            <div>2022</div>
+          <p class="text-slate-700 italic mb-6">"Selalu memuaskan klo beli di sini, enak bikin ketagian. Dimsum nya enak kaya ada urat2 nya gitu. Pangsit chili oil nya bikin nagih pedes nya pas."[cite: 1]</p>
+          <div class="font-bold text-slate-900">Nur J.</div>
+          <div class="text-sm text-slate-500">Local Guide</div>
+        </div>
+
+        <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 reveal">
+          <div class="flex text-yellow-400 mb-4">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
           </div>
-          <div>
-            <div class="font-bold text-[#1A1A2E]">Spesialisasi</div>
-            <div>Dimsum Ayam &amp; Cireng Isi</div>
+          <p class="text-slate-700 italic mb-6">"Good Taste. Good Delivered. 1000% Halal. Mantap banget pokoknya, rasa dan ukuran bintang 5."[cite: 1]</p>
+          <div class="font-bold text-slate-900">Husni T.</div>
+          <div class="text-sm text-slate-500">Pelanggan Awicio</div>
+        </div>
+
+        <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 reveal">
+          <div class="flex text-yellow-400 mb-4">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
           </div>
+          <p class="text-slate-700 italic mb-6">"Asliiii enak banget, kalian wajib cobain semua menu. Udah berapa kali PO ga bosen-bosen.. mantaaap!!"[cite: 1]</p>
+          <div class="font-bold text-slate-900">Nina I.</div>
+          <div class="text-sm text-slate-500">Pelanggan Awicio</div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROSES -->
-  <section class="bg-white border-t border-b py-16">
-    <div class="max-w-screen-xl mx-auto px-6">
-      <div class="text-center mb-12">
-        <div class="text-[#FF6B35] text-xs tracking-[2px] font-bold mb-2">MUDAH BANGET</div>
-        <h2 class="section-header">Cara Pesan dalam 4 Langkah</h2>
-      </div>
-
-      <div class="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-        <div class="text-center">
-          <div class="step-number mx-auto mb-5">1</div>
-          <div class="font-bold text-lg mb-1.5">Pilih Menu</div>
-          <p class="text-sm text-gray-600">Lihat katalog di website ini dan pilih yang kamu suka.</p>
-        </div>
-        <div class="text-center">
-          <div class="step-number mx-auto mb-5">2</div>
-          <div class="font-bold text-lg mb-1.5">Tambah ke Keranjang</div>
-          <p class="text-sm text-gray-600">Klik tombol + Keranjang. Kamu bisa pesan beberapa item sekaligus.</p>
-        </div>
-        <div class="text-center">
-          <div class="step-number mx-auto mb-5">3</div>
-          <div class="font-bold text-lg mb-1.5">Chat WhatsApp</div>
-          <p class="text-sm text-gray-600">Klik tombol Kirim Pesanan. Kami akan konfirmasi stok dan total.</p>
-        </div>
-        <div class="text-center">
-          <div class="step-number mx-auto mb-5">4</div>
-          <div class="font-bold text-lg mb-1.5">Ambil atau Diantar</div>
-          <p class="text-sm text-gray-600">Siapkan pembayaran. Kami siapkan pesananmu. Bisa ambil sendiri atau via ojol.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONI -->
-  <section id="testimoni" class="max-w-screen-xl mx-auto px-6 py-16">
-    <div class="text-center mb-10">
-      <div class="text-[#FF6B35] text-xs tracking-[2px] font-bold mb-2">KATA PELANGGAN</div>
-      <h2 class="section-header">Mereka Sudah Coba dan Balik Lagi</h2>
-    </div>
-
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Testimoni 1 -->
-      <div class="bg-white border border-gray-100 rounded-3xl p-7 testimonial-card">
-        <div class="flex gap-x-1 text-[#FF6B35] mb-4">
-          <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-        </div>
-        <p class="text-gray-700 leading-relaxed">"Dimsum nya enak ga banyak sagunya jd terasa bgt ayamnya. Saosnya juga enak. Selalu memuaskan klo beli di sini."</p>
-        <div class="mt-6 flex items-center gap-x-3">
-          <div class="font-semibold">Nila Priyanti</div>
-          <div class="text-xs text-gray-400">• Pamulang</div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-gray-100 rounded-3xl p-7 testimonial-card">
-        <div class="flex gap-x-1 text-[#FF6B35] mb-4">
-          <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-        </div>
-        <p class="text-gray-700 leading-relaxed">"Cireng nya isi nya banyak banget. Pangsit chili oil nya bikin nagih pedes nya pas. Dimsum nya enak kaya ada urat2 nya gitu. Recommended!"</p>
-        <div class="mt-6 flex items-center gap-x-3">
-          <div class="font-semibold">Nur Janah</div>
-          <div class="text-xs text-gray-400">• Pondok Cabe</div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-gray-100 rounded-3xl p-7 testimonial-card">
-        <div class="flex gap-x-1 text-[#FF6B35] mb-4">
-          <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-        </div>
-        <p class="text-gray-700 leading-relaxed">"Asli mantep. Udah berapa kali PO, ga bosen-bosen. Josh lah. Semoga tambah laris dan banyak pelanggan. Mantaaap!!"</p>
-        <div class="mt-6 flex items-center gap-x-3">
-          <div class="font-semibold">Zafran Kurniawan</div>
-          <div class="text-xs text-gray-400">• Tangsel</div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-gray-100 rounded-3xl p-7 testimonial-card">
-        <div class="flex gap-x-1 text-[#FF6B35] mb-4">
-          <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-        </div>
-        <p class="text-gray-700 leading-relaxed">"Good taste, good delivered. 100% halal. Mantappp bangeetss, rasa dan ukuran bintang 5."</p>
-        <div class="mt-6 flex items-center gap-x-3">
-          <div class="font-semibold">Husni Thamrin</div>
-          <div class="text-xs text-gray-400">• Ciputat</div>
-        </div>
-      </div>
-
-      <div class="bg-white border border-gray-100 rounded-3xl p-7 testimonial-card">
-        <div class="flex gap-x-1 text-[#FF6B35] mb-4">
-          <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-        </div>
-        <p class="text-gray-700 leading-relaxed">"Enak banget pokoknya. Segera dipesan!!! Chili oilnya bikin nagih banget 🤤"</p>
-        <div class="mt-6 flex items-center gap-x-3">
-          <div class="font-semibold">Rais Wijaya &amp; Mamih Kenny</div>
-          <div class="text-xs text-gray-400">• Tangsel</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA BANNER -->
-  <section class="max-w-screen-xl mx-auto px-6 pb-16">
-    <div class="bg-[#1A1A2E] rounded-[2.75rem] px-10 py-14 text-center text-white">
-      <div class="max-w-md mx-auto">
-        <h3 class="font-heading text-4xl tracking-tighter font-black mb-4">Siap Coba yang Bikin Nagih?</h3>
-        <p class="text-gray-300 mb-8">Chat admin sekarang. Kami bantu pilihkan paket yang pas buat kamu atau keluarga.</p>
-        
-        <a href="https://wa.me/6287898932247?text=Halo%20Awicio%2C%20saya%20mau%20pesan%20dimsum%20dan%20cireng%20hari%20ini" 
-           target="_blank" rel="noopener"
-           class="inline-flex items-center justify-center gap-x-3 bg-[#FF6B35] hover:bg-[#C2410F] transition-all text-white font-bold px-10 h-14 rounded-3xl text-base active:scale-[0.985]">
-          <i class="bi bi-whatsapp text-xl"></i>
-          <span>Chat WhatsApp Sekarang</span>
-        </a>
-        
-        <p class="text-[10px] text-gray-400 mt-4">Respon biasanya kurang dari 5 menit</p>
       </div>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section id="faq" class="max-w-screen-xl mx-auto px-6 pb-20">
-    <div class="max-w-3xl mx-auto">
-      <div class="text-center mb-10">
-        <div class="text-[#FF6B35] text-xs tracking-[2px] font-bold mb-2">PERTANYAAN UMUM</div>
-        <h2 class="section-header">Yang Sering Ditanyakan</h2>
+  <section id="faq" class="py-16 md:py-24 bg-slate-50" aria-labelledby="faq-title">
+    <div class="container mx-auto px-4 max-w-3xl">
+      <div class="text-center mb-12 reveal">
+        <h2 id="faq-title" class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Tanya Jawab (FAQ)</h2>
       </div>
 
-      <div class="space-y-3">
-        <details class="group bg-white border border-gray-100 rounded-3xl px-7 py-1">
-          <summary class="flex items-center justify-between py-5 font-semibold text-lg">
-            Berapa harga menu di Dimsum &amp; Cireng Awicio?
-            <i class="bi bi-chevron-down text-xl transition-transform group-open:rotate-180"></i>
+      <div class="space-y-4 reveal">
+        <details class="group bg-white rounded-lg shadow-sm border border-slate-200" open>
+          <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-lg text-slate-900">
+            <span>Dimana lokasi operasional Dimsum & Cireng Awicio?</span>
+            <span class="transition group-open:rotate-180">
+              <i class="bi bi-chevron-down"></i>
+            </span>
           </summary>
-          <div class="pb-6 text-gray-600 text-[15px]">
-            Harga mulai dari Rp 15.000 untuk cireng sampai Rp 55.000 untuk paket combo. Semua harga sudah tertera di menu website ini. Tidak ada biaya tersembunyi.
+          <div class="text-slate-600 px-6 pb-6 pt-0">
+            Kami berlokasi di Jl. RE Martadinata, Pd. Cabe Udik, Kec. Pamulang, Kota Tangerang Selatan, Banten.[cite: 1]
           </div>
         </details>
 
-        <details class="group bg-white border border-gray-100 rounded-3xl px-7 py-1">
-          <summary class="flex items-center justify-between py-5 font-semibold text-lg">
-            Apakah Dimsum &amp; Cireng Awicio halal?
-            <i class="bi bi-chevron-down text-xl transition-transform group-open:rotate-180"></i>
+        <details class="group bg-white rounded-lg shadow-sm border border-slate-200">
+          <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-lg text-slate-900">
+            <span>Apakah makanan di sini Halal?</span>
+            <span class="transition group-open:rotate-180">
+              <i class="bi bi-chevron-down"></i>
+            </span>
           </summary>
-          <div class="pb-6 text-gray-600 text-[15px]">
-            Ya, 100% halal. Kami pakai ayam dari supplier terpercaya dan semua proses memasak sesuai standar halal.
+          <div class="text-slate-600 px-6 pb-6 pt-0">
+            Ya! Semua produk kami dijamin 1000% halal dan dibuat dengan bahan-bahan premium yang bersih.[cite: 1]
           </div>
         </details>
 
-        <details class="group bg-white border border-gray-100 rounded-3xl px-7 py-1">
-          <summary class="flex items-center justify-between py-5 font-semibold text-lg">
-            Bagaimana cara memesan?
-            <i class="bi bi-chevron-down text-xl transition-transform group-open:rotate-180"></i>
+        <details class="group bg-white rounded-lg shadow-sm border border-slate-200">
+          <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-lg text-slate-900">
+            <span>Varian rasa cireng apa saja yang tersedia?</span>
+            <span class="transition group-open:rotate-180">
+              <i class="bi bi-chevron-down"></i>
+            </span>
           </summary>
-          <div class="pb-6 text-gray-600 text-[15px]">
-            Pilih menu di website, tambahkan ke keranjang, lalu klik tombol Kirim Pesanan via WhatsApp. Admin akan konfirmasi dan kasih info pembayaran.
+          <div class="text-slate-600 px-6 pb-6 pt-0">
+            Kami menyediakan varian isi Ati, Ayam, dan Keju. Tersedia juga varian "Mix" khusus untuk pemesanan Cireng Kuah Keju Creamy.
           </div>
         </details>
 
-        <details class="group bg-white border border-gray-100 rounded-3xl px-7 py-1">
-          <summary class="flex items-center justify-between py-5 font-semibold text-lg">
-            Apakah ada pengiriman?
-            <i class="bi bi-chevron-down text-xl transition-transform group-open:rotate-180"></i>
+        <details class="group bg-white rounded-lg shadow-sm border border-slate-200">
+          <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-lg text-slate-900">
+            <span>Apakah bisa dikirim dalam bentuk frozen?</span>
+            <span class="transition group-open:rotate-180">
+              <i class="bi bi-chevron-down"></i>
+            </span>
           </summary>
-          <div class="pb-6 text-gray-600 text-[15px]">
-            Bisa diantar via Gojek/Grab atau ambil sendiri di Pondok Cabe Udik, Pamulang. Untuk area sekitar Tangsel biasanya cepat sampai.
+          <div class="text-slate-600 px-6 pb-6 pt-0">
+            Tentu saja bisa! Anda dapat memberikan catatan "Frozen" atau "Matang" pada saat checkout melalui keranjang website kami.
           </div>
         </details>
 
-        <details class="group bg-white border border-gray-100 rounded-3xl px-7 py-1">
-          <summary class="flex items-center justify-between py-5 font-semibold text-lg">
-            Kapan Dimsum &amp; Cireng Awicio buka?
-            <i class="bi bi-chevron-down text-xl transition-transform group-open:rotate-180"></i>
+        <details class="group bg-white rounded-lg shadow-sm border border-slate-200">
+          <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-lg text-slate-900">
+            <span>Kapan jam buka operasionalnya?</span>
+            <span class="transition group-open:rotate-180">
+              <i class="bi bi-chevron-down"></i>
+            </span>
           </summary>
-          <div class="pb-6 text-gray-600 text-[15px]">
-            Kami buka setiap Sabtu dan Minggu mulai pukul 09.00 WIB. Untuk hari biasa atau pesanan khusus, silakan chat via WhatsApp dulu ya.
+          <div class="text-slate-600 px-6 pb-6 pt-0">
+            Kami buka setiap hari dan siap melayani pesanan Anda, mulai dari jam 09:00 WIB.[cite: 1]
           </div>
         </details>
       </div>
     </div>
   </section>
 
-  <!-- KONTAK -->
-  <section id="kontak" class="bg-[#FFF4EC] py-16">
-    <div class="max-w-screen-xl mx-auto px-6">
-      <div class="grid md:grid-cols-2 gap-x-12 gap-y-10">
-        <div>
-          <div class="text-[#FF6B35] text-xs tracking-[2px] font-bold mb-3">LOKASI &amp; KONTAK</div>
-          <h2 class="section-header mb-8">Datang atau Hubungi Kami</h2>
+  <!-- Kontak & Lokasi -->
+  <section id="kontak" class="py-16 md:py-24 bg-white border-t" aria-labelledby="kontak-title">
+    <div class="container mx-auto px-4 max-w-7xl">
+      <div class="grid md:grid-cols-2 gap-12 items-start">
+        <div class="reveal">
+          <h2 id="kontak-title" class="text-3xl md:text-4xl font-bold text-slate-900 mb-6">Kunjungi atau Hubungi Kami</h2>
+          <p class="text-slate-600 mb-8">Punya pertanyaan seputar ketersediaan atau pesanan dalam jumlah besar? Jangan ragu untuk menghubungi admin kami.</p>
           
-          <div class="space-y-7 text-[15px]">
-            <div>
-              <div class="font-semibold mb-1 flex items-center gap-x-2">
-                <i class="bi bi-geo-alt text-[#FF6B35]"></i> 
-                <span>Alamat</span>
+          <div class="space-y-6">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-brand-light text-brand rounded-full flex items-center justify-center text-xl shrink-0">
+                <i class="bi bi-geo-alt-fill"></i>
               </div>
-              <div class="text-gray-600">Jl. RE Martadinata, Pd. Cabe Udik,<br>Kec. Pamulang, Kota Tangerang Selatan, Banten</div>
-            </div>
-            
-            <div>
-              <div class="font-semibold mb-1 flex items-center gap-x-2">
-                <i class="bi bi-clock text-[#FF6B35]"></i> 
-                <span>Jam Operasional</span>
+              <div>
+                <h3 class="font-bold text-slate-900">Alamat Awicio[cite: 1]</h3>
+                <p class="text-slate-600 mt-1">Jl. RE Martadinata, Pd. Cabe Udik, Kec. Pamulang<br>Kota Tangerang Selatan, Banten</p>
               </div>
-              <div class="text-gray-600">Sabtu &amp; Minggu: 09.00 - 20.00 WIB<br>Hari biasa: Hubungi via WA</div>
             </div>
 
-            <div>
-              <div class="font-semibold mb-1 flex items-center gap-x-2">
-                <i class="bi bi-whatsapp text-[#FF6B35]"></i> 
-                <span>WhatsApp</span>
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-brand-light text-brand rounded-full flex items-center justify-center text-xl shrink-0">
+                <i class="bi bi-whatsapp"></i>
               </div>
-              <a href="https://wa.me/6287898932247" target="_blank" rel="noopener" class="text-[#FF6B35] font-semibold hover:underline">0878-8993-2247</a>
+              <div>
+                <h3 class="font-bold text-slate-900">WhatsApp[cite: 1]</h3>
+                <p class="text-slate-600 mt-1">0878-8993-2247 (Admin Fast Respon)</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-brand-light text-brand rounded-full flex items-center justify-center text-xl shrink-0">
+                <i class="bi bi-clock-fill"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-slate-900">Jam Buka[cite: 1]</h3>
+                <p class="text-slate-600 mt-1">Senin - Minggu: 09:00 - 21:00 WIB</p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="bg-white rounded-3xl p-8 border border-gray-100">
-          <div class="font-semibold mb-4">Lihat Lokasi di Peta</div>
-          <div class="aspect-video bg-gray-100 rounded-2xl overflow-hidden relative flex items-center justify-center">
-            <a href="https://www.google.com/maps/place/Dimsum+%26+Cireng+Awicio/@-6.3538371,106.7496564,21z/data=!4m6!3m5!1s0x2e69ef005d26da17:0x2714e7df408aedf1!8m2!3d-6.3537525!4d106.7495778!16s%2Fg%2F11w3ht_98z" 
-               target="_blank" rel="noopener"
-               class="inline-flex items-center gap-x-2 bg-white shadow px-6 h-12 rounded-3xl text-sm font-semibold hover:bg-gray-50 transition-all">
-              <i class="bi bi-map text-lg"></i>
-              <span>Buka Google Maps</span>
-            </a>
-          </div>
-          <p class="text-xs text-center text-gray-400 mt-3">JPWX+FR Pondok Cabe Udik, South Tangerang City</p>
+        <div class="w-full h-[400px] bg-slate-200 rounded-2xl overflow-hidden shadow-md reveal">
+          <iframe 
+            src="https://maps.google.com/maps?q=-6.3537525,106.7495778&z=15&output=embed" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Peta Lokasi Dimsum & Cireng Awicio[cite: 1]">
+          </iframe>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="bg-[#1A1A2E] text-gray-400 py-12">
-    <div class="max-w-screen-xl mx-auto px-6">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-y-6 text-sm">
-        <div>
-          <div class="flex items-center gap-x-3 mb-2">
-            <div class="w-8 h-8 bg-[#FF6B35] rounded-2xl flex items-center justify-center">
-              <i class="bi bi-egg-fried text-white"></i>
-            </div>
-            <span class="font-heading text-white text-xl font-black tracking-tighter">Awicio</span>
-          </div>
-          <div class="text-xs">Dimsum &amp; Cireng Premium • Pamulang, Tangsel</div>
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-300 py-12 border-t border-slate-800">
+    <div class="container mx-auto px-4 max-w-7xl flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="text-center md:text-left">
+        <div class="text-2xl font-bold font-heading text-white flex items-center justify-center md:justify-start gap-2 mb-2">
+          <i class="bi bi-shop text-brand"></i> Awicio
         </div>
-
-        <div class="flex flex-wrap gap-x-8 gap-y-2 text-xs">
-          <a href="#menu" class="hover:text-white transition-colors">Menu</a>
-          <a href="#tentang" class="hover:text-white transition-colors">Tentang</a>
-          <a href="#testimoni" class="hover:text-white transition-colors">Testimoni</a>
-          <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
-          <a href="#kontak" class="hover:text-white transition-colors">Kontak</a>
-        </div>
-
-        <div class="text-xs">
-          © 2026 Dimsum &amp; Cireng Awicio<br>
-          <span class="text-gray-500">Website oleh yztheme • Jasa Website UMKM Tangsel</span>
-        </div>
+        <p class="text-sm text-slate-400">Dimsum & Cireng Premium Tangerang Selatan[cite: 1]</p>
       </div>
+      
+      <div class="flex gap-6 text-xl">
+        <a href="https://wa.me/6287889932247" target="_blank" rel="noopener" class="hover:text-brand transition-colors" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+        <a href="#" class="hover:text-brand transition-colors" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+      </div>
+    </div>
+    
+    <div class="container mx-auto px-4 max-w-7xl mt-8 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
+      &copy; 2026 Dimsum & Cireng Awicio. All rights reserved.
+      <p class="text-sm text-slate-600 mt-2">
+        Website generated by <a href="https://yztheme.my.id" target="_blank" rel="noopener" class="hover:text-white underline">yztheme.my.id</a>
+      </p>
     </div>
   </footer>
 
-  <!-- FLOATING WHATSAPP -->
-  <a href="https://wa.me/6287898932247?text=Halo%20Awicio%2C%20saya%20ingin%20bertanya%20tentang%20dimsum%20dan%20cireng" 
-     target="_blank" rel="noopener"
-     class="fixed bottom-6 left-6 z-50 bg-[#25D366] text-white rounded-full p-4 shadow-xl wa-pulse"
-     aria-label="Chat WhatsApp Dimsum &amp; Cireng Awicio">
-    <i class="bi bi-whatsapp text-3xl"></i>
+  <!-- Floating Elements -->
+  <a href="https://wa.me/6287889932247?text=Halo%20Awicio,%20saya%20mau%20bertanya%20tentang%20produknya." class="fixed bottom-6 left-6 z-50 bg-[#25D366] text-white rounded-full p-4 shadow-xl hover:scale-110 transition-transform flex items-center justify-center" target="_blank" rel="noopener" aria-label="Chat WhatsApp[cite: 1]">
+    <i class="bi bi-whatsapp text-2xl"></i>
   </a>
 
-  <!-- FLOATING CART -->
-  <button onclick="toggleCart()" 
-          class="fixed bottom-6 right-6 z-50 bg-[#FF6B35] text-white rounded-full p-4 shadow-xl flex items-center justify-center"
-          aria-label="Buka keranjang belanja">
-    <i class="bi bi-cart3 text-3xl"></i>
-    <span id="cart-count" 
-          class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold w-6 h-6 flex items-center justify-center rounded-full">0</span>
-  </button>
-
-  <!-- BACK TO TOP -->
-  <button id="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'})"
-          class="fixed bottom-24 right-6 z-40 hidden bg-gray-900 text-white rounded-full p-3 shadow-lg">
+  <button id="back-to-top" class="fixed bottom-24 right-6 z-40 bg-slate-800 text-white rounded-full p-3 shadow-lg hover:bg-slate-700 transition-all opacity-0 pointer-events-none" aria-label="Kembali ke atas">
     <i class="bi bi-arrow-up text-xl"></i>
   </button>
 
-  <!-- CART SIDEBAR -->
-  <div id="cart-overlay" onclick="toggleCart()" class="hidden fixed inset-0 bg-black/60 z-[60]"></div>
-  
-  <div id="cart-sidebar" 
-       class="cart-sidebar hidden fixed top-0 right-0 bottom-0 w-full max-w-md bg-white z-[70] shadow-2xl flex flex-col">
+  <!-- Cart Sidebar -->
+  <div id="cart-overlay" class="fixed inset-0 bg-black/50 z-50 hidden opacity-0" onclick="toggleCart(false)"></div>
+  <div id="cart-sidebar" class="fixed top-0 right-0 bottom-0 w-full md:w-96 bg-white z-50 transform translate-x-full shadow-2xl flex flex-col">
+    <div class="p-4 border-b flex justify-between items-center bg-brand text-white">
+      <h3 class="font-bold text-lg flex items-center gap-2"><i class="bi bi-cart3"></i> Keranjang Pesanan</h3>
+      <button onclick="toggleCart(false)" class="text-white hover:text-gray-200 text-2xl leading-none">&times;</button>
+    </div>
     
-    <div class="px-6 pt-6 pb-4 border-b flex items-center justify-between">
-      <div class="font-heading text-2xl font-black">Keranjang</div>
-      <button onclick="toggleCart()" class="text-3xl leading-none text-gray-400 hover:text-gray-600">&times;</button>
+    <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4" id="cart-items">
+      <!-- Cart items will be rendered here -->
     </div>
-
-    <div id="cart-items" class="flex-1 overflow-auto px-6 py-4 space-y-4 text-sm">
-      <!-- JS populated -->
-    </div>
-
-    <div class="px-6 py-5 border-t bg-white">
-      <div class="flex justify-between items-baseline mb-4 px-1">
-        <div class="font-semibold">Total Sementara</div>
-        <div id="cart-total" class="font-black text-2xl text-[#FF6B35]">Rp 0</div>
+    
+    <div class="p-4 border-t bg-slate-50">
+      <div class="flex justify-between items-center mb-4 text-lg font-bold">
+        <span>Total:</span>
+        <span class="text-brand" id="cart-total">Rp 0</span>
       </div>
-
-      <!-- Nama Pemesan -->
-      <div class="mb-3">
-        <label class="text-xs font-medium text-gray-500 block mb-1.5 px-1">Nama Pemesan</label>
-        <input type="text" id="customer-name" placeholder="Contoh: Budi Santoso" 
-               class="w-full border border-gray-200 focus:border-[#FF6B35] rounded-2xl px-4 py-3 text-sm outline-none">
-      </div>
-
-      <!-- Catatan -->
-      <div class="mb-4">
-        <label class="text-xs font-medium text-gray-500 block mb-1.5 px-1">Catatan untuk Admin (opsional)</label>
-        <textarea id="customer-note" rows="2" placeholder="Contoh: Minta yang tidak pedas ya" 
-                  class="w-full border border-gray-200 focus:border-[#FF6B35] rounded-2xl px-4 py-3 text-sm outline-none resize-y"></textarea>
-      </div>
-
-      <!-- Lokasi -->
-      <div class="mb-5 px-1">
-        <label class="flex items-start gap-x-2 text-sm cursor-pointer">
-          <input type="checkbox" id="share-location" class="mt-1 accent-[#FF6B35]">
-          <span class="text-gray-600 text-xs leading-snug">Bagikan lokasi saya untuk estimasi ongkir (opsional)</span>
-        </label>
-      </div>
-
-      <button onclick="sendToWhatsApp()" 
-              class="w-full bg-[#25D366] hover:bg-[#128C7E] transition-all text-white font-bold h-14 rounded-3xl flex items-center justify-center gap-x-2 text-base">
-        <i class="bi bi-whatsapp text-xl"></i>
-        <span>Kirim Pesanan via WhatsApp</span>
-      </button>
       
-      <p class="text-center text-[10px] text-gray-400 mt-3">Admin akan konfirmasi stok &amp; total via chat</p>
+      <div class="space-y-3 mb-4">
+        <div>
+          <label for="cart-name" class="block text-sm font-medium text-gray-700 mb-1">Nama Pemesan <span class="text-red-500">*</span></label>
+          <input type="text" id="cart-name" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent" placeholder="Contoh: Budi">
+        </div>
+        <div>
+          <label for="cart-notes" class="block text-sm font-medium text-gray-700 mb-1">Catatan Tambahan</label>
+          <input type="text" id="cart-notes" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent" placeholder="Contoh: 1 Frozen, 1 Matang">
+        </div>
+      </div>
+      
+      <button onclick="checkoutWA()" class="w-full bg-accent hover:bg-orange-600 text-white font-bold py-3 rounded-lg shadow transition-colors flex items-center justify-center gap-2">
+        <i class="bi bi-whatsapp"></i> Kirim ke WhatsApp
+      </button>
     </div>
   </div>
 
+  <!-- Javascript Core -->
   <script>
-    // ==================== DATA PRODUK ====================
+    // 1. Data Produk (berdasarkan referensi config)
     const products = [
-      {
-        id: 1,
-        name: "Dimsum Ayam Original",
-        desc: "Dimsum ayam premium juicy dengan tekstur khas. Isi 5 pcs per porsi.",
-        price: 28000,
-        priceFormatted: "Rp 28.000",
-        img: "https://placehold.co/600x400/FF6B35/FFFFFF?text=Dimsum+Ayam",
-        badge: "Terlaris",
-        category: "Dimsum"
-      },
-      {
-        id: 2,
-        name: "Cireng Isi Ayam Pedas",
-        desc: "Cireng renyah luar, isi ayam cincang pedas melimpah. 4 pcs.",
-        price: 18000,
-        priceFormatted: "Rp 18.000",
-        img: "https://placehold.co/600x400/F5A623/FFFFFF?text=Cireng+Isi+Ayam",
-        badge: "",
-        category: "Cireng"
-      },
-      {
-        id: 3,
-        name: "Pangsit Chili Oil Nagih",
-        desc: "Pangsit goreng renyah + saus chili oil pedas manis spesial. Bikin nagih!",
-        price: 22000,
-        priceFormatted: "Rp 22.000",
-        img: "https://placehold.co/600x400/E74C3C/FFFFFF?text=Pangsit+Chili+Oil",
-        badge: "Nagih",
-        category: "Pangsit"
-      },
-      {
-        id: 4,
-        name: "Dimsum Udang Spesial",
-        desc: "Dimsum isi udang segar dan ayam. Tekstur lebih premium. 5 pcs.",
-        price: 35000,
-        priceFormatted: "Rp 35.000",
-        img: "https://placehold.co/600x400/FF6B35/FFFFFF?text=Dimsum+Udang",
-        badge: "Premium",
-        category: "Dimsum"
-      },
-      {
-        id: 5,
-        name: "Cireng Keju Mozzarella",
-        desc: "Cireng isi keju mozzarella lumer yang enak. Cocok buat anak-anak.",
-        price: 20000,
-        priceFormatted: "Rp 20.000",
-        img: "https://placehold.co/600x400/F1C40F/1A1A2E?text=Cireng+Keju",
-        badge: "",
-        category: "Cireng"
-      },
-      {
-        id: 6,
-        name: "Paket Combo Nagih",
-        desc: "3 pcs Dimsum Ayam + 3 pcs Cireng Isi + 1 Pangsit Chili Oil. Paling hemat!",
-        price: 55000,
-        priceFormatted: "Rp 55.000",
-        img: "https://placehold.co/600x400/8E44AD/FFFFFF?text=Combo+Nagih",
-        badge: "Hemat",
-        category: "Paket"
-      }
-    ]
+      { id: 'p1', name: 'Cireng Jumbo (3 pcs)', desc: 'Varian: Ati, Ayam, Keju', price: 10000, priceFormatted: 'Rp10.000', badge: 'Terlaris' },
+      { id: 'p2', name: 'Cireng Mini (4 pcs)', desc: 'Varian: Ati, Ayam, Keju', price: 5000, priceFormatted: 'Rp5.000', badge: 'Hemat' },
+      { id: 'p3', name: 'Cireng Ayam Chili Oil (6 pcs)', desc: 'Varian: Ati, Ayam, Keju', price: 10000, priceFormatted: 'Rp10.000', badge: 'Pedas Nagih' },
+      { id: 'p4', name: 'Cireng Kuah Keju Creamy (8 pcs)', desc: 'Varian: Ati, Ayam, Keju, Mix', price: 15000, priceFormatted: 'Rp15.000', badge: 'Varian Baru' }
+    ];
 
-    let cart = {}
-    let currentFilter = 'all'
-
-    // ==================== RENDER PRODUCTS ====================
-    function renderProducts(filteredProducts) {
-      const grid = document.getElementById('product-grid')
-      grid.innerHTML = ''
-
-      filteredProducts.forEach(product => {
-        const card = document.createElement('div')
-        card.className = `menu-card bg-white rounded-3xl overflow-hidden border border-gray-100 flex flex-col`
-        
-        let badgeHTML = ''
-        if (product.badge) {
-          const badgeColor = product.badge === 'Terlaris' ? 'bg-[#FF6B35]' : 
-                            product.badge === 'Premium' ? 'bg-purple-600' : 
-                            product.badge === 'Hemat' ? 'bg-emerald-600' : 'bg-orange-500'
-          badgeHTML = `<div class="absolute top-4 right-4 ${badgeColor} text-white text-[10px] font-bold px-3 h-7 flex items-center rounded-2xl tracking-wider">${product.badge}</div>`
-        }
-
-        card.innerHTML = `
-          <div class="relative">
-            <div class="product-img h-48 w-full" style="background-image: url('${product.img}')"></div>
-            ${badgeHTML}
-          </div>
-          <div class="p-6 flex flex-col flex-1">
-            <div class="font-heading text-xl font-bold tracking-tight mb-1">${product.name}</div>
-            <div class="text-sm text-gray-600 flex-1 leading-snug mb-5">${product.desc}</div>
-            
-            <div class="flex items-end justify-between mt-auto">
-              <div>
-                <div class="text-xs text-gray-400">Mulai dari</div>
-                <div class="font-black text-2xl text-[#FF6B35] tracking-tighter">${product.priceFormatted}</div>
-              </div>
-              <button onclick="addToCart(${product.id})" 
-                      class="bg-[#1A1A2E] hover:bg-black active:bg-black transition-all text-white text-sm font-semibold px-6 h-11 rounded-3xl flex items-center gap-x-2">
+    // 2. Render Produk
+    function renderProducts() {
+      const grid = document.getElementById('product-grid');
+      if (!grid) return;
+      
+      grid.innerHTML = products.map(p => `
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-all flex flex-col h-full">
+          <div class="p-5 flex-1 flex flex-col">
+            ${p.badge ? `<span class="bg-brand-light text-brand text-xs font-bold px-2 py-1 rounded w-fit mb-3">${p.badge}</span>` : ''}
+            <h3 class="font-bold text-lg text-slate-900 mb-1">${escapeHtml(p.name)}</h3>
+            <p class="text-sm text-slate-500 mb-4 flex-1">${escapeHtml(p.desc)}</p>
+            <div class="flex items-center justify-between mt-auto">
+              <span class="font-bold text-brand text-lg">${p.priceFormatted}</span>
+              <button onclick="addToCart('${p.id}')" class="bg-slate-100 hover:bg-brand hover:text-white text-slate-700 w-10 h-10 rounded-full flex items-center justify-center transition-colors" aria-label="Tambah ${p.name}">
                 <i class="bi bi-plus-lg"></i>
-                <span>Keranjang</span>
               </button>
             </div>
           </div>
-        `
-        grid.appendChild(card)
-      })
+        </div>
+      `).join('');
     }
 
-    function filterProducts(category) {
-      currentFilter = category
+    // 3. Cart State & Logic
+    let cart = {}; 
+
+    function addToCart(id) {
+      const p = products.find(item => item.id === id);
+      if (!p) return;
       
-      // Update active button
-      document.querySelectorAll('#category-filters button').forEach(btn => {
-        btn.classList.remove('active', 'border-[#FF6B35]', 'bg-[#FF6B35]', 'text-white')
-        btn.classList.add('border-gray-300', 'bg-white')
-        
-        if (category === 'all' && btn.dataset.category === 'all') {
-          btn.classList.add('active', 'border-[#FF6B35]', 'bg-[#FF6B35]', 'text-white')
-          btn.classList.remove('border-gray-300', 'bg-white')
-        } else if (btn.dataset.category === category) {
-          btn.classList.add('active', 'border-[#FF6B35]', 'bg-[#FF6B35]', 'text-white')
-          btn.classList.remove('border-gray-300', 'bg-white')
-        }
-      })
-
-      const filtered = category === 'all' ? products : products.filter(p => p.category === category)
-      renderProducts(filtered)
-    }
-
-    // ==================== CART FUNCTIONS ====================
-    function addToCart(productId) {
-      const product = products.find(p => p.id === productId)
-      if (!product) return
-
-      if (cart[productId]) {
-        cart[productId].qty += 1
+      if (cart[id]) {
+        cart[id].qty += 1;
       } else {
-        cart[productId] = { ...product, qty: 1 }
-      }
-
-      updateCartUI()
-      toggleCart(true)
-      
-      // Toast feedback
-      showToast(`${product.name} ditambahkan ke keranjang`)
-    }
-
-    function decreaseQty(productId) {
-      if (!cart[productId]) return
-      
-      cart[productId].qty -= 1
-      
-      if (cart[productId].qty <= 0) {
-        delete cart[productId]
+        cart[id] = { ...p, qty: 1 };
       }
       
-      updateCartUI()
+      updateCartUI();
+      showToast(`${p.name} ditambahkan!`);
+      toggleCart(true);
     }
 
-    function removeFromCart(productId) {
-      delete cart[productId]
-      updateCartUI()
-    }
-
-    function getCartTotal() {
-      return Object.values(cart).reduce((sum, item) => sum + (item.price * item.qty), 0)
+    function updateQty(id, delta) {
+      if (!cart[id]) return;
+      cart[id].qty += delta;
+      if (cart[id].qty <= 0) {
+        delete cart[id];
+      }
+      updateCartUI();
     }
 
     function updateCartUI() {
-      const container = document.getElementById('cart-items')
-      const totalEl = document.getElementById('cart-total')
-      const countEl = document.getElementById('cart-count')
+      const container = document.getElementById('cart-items');
+      const totalEl = document.getElementById('cart-total');
+      const countElNav = document.getElementById('nav-cart-count');
       
-      if (!container || !totalEl || !countEl) return
+      if (!container || !totalEl || !countElNav) return;
 
-      const items = Object.values(cart)
-      const totalQty = items.reduce((sum, item) => sum + item.qty, 0)
+      const items = Object.values(cart);
       
-      countEl.textContent = totalQty
+      // Update badge counts
+      const totalQty = items.reduce((sum, item) => sum + item.qty, 0);
+      countElNav.textContent = totalQty;
 
       if (items.length === 0) {
         container.innerHTML = `
-          <div class="flex flex-col items-center justify-center h-full text-center py-12">
-            <i class="bi bi-cart text-6xl text-gray-200 mb-4"></i>
-            <div class="font-semibold text-gray-400">Keranjang masih kosong</div>
-            <div class="text-xs text-gray-400 mt-1">Pilih menu favoritmu dulu ya</div>
+          <div class="text-center text-gray-500 py-10">
+            <i class="bi bi-bag-x text-4xl mb-3 block opacity-50"></i>
+            <p>Keranjang masih kosong</p>
           </div>
-        `
-        totalEl.textContent = 'Rp 0'
-        return
+        `;
+        totalEl.textContent = 'Rp 0';
+        return;
       }
 
-      let html = ''
-      items.forEach(item => {
-        const subtotal = item.price * item.qty
-        html += `
-          <div class="flex gap-x-4 border-b pb-5 last:border-none last:pb-0">
-            <div class="w-16 h-16 bg-gray-100 rounded-2xl flex-shrink-0 overflow-hidden">
-              <img src="${item.img}" class="w-full h-full object-cover" alt="${item.name}">
+      let total = 0;
+      container.innerHTML = items.map(item => {
+        const subtotal = item.price * item.qty;
+        total += subtotal;
+        return `
+          <div class="flex justify-between items-center p-3 border rounded-lg bg-white">
+            <div class="flex-1">
+              <h4 class="font-bold text-sm text-slate-800">${escapeHtml(item.name)}</h4>
+              <div class="text-brand text-sm font-semibold">Rp ${(item.price).toLocaleString('id-ID')}</div>
             </div>
-            <div class="flex-1 min-w-0">
-              <div class="font-semibold leading-tight pr-6">${item.name}</div>
-              <div class="text-xs text-gray-500 mt-0.5">${item.priceFormatted}</div>
-              
-              <div class="flex items-center justify-between mt-3">
-                <div class="flex items-center border border-gray-200 rounded-2xl">
-                  <button onclick="decreaseQty(${item.id})" class="w-8 h-8 flex items-center justify-center text-lg font-light hover:bg-gray-100 rounded-l-2xl">-</button>
-                  <div class="px-3 font-mono text-sm font-medium">${item.qty}</div>
-                  <button onclick="addToCart(${item.id})" class="w-8 h-8 flex items-center justify-center text-lg font-light hover:bg-gray-100 rounded-r-2xl">+</button>
-                </div>
-                
-                <div class="font-bold text-[#FF6B35]">${new Intl.NumberFormat('id-ID', {style:'currency', currency:'IDR', maximumFractionDigits:0}).format(subtotal)}</div>
-              </div>
+            <div class="flex items-center gap-3 bg-slate-50 border rounded-md px-2 py-1">
+              <button onclick="updateQty('${item.id}', -1)" class="text-slate-500 hover:text-brand"><i class="bi bi-dash"></i></button>
+              <span class="text-sm font-bold w-4 text-center">${item.qty}</span>
+              <button onclick="updateQty('${item.id}', 1)" class="text-slate-500 hover:text-brand"><i class="bi bi-plus"></i></button>
             </div>
-            
-            <button onclick="removeFromCart(${item.id})" class="text-gray-300 hover:text-red-500 self-start mt-1">
-              <i class="bi bi-trash text-lg"></i>
-            </button>
           </div>
-        `
-      })
-      
-      container.innerHTML = html
-      totalEl.textContent = new Intl.NumberFormat('id-ID', {style:'currency', currency:'IDR', maximumFractionDigits:0}).format(getCartTotal())
+        `;
+      }).join('');
+
+      totalEl.textContent = `Rp ${total.toLocaleString('id-ID')}`;
     }
 
-    function toggleCart(forceOpen = null) {
-      const sidebar = document.getElementById('cart-sidebar')
-      const overlay = document.getElementById('cart-overlay')
+    function toggleCart(show) {
+      const sidebar = document.getElementById('cart-sidebar');
+      const overlay = document.getElementById('cart-overlay');
+      if (!sidebar || !overlay) return;
       
-      if (!sidebar || !overlay) return
-
-      const isOpen = !sidebar.classList.contains('hidden')
-      
-      if (forceOpen === true || (!isOpen && forceOpen !== false)) {
-        sidebar.classList.remove('hidden')
-        overlay.classList.remove('hidden')
-        sidebar.style.transform = 'translateX(0)'
+      if (show) {
+        sidebar.classList.remove('translate-x-full');
+        overlay.classList.remove('hidden');
+        setTimeout(() => overlay.classList.remove('opacity-0'), 10);
       } else {
-        sidebar.style.transform = 'translateX(100%)'
-        setTimeout(() => {
-          sidebar.classList.add('hidden')
-          overlay.classList.add('hidden')
-          sidebar.style.transform = ''
-        }, 280)
+        sidebar.classList.add('translate-x-full');
+        overlay.classList.add('opacity-0');
+        setTimeout(() => overlay.classList.add('hidden'), 300);
       }
     }
 
-    function sendToWhatsApp() {
-      const items = Object.values(cart)
+    function checkoutWA() {
+      const items = Object.values(cart);
       if (items.length === 0) {
-        alert('Keranjang masih kosong. Silakan pilih menu dulu.')
-        return
+        showToast('Keranjang kosong!', 'error');
+        return;
       }
 
-      const nameInput = document.getElementById('customer-name').value.trim()
-      const noteInput = document.getElementById('customer-note').value.trim()
-      const shareLocation = document.getElementById('share-location').checked
+      const nameInput = document.getElementById('cart-name');
+      const notesInput = document.getElementById('cart-notes');
+      
+      const name = nameInput ? nameInput.value.trim() : '';
+      const notes = notesInput ? notesInput.value.trim() : '';
 
-      let message = `Halo Dimsum & Cireng Awicio, saya ingin memesan:\n\n`
+      if (!name) {
+        showToast('Mohon isi nama pemesan', 'error');
+        nameInput.focus();
+        return;
+      }
 
+      let total = 0;
+      let msg = `Halo Awicio, saya ingin memesan:\n\n`;
+      
       items.forEach((item, index) => {
-        const subtotal = item.price * item.qty
-        message += `${index + 1}. ${item.name} x${item.qty} = Rp ${subtotal.toLocaleString('id-ID')}\n`
-      })
-
-      const total = getCartTotal()
-      message += `\nTotal: Rp ${total.toLocaleString('id-ID')}\n`
-
-      if (nameInput) message += `\nNama: ${nameInput}`
-      if (noteInput) message += `\nCatatan: ${noteInput}`
-
-      if (shareLocation && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          const lat = position.coords.latitude
-          const lng = position.coords.longitude
-          const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`
-          message += `\n\nLokasi saya: ${mapsLink}`
-          openWhatsApp(message)
-        }, () => {
-          openWhatsApp(message)
-        })
-      } else {
-        openWhatsApp(message)
-      }
-    }
-
-    function openWhatsApp(message) {
-      const encodedMessage = encodeURIComponent(message)
-      const waUrl = `https://wa.me/6287898932247?text=${encodedMessage}`
-      window.open(waUrl, '_blank')
+        const subtotal = item.price * item.qty;
+        total += subtotal;
+        msg += `${index + 1}. ${item.name} x${item.qty} = Rp ${(subtotal).toLocaleString('id-ID')}\n`;
+      });
       
-      // Optional: clear cart after send
-      setTimeout(() => {
-        if (confirm('Pesanan sudah dikirim via WhatsApp. Mau mengosongkan keranjang?')) {
-          cart = {}
-          updateCartUI()
-          toggleCart(false)
-        }
-      }, 1200)
+      msg += `\n*Total: Rp ${(total).toLocaleString('id-ID')}*\n`;
+      msg += `Nama: ${name}\n`;
+      if (notes) msg += `Catatan Varian/Kondisi: ${notes}\n`;
+
+      const waNumber = "6287889932247"; //[cite: 1]
+      const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
     }
 
-    function showToast(text) {
-      const toast = document.createElement('div')
-      toast.className = `fixed bottom-24 left-1/2 -translate-x-1/2 bg-[#1A1A2E] text-white text-sm px-6 h-11 flex items-center rounded-3xl shadow-xl z-[80]`
-      toast.innerHTML = text
-      document.body.appendChild(toast)
+    // 4. Utilities
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `fixed bottom-24 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-lg shadow-lg text-white text-sm transition-opacity duration-300 opacity-0 ${type === 'success' ? 'bg-green-600' : 'bg-red-600'}`;
+      toast.innerHTML = `<i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${escapeHtml(message)}`;
+      document.body.appendChild(toast);
       
-      setTimeout(() => {
-        toast.style.transition = 'all 0.25s ease'
-        toast.style.opacity = '0'
-        setTimeout(() => toast.remove(), 200)
-      }, 2200)
+      setTimeout(() => toast.classList.remove('opacity-0'), 10);
+      setTimeout(() => { 
+        toast.classList.add('opacity-0'); 
+        setTimeout(() => toast.remove(), 300); 
+      }, 2000);
     }
 
-    // ==================== MOBILE MENU ====================
-    function initMobileMenu() {
-      const btn = document.getElementById('mobile-menu-btn')
-      const menu = document.getElementById('mobile-menu')
+    // 5. Initializations
+    document.addEventListener('DOMContentLoaded', () => {
+      // Smooth Scroll
+      document.documentElement.style.scrollBehavior = 'smooth';
       
-      if (!btn || !menu) return
-
-      btn.addEventListener('click', () => {
-        const isHidden = menu.classList.contains('hidden')
-        if (isHidden) {
-          menu.classList.remove('hidden')
-          btn.innerHTML = '<i class="bi bi-x-lg"></i>'
-        } else {
-          menu.classList.add('hidden')
-          btn.innerHTML = '<i class="bi bi-list"></i>'
-        }
-      })
-
-      // Close mobile menu when clicking links
-      document.querySelectorAll('.mobile-nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-          menu.classList.add('hidden')
-          btn.innerHTML = '<i class="bi bi-list"></i>'
-        })
-      })
-    }
-
-    // ==================== NAVBAR SCROLL ====================
-    function initNavbar() {
-      const navbar = document.getElementById('navbar')
-      if (!navbar) return
-
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 20) {
-          navbar.classList.add('nav-scrolled')
-        } else {
-          navbar.classList.remove('nav-scrolled')
-        }
-      })
-    }
-
-    // ==================== BACK TO TOP ====================
-    function initBackToTop() {
-      const btn = document.getElementById('back-to-top')
-      if (!btn) return
-
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 600) {
-          btn.classList.remove('hidden')
-        } else {
-          btn.classList.add('hidden')
-        }
-      })
-    }
-
-    // ==================== SMOOTH SCROLL ====================
-    function initSmoothScroll() {
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-          const target = document.querySelector(this.getAttribute('href'))
-          if (target) {
-            e.preventDefault()
-            const offset = 80
-            const bodyRect = document.body.getBoundingClientRect().top
-            const elementPosition = target.getBoundingClientRect().top
-            const offsetPosition = elementPosition - bodyRect - offset
-
-            window.scrollTo({
-              top: offsetPosition,
-              behavior: 'smooth'
-            })
+      // LazyLoad
+      new LazyLoad({ elements_selector: '.lazy' });
+      
+      // Render Products
+      renderProducts();
+      
+      // Scroll Reveal
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            revealObserver.unobserve(entry.target);
           }
-        })
-      })
-    }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-    // ==================== INIT ====================
-    function initializeWebsite() {
-      // Render all products initially
-      renderProducts(products)
+      // Navbar shadow & Back to Top
+      window.addEventListener('scroll', () => {
+        const nav = document.getElementById('navbar');
+        if (nav) {
+          if (window.scrollY > 10) nav.classList.add('shadow-md');
+          else nav.classList.remove('shadow-md');
+        }
 
-      // Init all interactive features
-      initMobileMenu()
-      initNavbar()
-      initBackToTop()
-      initSmoothScroll()
-
-      // Init cart UI
-      updateCartUI()
-
-      // Init lazy load if needed
-      if (typeof LazyLoad !== 'undefined') {
-        new LazyLoad()
-      }
-
-      // Keyboard escape for cart
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-          const sidebar = document.getElementById('cart-sidebar')
-          if (sidebar && !sidebar.classList.contains('hidden')) {
-            toggleCart(false)
+        const btt = document.getElementById('back-to-top');
+        if (btt) {
+          if (window.scrollY > 300) {
+            btt.classList.remove('opacity-0', 'pointer-events-none');
+          } else {
+            btt.classList.add('opacity-0', 'pointer-events-none');
           }
         }
-      })
+      });
 
-      // Make sure cart count starts at 0
-      const countEl = document.getElementById('cart-count')
-      if (countEl) countEl.textContent = '0'
-
-      // Optional: Preload one item for demo (comment in production)
-      // setTimeout(() => { addToCart(1) }, 8000)
-    }
-
-    // Boot the website
-    document.addEventListener('DOMContentLoaded', initializeWebsite)
+      const bttBtn = document.getElementById('back-to-top');
+      if (bttBtn) {
+        bttBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      }
+    });
   </script>
+
 </body>
 </html>
