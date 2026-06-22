@@ -103,11 +103,19 @@
   }
   /* SVG Shoe placeholder */
   .shoe-svg-wrap {
-    position: absolute; right: -5%; bottom: -3%;
-    width: 68%; max-width: 860px;
+    position: absolute;
+    right: -5%;
+    bottom: -3%;
+    width: 68%;
+    max-width: 860px;
     opacity: 0;
     animation: slideInShoe 1.4s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
+    text-align: end;
+    padding-inline-end: 4rem;
   }
+  .shoe-svg-wrap img {
+    width: 85%;
+}
   @keyframes slideInShoe {
     to { opacity: 1; transform: translateX(0); }
   }
@@ -1539,43 +1547,7 @@
   <div class="featured-left">
     <div class="featured-shoe-bg">EVO</div>
     <div class="featured-shoe-svg">
-      <svg viewBox="0 0 600 380" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="300" cy="350" rx="240" ry="20" fill="rgba(255,255,255,0.05)"/>
-        <path d="M80 250 Q155 210 300 205 Q415 200 510 228 Q555 242 560 264 L540 298 Q490 316 300 322 Q138 326 80 296 Z" fill="#e0ddd6"/>
-        <path d="M78 294 Q155 310 300 316 Q462 320 540 296 L560 298 Q568 316 552 332 L106 338 Q72 328 68 312 Z" fill="#1a1a1a"/>
-        <!-- Lugs -->
-        <rect x="100" y="322" width="28" height="12" rx="3" fill="#111"/>
-        <rect x="155" y="325" width="24" height="11" rx="3" fill="#111"/>
-        <rect x="215" y="326" width="28" height="11" rx="3" fill="#111"/>
-        <rect x="280" y="326" width="28" height="11" rx="3" fill="#111"/>
-        <rect x="345" y="326" width="28" height="11" rx="3" fill="#111"/>
-        <rect x="412" y="325" width="32" height="11" rx="3" fill="#111"/>
-        <rect x="476" y="323" width="38" height="12" rx="3" fill="#111"/>
-        <path d="M136 168 Q205 122 300 118 Q388 114 460 142 Q515 162 528 198 Q535 224 535 248 Q490 228 300 205 Q155 210 80 250 L80 235 Q98 200 136 168 Z" fill="#f2f0ec"/>
-        <!-- Mesh texture -->
-        <path d="M195 145 L215 238 M240 132 L256 226 M285 126 L297 222 M330 124 L338 220" stroke="rgba(0,0,0,0.06)" stroke-width="1.5"/>
-        <path d="M158 175 Q300 160 470 162" stroke="rgba(0,0,0,0.05)" stroke-width="1.5" fill="none"/>
-        <path d="M140 202 Q300 188 498 190" stroke="rgba(0,0,0,0.05)" stroke-width="1.5" fill="none"/>
-        <!-- 3 Stripes -->
-        <path d="M400 136 L378 246" stroke="white" stroke-width="18" stroke-linecap="round" opacity="0.9"/>
-        <path d="M430 144 L408 252" stroke="white" stroke-width="18" stroke-linecap="round" opacity="0.9"/>
-        <path d="M460 158 L438 260" stroke="white" stroke-width="18" stroke-linecap="round" opacity="0.9"/>
-        <!-- Heel counter -->
-        <path d="M480 152 Q528 188 535 248 Q490 228 465 260 Q460 220 460 158 Z" fill="#e8e5de"/>
-        <!-- Lace detail -->
-        <ellipse cx="255" cy="158" rx="22" ry="10" fill="white" opacity="0.6" transform="rotate(-6 255 158)"/>
-        <ellipse cx="298" cy="150" rx="22" ry="10" fill="white" opacity="0.6" transform="rotate(-6 298 150)"/>
-        <ellipse cx="341" cy="144" rx="22" ry="10" fill="white" opacity="0.6" transform="rotate(-6 341 144)"/>
-        <ellipse cx="384" cy="140" rx="22" ry="10" fill="white" opacity="0.6" transform="rotate(-6 384 140)"/>
-        <!-- Tongue -->
-        <path d="M216 148 Q255 132 316 130 L326 152 Q285 155 228 166 Z" fill="#f8f6f2" opacity="0.85"/>
-        <!-- Collar padding -->
-        <path d="M108 226 Q162 198 240 178 L252 210 Q172 224 124 248 Z" fill="white" opacity="0.08"/>
-        <!-- Lightstrike text -->
-        <text x="170" y="278" font-family="sans-serif" font-size="10" fill="#aaa" letter-spacing="2.5">LIGHTSTRIKE PRO</text>
-        <!-- Energy return indicator -->
-        <path d="M95 310 Q100 290 115 280 Q130 270 145 278" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" fill="none" stroke-dasharray="3,3"/>
-      </svg>
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjFocZa9gBnkUACSKDUYDPBsG4LYHRL2lJLfRCn_VYw_TEBG1Crro1C8Gz0KRFDVAnIsYAkzA6u1yvDrJj92ZycUhUDoO_8KYq4F2cXF2FDEhA9ZNf-tGLhTz4ETSJJPpioXjEUATZTToRiipUHrb9C8GgaQY4if2YOupxZCF8kP39bxDfbRJBZ7oYbyro/s320/Sepatu_ADIZERO_EVO_SL_EXO_Krem.png"/>
     </div>
   </div>
 
@@ -1837,7 +1809,7 @@
   <div class="gallery-item">
     <div class="gallery-item-bg" style="background: linear-gradient(135deg, #1a1a2e 0%, #2d2d4a 100%);"></div>
     <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.3;">
-      <svg viewBox="0 0 400 260" width="80%" fill="none"><path d="M50 170 Q100 145 200 142 Q280 140 340 158 Q370 166 375 180 L360 205 Q320 215 200 220 Q90 222 50 200 Z" fill="#e8e6e0"/><path d="M48 198 Q100 210 200 215 Q310 218 360 203 L375 205 Q380 218 370 228 L70 232 Q42 224 40 210 Z" fill="#0a0a0a"/><path d="M90 115 Q140 82 200 80 Q260 78 310 96 Q345 110 355 135 Q360 152 360 166 Q320 158 200 142 Q100 145 50 170 L50 158 Q65 135 90 115 Z" fill="#f0eeea"/><path d="M265 92 L252 168" stroke="white" stroke-width="14" stroke-linecap="round" opacity="0.9"/><path d="M285 97 L272 172" stroke="white" stroke-width="14" stroke-linecap="round" opacity="0.9"/><path d="M305 106 L292 176" stroke="white" stroke-width="14" stroke-linecap="round" opacity="0.9"/></svg>
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgRoAwCVFNJOVJ28u3p0uME49arC1gboS_XQi8TJFo0YcbKyEA-6vYdMvHupVJqpDBjzQ2BtgcqiL1ezj3WBkTxFO4YMD87rEgaqdPJnzj0SE6vyVfmo1VsbTCBhiPJR00kajU1rTHfFGGn2biu2Lg4JpHc5WVXr2fVBZ8BopifVVog8yG4P351FApGolA/s320/Sepatu_Adizero_EVO_SL_Ungu.png"/>
     </div>
     <div class="gallery-item-overlay"></div>
     <div class="gallery-item-label"><h3>Evo SL</h3><p>Daily Trainer</p></div>
@@ -1845,7 +1817,7 @@
   <div class="gallery-item">
     <div class="gallery-item-bg" style="background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);"></div>
     <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.3;">
-      <svg viewBox="0 0 400 260" width="80%" fill="none"><path d="M50 170 Q100 145 200 142 Q280 140 340 158 Q370 166 375 180 L360 205 Q320 215 200 220 Q90 222 50 200 Z" fill="#c8c6c2"/><path d="M48 198 Q100 210 200 215 Q310 218 360 203 L375 205 Q380 218 370 228 L70 232 Q42 224 40 210 Z" fill="#0a0a0a"/><path d="M90 115 Q140 82 200 80 Q260 78 310 96 Q345 110 355 135 Q360 152 360 166 Q320 158 200 142 Q100 145 50 170 L50 158 Q65 135 90 115 Z" fill="#2a2a2a"/><path d="M265 92 L252 168" stroke="white" stroke-width="14" stroke-linecap="round" opacity="0.9"/><path d="M285 97 L272 172" stroke="white" stroke-width="14" stroke-linecap="round" opacity="0.9"/><path d="M305 106 L292 176" stroke="white" stroke-width="14" stroke-linecap="round" opacity="0.9"/></svg>
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjFocZa9gBnkUACSKDUYDPBsG4LYHRL2lJLfRCn_VYw_TEBG1Crro1C8Gz0KRFDVAnIsYAkzA6u1yvDrJj92ZycUhUDoO_8KYq4F2cXF2FDEhA9ZNf-tGLhTz4ETSJJPpioXjEUATZTToRiipUHrb9C8GgaQY4if2YOupxZCF8kP39bxDfbRJBZ7oYbyro/s320/Sepatu_ADIZERO_EVO_SL_EXO_Krem.png"/>
     </div>
     <div class="gallery-item-overlay"></div>
     <div class="gallery-item-label"><h3>Evo SL EXO</h3><p>New 2026</p></div>
@@ -1853,7 +1825,7 @@
   <div class="gallery-item">
     <div class="gallery-item-bg" style="background: linear-gradient(135deg, #2d4a2a 0%, #3d6b3a 100%);"></div>
     <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.3;">
-      <svg viewBox="0 0 400 260" width="80%" fill="none"><path d="M50 170 Q100 145 200 142 Q280 140 340 158 Q370 166 375 180 L360 205 Q320 215 200 220 Q90 222 50 200 Z" fill="#b8b0a0"/><path d="M48 198 Q100 210 200 215 Q310 218 360 203 L375 205 Q380 218 370 228 L70 232 Q42 224 40 210 Z" fill="#2a2a2a"/><path d="M90 115 Q140 82 200 80 Q260 78 310 96 Q345 110 355 135 Q360 152 360 166 Q320 158 200 142 Q100 145 50 170 L50 158 Q65 135 90 115 Z" fill="#6b7c5a"/><path d="M265 92 L252 168" stroke="white" stroke-width="14" stroke-linecap="round" opacity="0.8"/><path d="M285 97 L272 172" stroke="white" stroke-width="14" stroke-linecap="round" opacity="0.8"/><path d="M305 106 L292 176" stroke="white" stroke-width="14" stroke-linecap="round" opacity="0.8"/></svg>
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgBNuFHCotu-diw0_8_CuCr74KXB0HsdPGAqjz7tZ9LjhxfwLlgkyuwOSd7y_z_w86paYN8AFRoTLFPGa-PuXDOJbwg2DJ196LYR_qb5ZnMNRduM6VrxT0bawFl7gw8Amle110pA3cn3eBjWXu8r2zrhUPUhQXfYQo7xNYPTRjtUUIUGJ07MwbU0K-MJTs/s320/Sepatu_ADIZERO_EVO_SL_ATR_Krem.png"/>
     </div>
     <div class="gallery-item-overlay"></div>
     <div class="gallery-item-label"><h3>Evo SL ATR</h3><p>All-Terrain</p></div>
@@ -1861,7 +1833,7 @@
   <div class="gallery-item">
     <div class="gallery-item-bg" style="background: linear-gradient(135deg, #4a1010 0%, #8a2020 100%);"></div>
     <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.3;">
-      <svg viewBox="0 0 400 260" width="80%" fill="none"><path d="M55 175 Q108 148 200 146 Q278 144 332 162 Q358 170 361 183 L348 205 Q312 216 200 220 Q96 222 55 202 Z" fill="#c8c5be"/><path d="M53 200 Q108 211 200 215 Q306 218 348 203 L361 205 Q366 217 357 226 L74 230 Q49 222 47 212 Z" fill="#1a1a1a"/><path d="M95 125 Q142 90 200 88 Q255 86 298 103 Q328 116 337 138 Q342 154 341 166 Q305 162 200 146 Q108 148 55 175 L55 162 Q68 140 95 125 Z" fill="#e8454a"/><path d="M258 96 L247 165" stroke="white" stroke-width="11" stroke-linecap="round" opacity="0.9"/><path d="M275 101 L264 169" stroke="white" stroke-width="11" stroke-linecap="round" opacity="0.9"/><path d="M292 109 L281 174" stroke="white" stroke-width="11" stroke-linecap="round" opacity="0.9"/></svg>
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjW8HWCo_WAfGHtIoQtyOq9vi7aIF_4ERNXQWPxQ0_JIpHraT0MVY-jzI09QnyXr-60K_OhHSzzw3AQw-kKc6YoczBMS3gi65QfUk4YybM3s6E0MaVWoRiJQCT0no0n91JX28vMG1dNQcm-4BfIgQZlvyerlZ_5x_iux2zSnKhu0m8bUOMROvl8ZQEwsGw/s320/Sepatu_Adizero_Takumi_Sen_10_Merah_muda.png"/>
     </div>
     <div class="gallery-item-overlay"></div>
     <div class="gallery-item-label"><h3>Takumi Sen 11</h3><p>Speed Racing</p></div>
@@ -1869,7 +1841,7 @@
   <div class="gallery-item">
     <div class="gallery-item-bg" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);"></div>
     <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.4;">
-      <svg viewBox="0 0 400 260" width="80%" fill="none"><path d="M60 175 Q110 148 200 145 Q278 142 335 162 Q362 170 366 184 L352 208 Q314 218 200 222 Q100 225 60 204 Z" fill="#d8d4c8"/><path d="M58 202 Q110 213 200 217 Q308 220 352 206 L366 208 Q372 220 362 230 L78 234 Q52 226 50 214 Z" fill="#1a1a1a"/><path d="M100 118 Q145 86 200 84 Q258 82 305 100 Q338 114 348 138 Q353 155 352 168 Q314 162 200 145 Q110 148 60 175 L60 162 Q74 138 100 118 Z" fill="#f8f7f5" opacity="0.9"/><path d="M262 95 L250 168" stroke="white" stroke-width="11" stroke-linecap="round" opacity="0.9"/><path d="M280 100 L268 172" stroke="white" stroke-width="11" stroke-linecap="round" opacity="0.9"/><path d="M298 108 L286 176" stroke="white" stroke-width="11" stroke-linecap="round" opacity="0.9"/></svg>
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh-jkLkTbh5NguZ0qzBK2i369bsRfISi_UO4qs7pKjZZu24uy08cPLQU_wuBUIM7aLdMOHgrh7jwNoFU0wdZ4_nQLEwvp7aAX_ROAqs0lBQhTuJfz5EX65fMW-d00nJI_UyAbaMQjwhU1gcvBLlUSclnig8R97Magctoj_dtsQIwsWyKFHu-mMY2_JgV94/s320/Sepatu_Adizero_Adios_Pro_4_Putih.png"/>
     </div>
     <div class="gallery-item-overlay"></div>
     <div class="gallery-item-label"><h3>Adios Pro 4</h3><p>Elite Marathon</p></div>
@@ -1891,7 +1863,7 @@
           <div class="shop-card-desc">Sepatu lari terlaris Adidas 2025–2026. Lightstrike Pro foam dalam daily trainer yang cocok untuk semua jarak. Versi EXO hadir dengan exoskeleton cage dan breathability yang lebih baik.</div>
         </div>
         <div class="shop-card-shoe">
-          <svg viewBox="0 0 300 200" fill="none"><ellipse cx="150" cy="185" rx="120" ry="10" fill="rgba(0,0,0,0.07)"/><path d="M35 128 Q75 108 150 105 Q210 103 255 118 Q278 126 280 138 L270 155 Q242 162 150 165 Q68 167 35 150 Z" fill="#e0ddd6"/><path d="M33 148 Q75 157 150 160 Q232 162 270 153 L280 155 Q284 164 277 172 L52 175 Q32 168 30 160 Z" fill="#1a1a1a"/><path d="M68 87 Q105 63 150 61 Q194 59 228 74 Q252 84 258 102 Q261 115 260 126 Q242 118 150 105 Q75 108 35 128 L35 118 Q48 102 68 87 Z" fill="#f0eeea"/><path d="M200 69 L189 126" stroke="white" stroke-width="9" stroke-linecap="round" opacity="0.85"/><path d="M215 73 L204 130" stroke="white" stroke-width="9" stroke-linecap="round" opacity="0.85"/><path d="M230 80 L219 134" stroke="white" stroke-width="9" stroke-linecap="round" opacity="0.85"/></svg>
+<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgRoAwCVFNJOVJ28u3p0uME49arC1gboS_XQi8TJFo0YcbKyEA-6vYdMvHupVJqpDBjzQ2BtgcqiL1ezj3WBkTxFO4YMD87rEgaqdPJnzj0SE6vyVfmo1VsbTCBhiPJR00kajU1rTHfFGGn2biu2Lg4JpHc5WVXr2fVBZ8BopifVVog8yG4P351FApGolA/s320/Sepatu_Adizero_EVO_SL_Ungu.png">
         </div>
       </div>
       <div>
@@ -1921,7 +1893,7 @@
           <div class="shop-card-desc">Versi all-terrain dari Evo SL. Water-repellent ripstop mesh, 1.5mm Continental rubber lugs untuk traksi di gravel dan trail, sawtooth laces untuk fit yang lebih aman.</div>
         </div>
         <div class="shop-card-shoe">
-          <svg viewBox="0 0 300 200" fill="none"><ellipse cx="150" cy="185" rx="120" ry="10" fill="rgba(0,0,0,0.07)"/><path d="M35 128 Q75 108 150 105 Q210 103 255 118 Q278 126 280 138 L270 155 Q242 162 150 165 Q68 167 35 150 Z" fill="#b8b0a0"/><path d="M33 148 Q75 157 150 160 Q232 162 270 153 L280 155 Q284 164 277 172 L52 175 Q32 168 30 160 Z" fill="#2a2a2a"/><rect x="45" y="165" width="14" height="7" rx="2" fill="#1a1a1a"/><rect x="76" y="167" width="13" height="6" rx="2" fill="#1a1a1a"/><rect x="112" y="167" width="14" height="6" rx="2" fill="#1a1a1a"/><rect x="150" y="167" width="14" height="6" rx="2" fill="#1a1a1a"/><rect x="190" y="167" width="16" height="6" rx="2" fill="#1a1a1a"/><rect x="230" y="166" width="20" height="7" rx="2" fill="#1a1a1a"/><path d="M68 87 Q105 63 150 61 Q194 59 228 74 Q252 84 258 102 Q261 115 260 126 Q242 118 150 105 Q75 108 35 128 L35 118 Q48 102 68 87 Z" fill="#6b7c5a"/><path d="M200 69 L189 126" stroke="white" stroke-width="9" stroke-linecap="round" opacity="0.8"/><path d="M215 73 L204 130" stroke="white" stroke-width="9" stroke-linecap="round" opacity="0.8"/><path d="M230 80 L219 134" stroke="white" stroke-width="9" stroke-linecap="round" opacity="0.8"/></svg>
+<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgBNuFHCotu-diw0_8_CuCr74KXB0HsdPGAqjz7tZ9LjhxfwLlgkyuwOSd7y_z_w86paYN8AFRoTLFPGa-PuXDOJbwg2DJ196LYR_qb5ZnMNRduM6VrxT0bawFl7gw8Amle110pA3cn3eBjWXu8r2zrhUPUhQXfYQo7xNYPTRjtUUIUGJ07MwbU0K-MJTs/s320/Sepatu_ADIZERO_EVO_SL_ATR_Krem.png">
         </div>
       </div>
       <div>
@@ -1951,7 +1923,7 @@
           <div class="shop-card-desc">Racing flat paling responsif untuk kecepatan. 184g dengan Lightstrike Pro terbaru, LIGHTTRAXION outsole, fiberglass plate — pilihan sempurna untuk PB Anda berikutnya.</div>
         </div>
         <div class="shop-card-shoe">
-          <svg viewBox="0 0 300 200" fill="none"><ellipse cx="150" cy="186" rx="118" ry="9" fill="rgba(0,0,0,0.06)"/><path d="M38 133 Q80 110 150 108 Q210 106 252 122 Q273 130 275 142 L264 160 Q238 167 150 170 Q75 172 38 152 Z" fill="#c8c5be"/><path d="M36 150 Q80 160 150 163 Q230 166 264 158 L275 160 Q280 170 272 178 L55 181 Q34 174 32 164 Z" fill="#1a1a1a"/><path d="M72 93 Q106 68 150 66 Q192 64 224 79 Q247 89 252 106 Q255 118 254 128 Q230 120 150 108 Q80 110 38 133 L38 122 Q50 105 72 93 Z" fill="#e8454a"/><path d="M198 72 L188 126" stroke="white" stroke-width="9" stroke-linecap="round" opacity="0.9"/><path d="M214 76 L204 130" stroke="white" stroke-width="9" stroke-linecap="round" opacity="0.9"/><path d="M230 83 L220 134" stroke="white" stroke-width="9" stroke-linecap="round" opacity="0.9"/></svg>
+<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjW8HWCo_WAfGHtIoQtyOq9vi7aIF_4ERNXQWPxQ0_JIpHraT0MVY-jzI09QnyXr-60K_OhHSzzw3AQw-kKc6YoczBMS3gi65QfUk4YybM3s6E0MaVWoRiJQCT0no0n91JX28vMG1dNQcm-4BfIgQZlvyerlZ_5x_iux2zSnKhu0m8bUOMROvl8ZQEwsGw/s320/Sepatu_Adizero_Takumi_Sen_10_Merah_muda.png">
         </div>
       </div>
       <div>
@@ -1981,7 +1953,7 @@
           <div class="shop-card-desc">Sepatu marathon terlengkap dan teringan yang pernah dibuat Adidas. 97 gram. Carbon plate generasi terbaru. Diperkenalkan di Tokyo Marathon 2026. Untuk mereka yang mengejar rekor.</div>
         </div>
         <div class="shop-card-shoe">
-          <svg viewBox="0 0 300 200" fill="none"><ellipse cx="150" cy="185" rx="115" ry="9" fill="rgba(0,0,0,0.05)"/><path d="M45 133 Q85 110 150 108 Q208 106 248 123 Q268 131 270 143 L260 160 Q235 168 150 171 Q80 173 45 152 Z" fill="#d8d4c8"/><path d="M43 150 Q85 160 150 163 Q228 166 260 158 L270 160 Q275 170 267 178 L58 181 Q38 174 36 164 Z" fill="#1a1a1a"/><path d="M75 90 Q108 66 150 64 Q190 62 220 77 Q244 88 249 105 Q252 118 251 130 Q228 121 150 108 Q85 110 45 133 L45 122 Q57 104 75 90 Z" fill="#f8f7f5" opacity="0.92"/><path d="M196 71 L185 128" stroke="white" stroke-width="9" stroke-linecap="round" opacity="0.9"/><path d="M212 75 L201 132" stroke="white" stroke-width="9" stroke-linecap="round" opacity="0.9"/><path d="M228 82 L218 136" stroke="white" stroke-width="9" stroke-linecap="round" opacity="0.9"/><circle cx="238" cy="78" r="17" fill="#0a0a0a"/><text x="238" y="75" text-anchor="middle" font-family="sans-serif" font-size="7" font-weight="bold" fill="white">97g</text><text x="238" y="84" text-anchor="middle" font-family="sans-serif" font-size="5" fill="rgba(255,255,255,0.6)">sz 9</text></svg>
+<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh-jkLkTbh5NguZ0qzBK2i369bsRfISi_UO4qs7pKjZZu24uy08cPLQU_wuBUIM7aLdMOHgrh7jwNoFU0wdZ4_nQLEwvp7aAX_ROAqs0lBQhTuJfz5EX65fMW-d00nJI_UyAbaMQjwhU1gcvBLlUSclnig8R97Magctoj_dtsQIwsWyKFHu-mMY2_JgV94/s320/Sepatu_Adizero_Adios_Pro_4_Putih.png">
         </div>
       </div>
       <div>
