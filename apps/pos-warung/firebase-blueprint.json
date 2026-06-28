@@ -1,0 +1,86 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Profile and personalization settings for a warung tenant",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "User ID of the warung owner (matches Auth UID)" },
+        "warungName": { "type": "string", "description": "Name of the warung" },
+        "ownerName": { "type": "string", "description": "Name of the owner" },
+        "email": { "type": "string", "description": "Email address" },
+        "address": { "type": "string", "description": "Address of the warung" },
+        "phone": { "type": "string", "description": "Phone number" },
+        "themeColor": { "type": "string", "description": "Tailwind color name or hex code for UI personalization" },
+        "receiptFooter": { "type": "string", "description": "Custom text at the bottom of printed receipts" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "warungName", "email", "createdAt"]
+    },
+    "KatalogPusat": {
+      "title": "KatalogPusat",
+      "description": "Global shared catalog of products accessible to all warungs (crowdsourced)",
+      "type": "object",
+      "properties": {
+        "barcode": { "type": "string", "description": "Barcode number of the product" },
+        "name": { "type": "string", "description": "Product name" },
+        "category": { "type": "string", "description": "Product category (e.g., Minuman, Makanan, Sembako, dll.)" },
+        "image": { "type": "string", "description": "Product image URL or placeholder" },
+        "createdBy": { "type": "string", "description": "User UID who added this product" }
+      },
+      "required": ["barcode", "name", "category"]
+    },
+    "KatalogWarung": {
+      "title": "KatalogWarung",
+      "description": "Product inventory specific to a warung",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique product ID or barcode" },
+        "barcode": { "type": "string", "description": "Barcode number" },
+        "name": { "type": "string", "description": "Product name" },
+        "category": { "type": "string", "description": "Category" },
+        "purchasePrice": { "type": "number", "description": "Harga Beli" },
+        "sellingPrice": { "type": "number", "description": "Harga Jual" },
+        "stock": { "type": "number", "description": "Current inventory stock level" },
+        "minStock": { "type": "number", "description": "Minimum stock threshold for low stock alert" },
+        "lastUpdated": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "barcode", "name", "category", "purchasePrice", "sellingPrice", "stock", "minStock"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "A sale transaction processed by the cashier",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Transaction unique identifier" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "items": { "type": "array", "description": "Purchased items with quantity and selling price" },
+        "totalAmount": { "type": "number", "description": "Total payment amount" },
+        "cashAmount": { "type": "number", "description": "Amount paid by cash" },
+        "changeAmount": { "type": "number", "description": "Change returned to customer" },
+        "paymentMethod": { "type": "string", "enum": ["Tunai", "QRIS", "Transfer"], "description": "Payment method" },
+        "customerName": { "type": "string", "description": "Customer name (optional)" },
+        "cashierName": { "type": "string", "description": "Cashier who made the sale" }
+      },
+      "required": ["id", "timestamp", "items", "totalAmount", "paymentMethod"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile document"
+    },
+    "/katalog_pusat/{productId}": {
+      "schema": "KatalogPusat",
+      "description": "Global crowdsourced catalog"
+    },
+    "/users/{userId}/katalog/{itemId}": {
+      "schema": "KatalogWarung",
+      "description": "Warung-specific product catalog"
+    },
+    "/users/{userId}/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Warung-specific transactions"
+    }
+  }
+}

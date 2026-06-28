@@ -1,0 +1,10 @@
+{
+  "name": "Warung POS",
+  "description": "A complete multi-tenant Point of Sale (POS) and inventory management application for warungs, featuring Firebase Google authentication, manual and barcode catalog entry, checkout transactions, receipt printing, and sales analytics.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
