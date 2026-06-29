@@ -10,17 +10,17 @@
             'use strict';
             tailwind.config = { theme: { extend: { colors: { primary: 'var(--primary)' } } } };
         }());
-    </script>
+</script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <!-- Import Library Supabase JS -->
+    
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <!-- Import Library Grafik Penjualan (Chart.js) -->
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         :root { --primary: #1f2937; }
-        /* Utility khusus POS: mengganti class global `hidden` agar tidak bentrok dengan CSS website induk */
+        
         .pos-hidden { display: none !important; }
         @media (min-width: 640px) {
             .sm\:pos-inline { display: inline !important; }
@@ -30,16 +30,14 @@
             .md\:pos-flex { display: flex !important; }
             .md\:pos-inline { display: inline !important; }
         }
-        
-        /* ISOLASI CSS */
+
         .pos-app-active {
             overflow: hidden !important;
             overscroll-behavior: none !important;
             height: 100dvh !important;
             width: 100vw !important;
         }
-        
-        /* Kontainer Utama POS agar terisolasi dari sisa halaman web Anda lainnya */
+
         .pos-viewport-wrapper {
             position: fixed;
             top: 0;
@@ -50,12 +48,11 @@
             overscroll-behavior: none;
             display: flex;
             flex-direction: column; 
-            background-color: #f3f4f6; /* bg-gray-100 */
+            background-color: #f3f4f6; 
             font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             z-index: 1; 
         }
 
-        /* desktop-nav tersembunyi di mobile & muncul flex di desktop tanpa class hiddent di HTML */
         #desktop-nav {
             display: none;
         }
@@ -65,31 +62,25 @@
             }
         }
 
-        /* ISOLASI SCROLLBAR - Khusus elemen di dalam POS */
         .pos-viewport-wrapper ::-webkit-scrollbar { width: 5px; height: 5px; }
         .pos-viewport-wrapper ::-webkit-scrollbar-track { background: transparent; }
         .pos-viewport-wrapper ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .pos-viewport-wrapper .no-scrollbar::-webkit-scrollbar { display: none; }
-        
-        /* Loader Terisolasi */
+
         .pos-loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        /* Padding khusus penyeimbang navigasi bawah di mobile (76px tinggi nav) */
+
         .pos-pb-safe { padding-bottom: 76px; }
         @media (min-width: 768px) {
             .pos-pb-safe { padding-bottom: 0px; }
         }
 
-        /* Custom Payment Modal Z-Index */
         #payment-modal { z-index: 1 !important; }
 
-        /* Margin Bawah Panel Keranjang Pada Mobile */
         @media (max-width: 767px) {
             #panel-keranjang { margin-bottom: 6rem !important; }
         }
 
-        /* AREA CETAK TERISOLASI */
         #print-section { display: none; }
         @media print {
             @page { margin: 0; size: 58mm auto; }
@@ -108,6 +99,744 @@
             .pos-struk-footer { text-align: center; margin-top: 15px; font-size: 9px; }
         }
     </style>
+
+    <style id="yzpos-production-redesign-css">
+        
+        :root {
+            --primary: #1f2937;
+            --pos-bg: #eef2f7;
+            --pos-bg-soft: #f8fafc;
+            --pos-surface: #ffffff;
+            --pos-surface-2: #f9fafb;
+            --pos-line: #e5e7eb;
+            --pos-line-strong: #cbd5e1;
+            --pos-text: #111827;
+            --pos-muted: #64748b;
+            --pos-muted-2: #94a3b8;
+            --pos-radius-sm: 10px;
+            --pos-radius: 16px;
+            --pos-radius-lg: 22px;
+            --pos-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+            --pos-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+            --pos-shadow-lg: 0 22px 55px rgba(15, 23, 42, 0.16);
+            --pos-focus: 0 0 0 4px rgba(31, 41, 55, 0.14);
+            --pos-header-h: 72px;
+            --pos-mobile-nav-h: 76px;
+        }
+
+        html,
+        body {
+            background: var(--pos-bg);
+            -webkit-font-smoothing: antialiased;
+            text-rendering: geometricPrecision;
+        }
+
+        .pos-viewport-wrapper {
+            background:
+                radial-gradient(circle at top left, rgba(31, 41, 55, 0.08), transparent 32rem),
+                linear-gradient(135deg, #f8fafc 0%, #eef2f7 45%, #e2e8f0 100%) !important;
+            color: var(--pos-text);
+            letter-spacing: -0.01em;
+        }
+
+        .pos-viewport-wrapper * {
+            box-sizing: border-box;
+        }
+
+        .pos-viewport-wrapper :focus-visible {
+            outline: none !important;
+            box-shadow: var(--pos-focus) !important;
+        }
+
+        .pos-viewport-wrapper input,
+        .pos-viewport-wrapper select,
+        .pos-viewport-wrapper textarea {
+            min-height: 44px;
+            border-color: var(--pos-line) !important;
+            border-radius: var(--pos-radius-sm) !important;
+            background: var(--pos-surface-2) !important;
+            color: var(--pos-text) !important;
+            transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease, transform .18s ease;
+        }
+
+        .pos-viewport-wrapper input:hover,
+        .pos-viewport-wrapper select:hover,
+        .pos-viewport-wrapper textarea:hover {
+            border-color: var(--pos-line-strong) !important;
+            background: #fff !important;
+        }
+
+        .pos-viewport-wrapper input:focus,
+        .pos-viewport-wrapper select:focus,
+        .pos-viewport-wrapper textarea:focus {
+            border-color: var(--primary) !important;
+            background: #fff !important;
+            box-shadow: var(--pos-focus) !important;
+        }
+
+        .pos-viewport-wrapper button,
+        #msg-box-modal button,
+        #premium-upgrade-modal button,
+        #transaction-detail-modal button,
+        #add-product-modal button,
+        #payment-modal button {
+            min-height: 42px;
+            border-radius: var(--pos-radius-sm) !important;
+            font-weight: 800 !important;
+            letter-spacing: -0.01em;
+            transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease, background-color .16s ease, border-color .16s ease, color .16s ease;
+        }
+
+        .pos-viewport-wrapper button:hover,
+        #msg-box-modal button:hover,
+        #premium-upgrade-modal button:hover,
+        #transaction-detail-modal button:hover,
+        #add-product-modal button:hover,
+        #payment-modal button:hover {
+            transform: translateY(-1px);
+        }
+
+        .pos-viewport-wrapper button:active,
+        #msg-box-modal button:active,
+        #premium-upgrade-modal button:active,
+        #transaction-detail-modal button:active,
+        #add-product-modal button:active,
+        #payment-modal button:active {
+            transform: translateY(0) scale(.99);
+        }
+
+        #login-screen {
+            background:
+                radial-gradient(circle at top, rgba(31, 41, 55, 0.18), transparent 28rem),
+                linear-gradient(135deg, #0f172a 0%, #1f2937 48%, #334155 100%) !important;
+            padding: 20px !important;
+        }
+
+        #login-screen > div {
+            border: 1px solid rgba(255,255,255,.18) !important;
+            border-radius: 28px !important;
+            box-shadow: var(--pos-shadow-lg) !important;
+            padding: 30px !important;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #login-screen > div::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), #64748b, var(--primary));
+        }
+
+        #login-screen h1 {
+            letter-spacing: -0.04em;
+        }
+
+        #login-screen .fa-store,
+        #login-screen .fa-user-plus {
+            filter: drop-shadow(0 10px 22px rgba(15, 23, 42, .18));
+        }
+
+        #app-container > header {
+            min-height: var(--pos-header-h);
+            background: rgba(255,255,255,.94) !important;
+            border-bottom: 1px solid rgba(226,232,240,.95) !important;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, .07) !important;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            z-index: 80 !important;
+        }
+
+        #header-warung-name {
+            max-width: 220px;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+            letter-spacing: -0.035em;
+        }
+
+        #desktop-nav {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 999px;
+            padding: 5px;
+            gap: 2px !important;
+        }
+
+        #desktop-nav > button {
+            min-height: 38px;
+            border: 0 !important;
+            border-radius: 999px !important;
+            padding: 8px 14px !important;
+            color: #64748b !important;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        #desktop-nav > button.border-primary,
+        #desktop-nav > button.text-primary,
+        #desktop-nav > button.font-bold {
+            background: #fff !important;
+            color: var(--primary) !important;
+            box-shadow: var(--pos-shadow-sm) !important;
+        }
+
+        #desktop-nav > button#desk-admin {
+            color: #dc2626 !important;
+        }
+
+        #desktop-nav > button#desk-admin.border-primary,
+        #desktop-nav > button#desk-admin.font-bold {
+            background: #fef2f2 !important;
+            color: #b91c1c !important;
+        }
+
+        #app-container > .flex.flex-1 {
+            padding: 14px;
+            gap: 14px;
+        }
+
+        #app-container > .flex.flex-1 > .flex-1 {
+            border: 1px solid rgba(226,232,240,.95);
+            border-radius: var(--pos-radius-lg);
+            box-shadow: var(--pos-shadow);
+            overflow: hidden;
+            background: rgba(255,255,255,.82) !important;
+        }
+
+        #tab-katalog,
+        #tab-stok,
+        #tab-riwayat,
+        #tab-setelan,
+        #tab-admin {
+            background: var(--pos-bg-soft) !important;
+        }
+
+        #tab-katalog > .p-3,
+        #tab-stok > .p-3,
+        #tab-riwayat > .p-4,
+        #tab-setelan > .p-4,
+        #tab-admin > .p-4 {
+            background: rgba(255,255,255,.96) !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+        }
+
+        #search-input,
+        #stok-search {
+            height: 48px;
+            padding-left: 44px !important;
+            font-weight: 700;
+        }
+
+        #category-bar {
+            background: rgba(255,255,255,.88) !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            padding: 12px 14px !important;
+            gap: 8px !important;
+        }
+
+        #category-bar button {
+            border-radius: 999px !important;
+            min-height: 36px;
+            padding: 8px 14px !important;
+            font-weight: 900 !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: var(--pos-shadow-sm);
+        }
+
+        #stock-warning-banner {
+            border-radius: 14px !important;
+            border-left-width: 0 !important;
+            border: 1px solid #fcd34d !important;
+            box-shadow: 0 10px 18px rgba(245, 158, 11, .10);
+        }
+
+        #product-grid {
+            gap: 14px !important;
+            padding-bottom: 14px !important;
+        }
+
+        #product-grid > div[onclick] {
+            min-height: 154px !important;
+            border-radius: 18px !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: var(--pos-shadow-sm) !important;
+            padding: 14px !important;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%) !important;
+        }
+
+        #product-grid > div[onclick]::after {
+            content: "";
+            position: absolute;
+            inset: auto 0 0 0;
+            height: 3px;
+            background: var(--primary);
+            opacity: 0;
+            transition: opacity .16s ease;
+        }
+
+        #product-grid > div[onclick]:hover {
+            border-color: rgba(31,41,55,.45) !important;
+            box-shadow: 0 16px 34px rgba(15,23,42,.12) !important;
+            transform: translateY(-2px);
+        }
+
+        #product-grid > div[onclick]:hover::after {
+            opacity: 1;
+        }
+
+        #product-grid h3 {
+            font-size: 13px !important;
+            line-height: 1.25 !important;
+        }
+
+        #product-grid .font-mono {
+            border: 1px solid #eef2f7;
+            color: #64748b !important;
+        }
+
+        #tab-keranjang {
+            width: 390px !important;
+            border: 1px solid rgba(226,232,240,.95) !important;
+            border-radius: var(--pos-radius-lg) !important;
+            overflow: hidden !important;
+            box-shadow: var(--pos-shadow) !important;
+            background: #fff !important;
+        }
+
+        #panel-keranjang > .bg-primary:first-child {
+            min-height: 66px;
+            background: linear-gradient(135deg, var(--primary), #111827) !important;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        #empty-cart-msg {
+            justify-content: center;
+            margin-top: 0 !important;
+        }
+
+        #cart-items > div,
+        #history-list > div,
+        #right-context-body .bg-white,
+        #tab-setelan .bg-white,
+        #tab-admin .bg-white,
+        #tab-riwayat .bg-white,
+        #tab-stok .bg-white {
+            border-color: #e2e8f0 !important;
+            box-shadow: var(--pos-shadow-sm) !important;
+        }
+
+        #cart-items > div {
+            border-radius: 16px !important;
+        }
+
+        #total-display,
+        #modal-total-tagihan,
+        #desk-sum-total,
+        #mob-sum-total {
+            letter-spacing: -0.045em;
+        }
+
+        #right-context-panel {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
+        }
+
+        #right-context-panel > div:first-child {
+            min-height: 66px;
+            background: #fff !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+        }
+
+        #right-context-title {
+            letter-spacing: -0.025em;
+        }
+
+        #right-context-body {
+            padding: 14px !important;
+        }
+
+        #right-context-body .rounded-2xl,
+        #tab-riwayat .rounded-2xl,
+        #tab-setelan .rounded-2xl,
+        #tab-admin .rounded-2xl,
+        #tab-stok .rounded-2xl {
+            border-radius: 18px !important;
+        }
+
+        #right-context-body .text-2xl,
+        #right-context-body .text-3xl {
+            letter-spacing: -0.05em;
+        }
+
+        table {
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+        }
+
+        thead th {
+            background: #f8fafc !important;
+            color: #64748b !important;
+            font-size: 11px !important;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+
+        tbody tr {
+            transition: background-color .16s ease, transform .16s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc !important;
+        }
+
+        tbody td {
+            vertical-align: middle;
+        }
+
+        #stok-table-body td,
+        #admin-warung-table-body td,
+        #admin-produk-pusat-table-body td {
+            padding-top: 14px !important;
+            padding-bottom: 14px !important;
+        }
+
+        #tab-riwayat .grid > .bg-white,
+        #tab-setelan .bg-white,
+        #tab-admin .bg-white {
+            border-radius: 20px !important;
+        }
+
+        #history-list > div {
+            border-radius: 16px !important;
+        }
+
+        #history-list > div:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 32px rgba(15,23,42,.10) !important;
+        }
+
+        #scanner-container,
+        #floating-scanner,
+        #cart-scanner-container {
+            background: #020617 !important;
+        }
+
+        #reader,
+        #floating-reader,
+        #cart-reader {
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 18px !important;
+            overflow: hidden;
+        }
+
+        #msg-box-modal,
+        #premium-upgrade-modal,
+        #transaction-detail-modal,
+        #add-product-modal,
+        #payment-modal {
+            background: rgba(15, 23, 42, .72) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        #msg-box-modal > div,
+        #premium-upgrade-modal > div,
+        #transaction-detail-modal > div,
+        #add-product-modal > div,
+        #payment-modal > div {
+            border: 1px solid rgba(255,255,255,.22) !important;
+            border-radius: 24px !important;
+            box-shadow: var(--pos-shadow-lg) !important;
+        }
+
+        #payment-modal h2,
+        #modal-product-title,
+        #detail-trx-title,
+        #msg-box-header,
+        #premium-upgrade-modal h3 {
+            letter-spacing: -0.03em;
+        }
+
+        #uang-diterima {
+            min-height: 62px !important;
+            border-radius: 18px !important;
+            letter-spacing: -0.05em;
+        }
+
+        #kembalian-display {
+            letter-spacing: -0.045em;
+        }
+
+        nav.md\:pos-hidden {
+            height: var(--pos-mobile-nav-h) !important;
+            background: rgba(255,255,255,.96) !important;
+            border-top: 1px solid #e2e8f0 !important;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: 0 -16px 34px rgba(15,23,42,.10) !important;
+            z-index: 90 !important;
+        }
+
+        nav.md\:pos-hidden button {
+            min-width: 72px !important;
+            min-height: 70px !important;
+            border-radius: 16px !important;
+            margin: 3px 2px;
+        }
+
+        nav.md\:pos-hidden button.text-primary,
+        nav.md\:pos-hidden button.font-bold {
+            background: rgba(31,41,55,.08);
+            color: var(--primary) !important;
+        }
+
+        #cart-badge {
+            min-width: 20px !important;
+            height: 20px !important;
+            box-shadow: 0 8px 16px rgba(239,68,68,.24);
+        }
+
+        .pos-loader {
+            width: 46px;
+            height: 46px;
+            border-width: 5px;
+        }
+
+        #loading-overlay {
+            background: rgba(255,255,255,.88) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .pos-viewport-wrapper .bg-primary,
+        #msg-box-modal .bg-primary,
+        #premium-upgrade-modal .bg-primary,
+        #transaction-detail-modal .bg-primary,
+        #add-product-modal .bg-primary,
+        #payment-modal .bg-primary {
+            box-shadow: 0 10px 22px rgba(31,41,55,.16);
+        }
+
+        .pos-viewport-wrapper .text-primary,
+        #msg-box-modal .text-primary,
+        #premium-upgrade-modal .text-primary,
+        #transaction-detail-modal .text-primary,
+        #add-product-modal .text-primary,
+        #payment-modal .text-primary {
+            color: var(--primary) !important;
+        }
+
+        @media (min-width: 1280px) {
+            #tab-keranjang {
+                width: 410px !important;
+            }
+            #product-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            }
+        }
+
+        @media (min-width: 1536px) {
+            #product-grid {
+                grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            #desktop-nav > button {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+            #header-warung-name {
+                max-width: 150px;
+            }
+            #tab-keranjang {
+                width: 360px !important;
+            }
+        }
+
+        @media (max-width: 767px) {
+            :root {
+                --pos-header-h: 64px;
+            }
+
+            #app-container > header {
+                min-height: var(--pos-header-h);
+                padding: 10px 12px !important;
+            }
+
+            #header-warung-name {
+                max-width: 145px;
+                font-size: 15px;
+            }
+
+            #app-container > .flex.flex-1 {
+                padding: 8px 8px calc(var(--pos-mobile-nav-h) + 8px) 8px !important;
+                gap: 0;
+            }
+
+            #app-container > .flex.flex-1 > .flex-1 {
+                border-radius: 18px !important;
+            }
+
+            #tab-katalog > .p-3,
+            #tab-stok > .p-3 {
+                padding: 10px !important;
+                gap: 8px !important;
+            }
+
+            #search-input,
+            #stok-search {
+                height: 46px;
+            }
+
+            #category-bar {
+                padding: 10px !important;
+            }
+
+            #product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 10px !important;
+            }
+
+            #product-grid > div[onclick] {
+                min-height: 146px !important;
+                padding: 12px !important;
+            }
+
+            #product-grid h3 {
+                font-size: 12px !important;
+            }
+
+            #tab-keranjang {
+                width: 100% !important;
+                border-radius: 0 !important;
+                border: 0 !important;
+            }
+
+            #panel-keranjang {
+                margin-bottom: 0 !important;
+            }
+
+            #payment-modal > div,
+            #add-product-modal > div,
+            #transaction-detail-modal > div,
+            #premium-upgrade-modal > div,
+            #msg-box-modal > div {
+                border-radius: 22px !important;
+                max-height: calc(100dvh - 24px) !important;
+            }
+
+            #tab-riwayat .grid,
+            #tab-setelan .grid,
+            #tab-admin .grid {
+                gap: 10px !important;
+            }
+        }
+
+        @media (max-width: 420px) {
+            #product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            }
+
+            #product-grid > div[onclick] {
+                min-height: 136px !important;
+                padding: 10px !important;
+            }
+
+            #modal-total-tagihan {
+                font-size: 2rem !important;
+            }
+
+            #uang-diterima {
+                font-size: 1.75rem !important;
+            }
+        }
+
+    </style>
+
+    <style id="yzpos-mobile-cart-payment-fix-css">
+        
+        @media (max-width: 767px) {
+            #tab-keranjang {
+                position: fixed !important;
+                top: 0 !important;
+                right: 0 !important;
+                bottom: var(--pos-mobile-nav-h, 76px) !important;
+                left: 0 !important;
+                width: 100% !important;
+                height: calc(100dvh - var(--pos-mobile-nav-h, 76px)) !important;
+                max-height: calc(100dvh - var(--pos-mobile-nav-h, 76px)) !important;
+                border-radius: 0 !important;
+                overflow: hidden !important;
+                z-index: 80 !important;
+            }
+
+            #panel-keranjang {
+                height: 100% !important;
+                min-height: 0 !important;
+                margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
+            }
+
+            #panel-keranjang > .flex-1 {
+                min-height: 0 !important;
+                padding-bottom: 18px !important;
+            }
+
+            #panel-keranjang > .border-t {
+                position: sticky !important;
+                bottom: 0 !important;
+                z-index: 35 !important;
+                padding: 12px 14px calc(14px + env(safe-area-inset-bottom)) 14px !important;
+                background: rgba(255, 255, 255, 0.98) !important;
+                border-top: 1px solid #e2e8f0 !important;
+                box-shadow: 0 -14px 30px rgba(15, 23, 42, 0.12) !important;
+            }
+
+            #panel-keranjang > .border-t .mb-4 {
+                margin-bottom: 10px !important;
+            }
+
+            #panel-keranjang > .border-t button {
+                min-height: 54px !important;
+                border-radius: 16px !important;
+            }
+
+            #close-mob-panel {
+                top: 12px !important;
+                right: 12px !important;
+                bottom: auto !important;
+                left: auto !important;
+                width: auto !important;
+                min-width: 0 !important;
+                padding: 8px 12px !important;
+                border-radius: 999px !important;
+                z-index: 45 !important;
+                font-size: 0 !important;
+                line-height: 1 !important;
+                background: rgba(17, 24, 39, 0.88) !important;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+
+            #close-mob-panel i {
+                margin-right: 6px !important;
+                font-size: 13px !important;
+            }
+
+            #close-mob-panel::after {
+                content: "Tutup";
+                font-size: 11px;
+                font-weight: 800;
+            }
+        }
+    </style>
+
 </head>
 <body>
 
@@ -116,7 +845,6 @@
     <p class="text-gray-800 font-bold animate-pulse text-lg" id="loading-text">Memproses...</p>
 </div>
 
-<!-- Custom Modal -->
 <div id="msg-box-modal" class="fixed inset-0 bg-gray-900 bg-opacity-60 pos-hidden flex items-center justify-center z-[2500] p-4 backdrop-blur-sm transition-opacity">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden transform scale-100 transition-transform z-[1500]">
         <div id="msg-box-header" class="p-4 font-black text-lg text-gray-800 border-b border-gray-100 flex items-center gap-2">Title</div>
@@ -125,7 +853,6 @@
     </div>
 </div>
 
-<!-- FLOATING SCANNER OVERLAY MOBILE -->
 <div id="floating-scanner" class="fixed inset-0 bg-black/90 pos-hidden flex flex-col items-center justify-center z-[3000] p-4">
     <div class="w-full max-w-sm bg-gray-900 rounded-2xl overflow-hidden shadow-2xl p-4 flex flex-col">
         <div class="flex justify-between items-center mb-3">
@@ -137,20 +864,20 @@
     </div>
 </div>
 
-<!-- MODAL UPGRADE PREMIUM -->
 <div id="premium-upgrade-modal" class="fixed inset-0 bg-gray-900/70 pos-hidden flex items-center justify-center z-[1600] p-4 backdrop-blur-sm">
     <div class="bg-white p-6 w-full max-w-sm rounded-2xl shadow-2xl flex flex-col text-center">
         <div class="w-16 h-16 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
             <i class="fas fa-crown text-3xl"></i>
         </div>
         <h3 class="text-xl font-black text-gray-900 mb-2">Batas Produk Tercapai!</h3>
-        <p class="text-sm text-gray-500 mb-6 leading-relaxed">Anda telah mencapai batas maksimal <strong>10 produk</strong> pada paket Free. Hubungi admin via WhatsApp untuk upgrade ke paket <strong>Premium Unlimited</strong> dan mengelola produk tanpa batas!</p>
+        <p class="text-sm text-gray-500 mb-6 leading-relaxed">Anda telah mencapai batas maksimal <strong>10 produk</strong> pada paket Free. Hubungi admin via WhatsApp untuk upgrade ke paket <strong>Premium Unlimited</strong> dan mengelola produk tanpa batas. Biaya pemeliharaan sistem: <strong>Rp 7.500/bulan</strong>.</p>
         
         <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 text-left mb-6 space-y-2 text-xs text-gray-600">
             <p class="font-bold text-gray-800"><i class="fas fa-star text-amber-500 mr-1.5"></i> Keuntungan Premium:</p>
             <p>• Input & Jual Produk Tanpa Batas (Unlimited)</p>
             <p>• Laporan Grafik Keuangan Harian Real-time</p>
             <p>• Backup Keamanan Database Cloud Supabase</p>
+            <p>• Pemeliharaan sistem Rp 7.500/bulan</p>
         </div>
 
         <div class="flex gap-2">
@@ -160,11 +887,9 @@
     </div>
 </div>
 
-<!-- Login & Register Screen -->
 <div id="login-screen" class="pos-viewport-wrapper z-[1000] flex items-center justify-center p-4">
     <div class="bg-white p-8 w-full max-w-md shadow-2xl rounded-2xl border border-gray-100">
-        
-        <!-- SUB-MODUL 1: MASUK (LOGIN) -->
+
         <div id="login-form-wrapper" class="space-y-4">
             <div class="text-center mb-8">
                 <i class="fas fa-store text-6xl text-primary mb-4 drop-shadow-md"></i>
@@ -185,9 +910,14 @@
             <div class="text-center mt-4">
                 <button onclick="toggleLoginRegister(true)" class="text-xs text-primary font-bold hover:underline px-4 py-1">Belum punya akun? Daftar akun baru</button>
             </div>
+            <div class="mt-5 pt-4 border-t border-gray-100 text-center">
+                <p class="text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-2">Butuh bantuan?</p>
+                <a href="https://wa.me/6289507785333?text=Halo%20Admin%20YzPOS%2C%20saya%20butuh%20bantuan%20untuk%20akses%20aplikasi." target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 w-full bg-green-50 hover:bg-green-100 text-green-700 border border-green-200 font-black py-3 px-4 rounded-xl text-xs transition">
+                    <i class="fab fa-whatsapp text-base"></i> Hubungi Support WhatsApp
+                </a>
+            </div>
         </div>
 
-        <!-- SUB-MODUL 2: REGISTRASI -->
         <div id="register-form-wrapper" class="pos-hidden space-y-4">
             <div class="text-center mb-8">
                 <i class="fas fa-user-plus text-6xl text-primary mb-4 drop-shadow-md"></i>
@@ -217,9 +947,8 @@
     </div>
 </div>
 
-<!-- App Container -->
 <div id="app-container" class="pos-hidden pos-viewport-wrapper">
-    <!-- HEADER -->
+    
     <header class="bg-white border-b border-gray-200 p-3 md:p-4 flex justify-between items-center z-10 shadow-sm shrink-0">
         <div class="flex items-center gap-4 md:gap-8">
             <h1 class="text-lg md:text-xl font-bold text-gray-900 tracking-tight flex items-center gap-2">
@@ -232,7 +961,7 @@
                 <button onclick="switchTab('stok')" id="desk-stok" class="pb-1 border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition px-2 py-1">Stok</button>
                 <button onclick="switchTab('riwayat')" id="desk-riwayat" class="pb-1 border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition px-2">Riwayat</button>
                 <button onclick="switchTab('setelan')" id="desk-setelan" class="pb-1 border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition px-2">Pengaturan</button>
-                <!-- Tombol Admin Panel Desktop (Hidden By Default) -->
+                
                 <button onclick="switchTab('admin')" id="desk-admin" class="pb-1 border-b-2 border-transparent text-red-600 hover:text-red-800 transition px-2">Admin</button>
             </div>
         </div>
@@ -243,15 +972,12 @@
         </div>
     </header>
 
-    <!-- AREA KONTEN UTAMA -->
     <div class="flex flex-1 overflow-hidden relative pos-pb-safe">
-        
-        <!-- PANEL KIRI (Utama: Berubah Tab) -->
+
         <div class="flex-1 flex flex-col w-full bg-white relative overflow-hidden">
-            
-            <!-- TAB 1: KATALOG (Fokus Operasional Penjualan) -->
+
             <div id="tab-katalog" class="absolute inset-0 flex flex-col w-full h-full bg-gray-50 overflow-hidden">
-                <!-- Baris Atas Pencarian & Scan -->
+                
                 <div class="p-3 md:p-4 bg-white border-b border-gray-100 shadow-sm z-10 flex gap-2 shrink-0">
                     <div class="relative flex-1">
                         <i class="fas fa-search absolute left-3.5 top-3.5 text-gray-400"></i>
@@ -260,10 +986,8 @@
                     <button onclick="toggleScanner()" class="bg-gray-800 text-white px-5 py-2.5 rounded-xl hover:opacity-90 shadow-md transition font-bold flex items-center gap-2"><i class="fas fa-qrcode"></i> <span class="pos-hidden sm:pos-inline">Scan</span></button>
                 </div>
 
-                <!-- Banner Pemberitahuan Stok Menipis -->
                 <div id="stock-warning-banner" class="pos-hidden mx-3 mt-3 p-3 bg-amber-50 border-l-4 border-amber-500 text-amber-800 rounded-r-xl text-xs font-bold flex justify-between items-center shrink-0"></div>
 
-                <!-- Baris Kategori: Mendukung scroll horizontal dinamis -->
                 <div id="category-bar" class="flex overflow-x-auto p-3 gap-2 bg-white border-b border-gray-100 no-scrollbar shrink-0 justify-start items-center"></div>
 
                 <div id="scanner-container" class="pos-hidden p-4 bg-gray-900 border-b border-gray-800 shrink-0">
@@ -276,15 +1000,13 @@
                 </div>
             </div>
 
-            <!-- TAB 2: MANAJEMEN STOK -->
             <div id="tab-stok" class="absolute inset-0 pos-hidden flex-col w-full h-full bg-gray-50 overflow-hidden">
                 <div class="p-3 md:p-4 bg-white border-b border-gray-100 shadow-sm z-10 flex gap-2 shrink-0 justify-between items-center">
                     <div class="relative flex-1 max-w-xs sm:max-w-sm">
                         <i class="fas fa-search absolute left-3.5 top-3.5 text-gray-400"></i>
                         <input type="text" id="stok-search" placeholder="Cari nama produk di stok..." class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary transition" onkeyup="renderStockTable()">
                     </div>
-                    
-                    <!-- Dropdown Sortir di Halaman Stok -->
+
                     <select id="sort-select-stok" onchange="renderStockTable()" class="p-2.5 border border-gray-200 rounded-xl text-xs font-bold text-gray-600 bg-gray-50 focus:outline-none focus:border-primary transition shrink-0">
                         <option value="az">Nama A-Z</option>
                         <option value="za">Nama Z-A</option>
@@ -317,7 +1039,6 @@
                 </div>
             </div>
 
-            <!-- TAB 3: RIWAYAT & KEUANGAN -->
             <div id="tab-riwayat" class="absolute inset-0 pos-hidden flex-col w-full h-full bg-gray-50 overflow-hidden">
                 <div class="p-4 bg-white border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shadow-sm shrink-0">
                     <h2 class="text-lg font-bold text-gray-800 flex items-center"><i class="fas fa-history text-primary mr-2"></i>Keuangan & Laporan</h2>
@@ -328,7 +1049,7 @@
                 </div>
                 
                 <div class="flex-1 overflow-y-auto p-4">
-                    <!-- Dashboard Riwayat Penjualan -->
+                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
                             <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Total Penjualan Bulan Ini</p>
@@ -341,7 +1062,7 @@
                             </div>
                             <button onclick="exportToCSV()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-5 rounded-xl text-xs flex items-center gap-1.5 transition shadow-md"><i class="fas fa-file-excel text-sm"></i> Export CSV</button>
                         </div>
-                        <!-- Canvas Grafik Tren Penjualan Harian -->
+                        
                         <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 col-span-1 md:col-span-2">
                             <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4"><i class="fas fa-chart-line text-primary"></i> Tren Penjualan Harian</p>
                             <div class="h-44">
@@ -354,26 +1075,24 @@
                 </div>
             </div>
 
-            <!-- TAB 4: PENGATURAN -->
             <div id="tab-setelan" class="absolute inset-0 pos-hidden flex-col w-full h-full bg-gray-50 overflow-hidden">
                 <div class="p-4 bg-white border-b border-gray-200 shadow-sm shrink-0">
                     <h2 class="text-lg font-bold text-gray-800 flex items-center"><i class="fas fa-cogs text-primary mr-2"></i>Pengaturan Warung</h2>
                 </div>
                 <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
-                    <!-- Paket Langganan -->
+                    
                     <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 class="text-sm font-bold text-gray-700 mb-4 flex items-center gap-2"><i class="fas fa-crown text-amber-500"></i> Paket Langganan</h3>
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-50 p-4 rounded-xl border border-gray-100 gap-3">
                             <div>
                                 <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Status Akun Aktif</p>
                                 <p class="font-black text-base sm:text-lg text-gray-800" id="set-plan-status">Free (Maks 10 Produk)</p>
-                                <p class="text-xs text-gray-500 mt-1">Upgrade premium diproses melalui admin WhatsApp.</p>
+                                <p class="text-xs text-gray-500 mt-1">Upgrade premium diproses melalui admin WhatsApp. Biaya pemeliharaan sistem Rp 7.500/bulan.</p>
                             </div>
                             <button id="btn-toggle-plan" onclick="openWhatsAppUpgrade('settings')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-5 rounded-xl text-xs transition shadow-md whitespace-nowrap"><i class="fab fa-whatsapp mr-1"></i> Upgrade via WA</button>
                         </div>
                     </div>
 
-                    <!-- Tema -->
                     <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 class="text-sm font-bold text-gray-700 mb-4">Warna Tema UI</h3>
                         <div class="flex flex-wrap gap-4">
@@ -385,7 +1104,6 @@
                         </div>
                     </div>
 
-                    <!-- Profil & Akun -->
                     <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 class="text-sm font-bold text-gray-700 mb-4">Profil & Kredensial Akun</h3>
                         <div class="space-y-4 max-w-md">
@@ -393,8 +1111,7 @@
                                 <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nama Warung</label>
                                 <input type="text" id="set-name" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:border-primary focus:bg-white outline-none font-bold text-gray-800">
                             </div>
-                            
-                            <!-- Input Logo & Biodata Khusus Struk -->
+
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Logo Warung (Kustom Struk)</label>
@@ -426,7 +1143,6 @@
                 </div>
             </div>
 
-            <!-- TAB 5: PANEL ADMIN (Modul Manajemen Lisensi & Database - Khusus Superadmin) -->
             <div id="tab-admin" class="absolute inset-0 pos-hidden flex-col w-full h-full bg-gray-50 overflow-hidden">
                 <div class="p-4 bg-white border-b border-gray-200 shadow-sm shrink-0 flex justify-between items-center">
                     <h2 class="text-lg font-bold text-gray-800 flex items-center"><i class="fas fa-user-shield text-red-600 mr-2"></i>Admin Console YzPOS</h2>
@@ -436,9 +1152,18 @@
                     </div>
                 </div>
                 <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
-                    <!-- Manajemen Lisensi Warung -->
+
+                    <div class="bg-white p-2 rounded-2xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-2">
+                        <button id="admin-tab-users" onclick="switchAdminTab('users')" class="flex-1 bg-primary text-white font-black py-3 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2">
+                            <i class="fas fa-users"></i> Manajemen User
+                        </button>
+                        <button id="admin-tab-products" onclick="switchAdminTab('products')" class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-700 font-black py-3 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2">
+                            <i class="fas fa-boxes-stacked"></i> Produk Pusat
+                        </button>
+                    </div>
+                    <div id="admin-panel-users" class="space-y-6">
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-                        <h3 class="text-sm font-black text-gray-800 mb-4 border-b border-gray-100 pb-3"><i class="fas fa-users mr-1.5 text-primary"></i> Daftar Cabang & Lisensi Paket</h3>
+                        <h3 class="text-sm font-black text-gray-800 mb-4 border-b border-gray-100 pb-3"><i class="fas fa-users mr-1.5 text-primary"></i> Daftar Cabang, Akun & Lisensi Paket</h3>
                         <div class="overflow-x-auto w-full no-scrollbar">
                             <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[600px]">
                                 <thead class="bg-gray-50 border-b border-gray-100 font-bold text-gray-500">
@@ -448,7 +1173,7 @@
                                         <th class="p-3">Username</th>
                                         <th class="p-3 text-center">Paket Lisensi</th>
                                         <th class="p-3 text-center">Status</th>
-                                        <th class="p-3 text-center">Aksi Paket</th>
+                                        <th class="p-3 text-center">Aksi Akun & Paket</th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin-warung-table-body" class="divide-y divide-gray-50">
@@ -458,7 +1183,9 @@
                         </div>
                     </div>
 
-                    <!-- Manajemen Produk Pusat -->
+                    </div>
+
+                    <div id="admin-panel-products" class="pos-hidden space-y-6">
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-gray-100 pb-3 mb-4">
                             <h3 class="text-sm font-black text-gray-800"><i class="fas fa-boxes-stacked mr-1.5 text-primary"></i> Daftar Produk Pusat</h3>
@@ -487,17 +1214,17 @@
                             </table>
                         </div>
                     </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- PANEL KANAN (KERANJANG) -->
         <div id="tab-keranjang" class="pos-hidden md:pos-flex flex-col w-full md:w-[350px] lg:w-[400px] bg-white h-full z-20 md:z-10 shadow-2xl md:shadow-[rgba(0,0,0,0.05)_-4px_0px_10px_0px] absolute md:relative inset-0 md:inset-auto transition-transform shrink-0 border-l border-gray-200 relative">
             <div id="panel-keranjang" class="flex flex-col h-full w-full">
                 <div class="p-4 bg-primary text-white flex justify-between items-center shadow-md shrink-0">
                     <h2 class="text-lg font-bold flex items-center gap-1.5"><i class="fas fa-shopping-basket"></i> Keranjang</h2>
                     <div class="flex gap-2">
-                        <!-- Tombol Scan Barcode Keranjang Mobile -->
+                        
                         <button onclick="toggleCartScanner(true)" class="pos-md-hidden bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-4 py-1.5 rounded-lg transition flex items-center gap-1"><i class="fas fa-qrcode"></i> Scan</button>
                         <button onclick="clearCart()" class="bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-4 py-1.5 rounded-lg transition flex items-center gap-1"><i class="fas fa-trash-alt"></i> Bersihkan</button>
                     </div>
@@ -516,9 +1243,9 @@
                         <span class="text-sm text-gray-500 uppercase tracking-widest">Total Bayar</span>
                         <span id="total-display" class="text-primary">Rp 0</span>
                     </div>
-                    <!-- Flex container penyeimbang tombol checkout & scan -->
+                    
                     <div class="flex gap-2 shrink-0">
-                        <!-- Tombol Scan Barcode di Samping Lanjut Pembayaran -->
+                        
                         <button onclick="toggleCartScanner(true)" class="bg-gray-800 hover:opacity-90 text-white font-bold p-4 rounded-xl shadow-lg transition flex items-center justify-center aspect-square shrink-0 transform active:scale-95" title="Scan Barcode">
                             <i class="fas fa-qrcode text-xl"></i>
                         </button>
@@ -529,7 +1256,6 @@
                 </div>
             </div>
 
-            <!-- PANEL KANAN KONTEKSTUAL DESKTOP -->
             <div id="right-context-panel" class="pos-hidden flex-col h-full w-full bg-gray-50 overflow-y-auto">
                 <div class="p-4 bg-white border-b border-gray-200 shadow-sm shrink-0">
                     <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2" id="right-context-title"><i class="fas fa-layer-group text-primary"></i> Ringkasan</h2>
@@ -537,8 +1263,7 @@
                 </div>
                 <div id="right-context-body" class="flex-1 p-4 space-y-4"></div>
             </div>
-            
-            <!-- SCANNER OVERLAY YANG MEMENUHI TAB KERANJANG -->
+
             <div id="cart-scanner-container" class="absolute inset-0 bg-gray-900 pos-hidden flex-col z-50 p-4">
                 <div class="flex justify-between items-center mb-3 shrink-0">
                     <h3 class="text-white font-bold text-sm flex items-center gap-1.5">
@@ -556,7 +1281,6 @@
         </div>
     </div>
 
-    <!-- NAVIGASI BAWAH (MOBILE) -->
     <nav class="pos-md-hidden fixed bottom-0 w-full h-[76px] pb-1 bg-white border-t border-gray-200 flex overflow-x-auto no-scrollbar justify-start items-center text-[10px] text-gray-400 z-50 shadow-[0_-4px_15px_-1px_rgba(0,0,0,0.05)] shrink-0">
         <button id="nav-katalog" onclick="switchTab('katalog')" class="min-w-[76px] flex-1 h-full flex flex-col items-center justify-center gap-1.5 text-primary font-bold transition">
             <i class="fas fa-box text-2xl"></i><span>Katalog</span>
@@ -574,13 +1298,12 @@
         <button id="nav-setelan" onclick="switchTab('setelan')" class="min-w-[76px] flex-1 h-full flex flex-col items-center justify-center gap-1.5 transition">
             <i class="fas fa-cog text-2xl"></i><span>Setelan</span>
         </button>
-        <!-- Tombol Admin Panel Mobile (Hidden By Default) -->
+        
         <button id="nav-admin" onclick="switchTab('admin')" class="pos-hidden min-w-[76px] flex-1 h-full flex flex-col items-center justify-center gap-1.5 text-red-600 transition">
             <i class="fas fa-user-shield text-2xl"></i><span>Admin</span>
         </button>
     </nav>
 
-    <!-- SHORTCUT HELPER (DESKTOP) -->
     <div class="pos-hidden md:pos-flex bg-gray-100 border-t border-gray-200 px-4 py-2 text-[11px] text-gray-500 justify-between items-center shrink-0">
         <div class="flex flex-wrap gap-4 font-semibold text-gray-600">
             <span><kbd class="bg-white border border-gray-300 rounded px-1.5 py-0.5 shadow-sm text-gray-800">F1</kbd> Katalog</span>
@@ -595,7 +1318,6 @@
     </div>
 </div>
 
-<!-- MODAL DETAIL TRANSAKSI -->
 <div id="transaction-detail-modal" class="fixed inset-0 bg-gray-900/70 pos-hidden flex items-center justify-center z-[1500] p-4 backdrop-blur-sm">
     <div class="bg-white p-5 w-full max-w-md rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
         <div class="flex justify-between items-center pb-3 border-b border-gray-100 shrink-0">
@@ -610,7 +1332,6 @@
     </div>
 </div>
 
-<!-- MODAL EDIT/TAMBAH PRODUK -->
 <div id="add-product-modal" class="fixed inset-0 bg-gray-900/70 pos-hidden flex items-center justify-center z-[1500] p-4 backdrop-blur-sm">
     <div class="bg-white p-6 w-full max-w-sm rounded-2xl shadow-2xl transform transition-all overflow-hidden flex flex-col max-h-[90vh]">
         <h3 class="text-xl font-black text-gray-900 mb-2 shrink-0" id="modal-product-title">Setup Produk</h3>
@@ -659,7 +1380,40 @@
     </div>
 </div>
 
-<!-- MODAL EDIT PRODUK PUSAT ADMIN -->
+<div id="admin-warung-account-modal" class="fixed inset-0 bg-gray-900/70 pos-hidden flex items-center justify-center z-[1550] p-4 backdrop-blur-sm">
+    <div class="bg-white p-6 w-full max-w-md rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
+        <div class="flex justify-between items-center pb-3 border-b border-gray-100 shrink-0">
+            <h3 class="text-lg font-black text-gray-900 flex items-center gap-2"><i class="fas fa-user-gear text-primary"></i> Edit Akun Warung</h3>
+            <button onclick="closeAdminWarungAccountModal()" class="text-gray-400 hover:text-gray-600 transition px-2 py-1"><i class="fas fa-times text-lg"></i></button>
+        </div>
+        <div class="py-4 space-y-4">
+            <div class="p-3 text-xs font-semibold bg-amber-50 text-amber-700 border-l-4 border-amber-500 rounded-r-lg leading-relaxed">
+                Superadmin dapat mengubah username dan password akun warung. Kosongkan password baru bila tidak ingin mengganti password.
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">ID Warung</label>
+                <input type="text" id="admin-account-id" readonly class="w-full p-3 bg-gray-100 border border-gray-200 rounded-xl text-gray-600 font-mono font-bold outline-none">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nama Warung</label>
+                <input type="text" id="admin-account-name" class="w-full p-3 bg-white border border-gray-300 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none font-bold text-gray-800 transition" placeholder="Nama warung">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Username Baru</label>
+                <input type="text" id="admin-account-username" class="w-full p-3 bg-white border border-gray-300 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none font-bold text-gray-800 transition" placeholder="Username akun warung">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Password Baru</label>
+                <input type="password" id="admin-account-password" class="w-full p-3 bg-white border border-gray-300 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none font-bold text-gray-800 transition" placeholder="Kosongkan bila tidak diubah">
+            </div>
+        </div>
+        <div class="flex gap-3 pt-3 border-t border-gray-100 shrink-0">
+            <button onclick="closeAdminWarungAccountModal()" class="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl transition">Batal</button>
+            <button onclick="saveAdminWarungAccount()" class="w-2/3 bg-primary hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition"><i class="fas fa-save mr-1"></i> Simpan Akun</button>
+        </div>
+    </div>
+</div>
+
 <div id="admin-product-modal" class="fixed inset-0 bg-gray-900/70 pos-hidden flex items-center justify-center z-[1550] p-4 backdrop-blur-sm">
     <div class="bg-white p-6 w-full max-w-md rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
         <div class="flex justify-between items-center pb-3 border-b border-gray-100 shrink-0">
@@ -690,7 +1444,6 @@
     </div>
 </div>
 
-<!-- MODAL PEMBAYARAN -->
 <div id="payment-modal" class="fixed inset-0 bg-gray-900/70 pos-hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white p-5 w-full max-w-md rounded-2xl shadow-2xl flex flex-col max-h-[95vh] overflow-y-auto font-sans">
         <h2 class="text-xl font-black mb-4 text-center text-gray-900 uppercase tracking-widest shrink-0">Pembayaran Kasir</h2>
@@ -704,8 +1457,7 @@
             <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Input Uang Diterima (Rp)</label>
             <input type="number" id="uang-diterima" class="w-full p-3 border-2 border-gray-300 rounded-xl text-3xl font-black focus:border-primary focus:outline-none text-center transition" onkeyup="calculateKembalian()" placeholder="0">
         </div>
-        
-        <!-- TOMBOL UANG CEPAT -->
+
         <div class="grid grid-cols-4 gap-2 mb-6 shrink-0 font-bold">
             <button onclick="setUang('Pas')" class="bg-gray-100 text-gray-800 font-bold py-2 px-2 rounded-lg border text-sm hover:bg-gray-200">Pas</button>
             <button onclick="setUang(2000)" class="bg-white text-primary font-bold py-2 px-2 rounded-lg border text-sm hover:bg-gray-50">2k</button>
@@ -731,7 +1483,6 @@
     </div>
 </div>
 
-<!-- AREA CETAK -->
 <div id="print-section">
     <div class="pos-struk-header">
         <img id="print-logo" class="mx-auto max-h-12 mb-2 pos-hidden" src="" alt="Logo">
@@ -767,17 +1518,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 (function () {
     'use strict';
-    // ==========================================
-    // KREDENSIAL SUPABASE RESMI PROYEK ANDA
-    // ==========================================
+
     const SUPABASE_URL = 'https://jbwlnscywfltsxnfwvma.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impid2xuc2N5d2ZsdHN4bmZ3dm1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2NTUxMTgsImV4cCI6MjA5ODIzMTExOH0.v8rhZ_USgitx1dBlEJngAW_1lfv2BJqmI3M8LscnqYY';
-    // Inisialisasi library tanpa bentrok
+
     const { createClient } = window.supabase;
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     let isCheckoutRunning = false;
     const PREMIUM_WA_NUMBER = '6289507785333';
-    // --- CUSTOM MSGBOX ---
+
     function showMsg(title, msg, type = 'info', onConfirm = null, allowHtml = false) {
         const headerIcon = type === 'confirm'
             ? `<i class="fas fa-question-circle text-yellow-500"></i>`
@@ -800,7 +1549,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     function closeMsg() { document.getElementById('msg-box-modal').classList.add('pos-hidden'); }
     function execConfirm() { closeMsg(); if (window.pendingConfirm)
         window.pendingConfirm(); }
-    // --- TEMA & AUDIO ---
+
     const themeColors = { 'dark': '#1f2937', 'blue': '#2563eb', 'green': '#16a34a', 'red': '#dc2626', 'purple': '#9333ea' };
     function applyTheme(colorKey) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -818,7 +1567,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         }
         catch (e) { }
     }
-    // --- FULLSCREEN LOGIC ---
+
     function toggleFullScreen() {
         if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen().catch(err => {
@@ -831,7 +1580,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             }
         }
     }
-    // --- HASH PASSWORD HELPER (SHA-256) ---
+
     function hashPassword(password) {
         return __awaiter(this, void 0, void 0, function* () {
             const msgBuffer = new TextEncoder().encode(password);
@@ -840,24 +1589,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             return hashArray.map(b => leftPad(b.toString(16), 2, '0')).join('');
         });
     }
-    // --- STATE & VARIABEL ---
+
     let currentWarung = null;
     let localCatalog = [];
     let rawCatalog = [];
     let masterDB = {};
     let historyData = [];
     let popularityMap = {};
-    let categoryPopularity = {}; // Mengurutkan kategori terlaris
+    let categoryPopularity = {};
     let cart = [];
     let currentCategory = 'Semua';
     let activeMainTab = 'katalog';
     let grandTotal = 0;
-    let html5QrScanner = null; // Scanner Mengambang/Floating (Untuk modal input produk)
-    let html5InlineScanner = null; // Scanner Desktop/Inline
-    let html5CartScanner = null; // Scanner Keranjang Belanja (Revisi Ke-2)
+    let html5QrScanner = null;
+    let html5InlineScanner = null;
+    let html5CartScanner = null;
     let scannerTarget = 'cart';
     let salesChart = null;
-    let activeDetailTrx = null; // Rincian aktif yang sedang dibuka
+    let activeDetailTrx = null;
     const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
     function leftPad(value, targetLength, padString) {
         const str = String(value);
@@ -993,7 +1742,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         renderPlanStatus();
         handleResize();
     }
-    // Switch Panel Login & Registrasi
     function toggleLoginRegister(isRegister) {
         const loginForm = document.getElementById('login-form-wrapper');
         const registerForm = document.getElementById('register-form-wrapper');
@@ -1006,7 +1754,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             registerForm.classList.add('pos-hidden');
         }
     }
-    // Konversi logo berkas lokal ke Base64
     function convertLogoToBase64() {
         const file = document.getElementById('set-logo-file').files[0];
         if (!file)
@@ -1060,7 +1807,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                     .from('warung')
                     .update(payload)
                     .eq('id_warung', currentWarung.id);
-                // Fallback jika database lama belum memiliki kolom logo/biodata.
                 if (error && /logo|biodata/i.test(error.message || '')) {
                     delete payload.logo;
                     delete payload.biodata;
@@ -1088,7 +1834,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             }
         });
     }
-    // Fungsi Mendaftar Pengguna Baru Secara Instan
     function prosesRegistrasi() {
         return __awaiter(this, void 0, void 0, function* () {
             const name = document.getElementById('reg-name').value.trim();
@@ -1102,7 +1847,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             }
             showLoading("Mendaftarkan Cabang...");
             try {
-                // Validasi duplikasi username
                 const { data: existing, error: checkErr } = yield supabaseClient
                     .from('warung')
                     .select('id_warung')
@@ -1125,7 +1869,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                     nama_warung: name,
                     tema: 'dark',
                     status: 'Aktif',
-                    role: 'user', // Default pendaftar baru adalah user biasa
+                    role: 'user',
                     updated_at: new Date()
                 });
                 if (insertErr)
@@ -1178,8 +1922,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                         user: warung.username,
                         name: warung.nama_warung,
                         theme: warung.tema || 'dark',
-                        role: warung.role || 'user', // Rekam Peran Sesi (Revisi Baru)
-                        status: warung.status || 'Aktif', // Rekam Lisensi Sesi (Revisi Baru)
+                        role: warung.role || 'user',
+                        status: warung.status || 'Aktif',
                         logo: warung.logo || '',
                         biodata: warung.biodata || ''
                     };
@@ -1199,7 +1943,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             }
         });
     }
-    // Fungsi perbaikan signout handal dengan hapus total local storage (Revisi Ke-5)
     function logout() {
         showMsg('Konfirmasi', 'Keluar dari aplikasi dan hapus data sesi?', 'confirm', () => {
             localStorage.removeItem('pos_session');
@@ -1486,13 +2229,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                 <button onclick="triggerDatabaseBackup()" class="bg-green-600 text-white font-bold py-3 px-4 rounded-xl text-xs shadow-md"><i class="fas fa-database mr-1"></i> Backup</button>
             </div>`;
     }
-    // Paket Langganan: upgrade diarahkan ke admin WhatsApp resmi.
     function openWhatsAppUpgrade(source = 'settings') {
         const warungName = (currentWarung ? currentWarung.name : undefined) || '-';
         const username = (currentWarung ? currentWarung.user : undefined) || '-';
         const pesan = source === 'limit'
-            ? `Halo Admin YzPOS, saya ingin upgrade Premium Unlimited karena batas 10 produk sudah tercapai.%0A%0ANama Warung: ${encodeURIComponent(warungName)}%0AUsername: ${encodeURIComponent(username)}`
-            : `Halo Admin YzPOS, saya ingin upgrade akun ke Premium Unlimited.%0A%0ANama Warung: ${encodeURIComponent(warungName)}%0AUsername: ${encodeURIComponent(username)}`;
+            ? `Halo Admin YzPOS, saya ingin upgrade Premium Unlimited karena batas 10 produk sudah tercapai.%0A%0ABiaya pemeliharaan sistem Rp 7.500/bulan.%0A%0ANama Warung: ${encodeURIComponent(warungName)}%0AUsername: ${encodeURIComponent(username)}`
+            : `Halo Admin YzPOS, saya ingin upgrade akun ke Premium Unlimited.%0A%0ABiaya pemeliharaan sistem Rp 7.500/bulan.%0A%0ANama Warung: ${encodeURIComponent(warungName)}%0AUsername: ${encodeURIComponent(username)}`;
         const waUrl = `https://wa.me/${PREMIUM_WA_NUMBER}?text=${pesan}`;
         const opened = window.open(waUrl, '_blank');
         if (!opened)
@@ -1502,7 +2244,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         const status = document.getElementById('set-plan-status');
         const btn = document.getElementById('btn-toggle-plan');
         if (status && btn) {
-            // Tampilan status paket yang dinamis mengevaluasi database Superadmin / Premium (Revisi Baru)
             if (currentWarung && currentWarung.role === 'superadmin') {
                 status.innerHTML = `<span class="text-red-600 font-bold"><i class="fas fa-user-shield text-red-500 mr-1"></i> Superadmin (Unlimited)</span>`;
                 btn.classList.add('pos-hidden');
@@ -1527,7 +2268,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         closePremiumModal();
         openWhatsAppUpgrade('limit');
     }
-    // Penghitungan Peringkat Produk Terpopuler Kasir
     function loadPopularity() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -1550,7 +2290,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             catch (e) { }
         });
     }
-    // Kalkulasi Kategori Terlaris Berdasarkan Sering Dibeli (Revisi Ke-7)
     function calculateCategoryPopularity() {
         categoryPopularity = { 'Makanan': 0, 'Minuman': 0, 'Snack': 0 };
         rawCatalog.forEach(p => {
@@ -1559,7 +2298,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             categoryPopularity[cat] = (categoryPopularity[cat] || 0) + soldQty;
         });
     }
-    // Render Ulang Bilah Kategori Kasir Berdasarkan Data Penjualan (Revisi Ke-7)
     function renderCategoryBar() {
         calculateCategoryPopularity();
         const defaultCats = ['Makanan', 'Minuman', 'Snack'];
@@ -1584,13 +2322,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             bar.innerHTML += `<button onclick='filterCategory(${jsArg(cat)})' class="cat-btn px-4 py-1.5 ${isActive} text-xs rounded-full font-medium flex-shrink-0 whitespace-nowrap transition">${escapeHtml(cat)}</button>`;
         });
     }
-    // Fungsi Peringatan Stok Menipis
     function checkLowStock() {
         const lowStockItems = rawCatalog.filter(p => p.stock >= 0 && p.stock <= 5);
         const banner = document.getElementById('stock-warning-banner');
         if (banner) {
             if (lowStockItems.length > 0) {
-                banner.innerHTML = `<span class="truncate"><i class="fas fa-exclamation-triangle text-amber-500 mr-1.5"></i> Peringatan: Terdapat <strong>${lowStockItems.length} produk</strong> dengan persediaan kritis (≤ 5 item).</span> 
+                banner.innerHTML = `<span class="truncate"><i class="fas fa-exclamation-triangle text-amber-500 mr-1.5"></i> Peringatan: Terdapat <strong>${lowStockItems.length} produk</strong> dengan persediaan kritis (≤ 5 item).</span>
                 <button onclick="switchTab('stok')" class="underline hover:text-amber-900 ml-2 shrink-0">Kelola Stok</button>`;
                 banner.classList.remove('pos-hidden');
             }
@@ -1697,7 +2434,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             </div>`;
         });
     }
-    // Fungsi Render Tabel Halaman Stok Baru
     function renderStockTable() {
         const searchEl = document.getElementById('stok-search');
         const query = String(searchEl ? searchEl.value : '').toLowerCase();
@@ -1752,7 +2488,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     }
     function filterCategory(cat) {
         currentCategory = cat;
-        renderCategoryBar(); // Gambar ulang kategori
+        renderCategoryBar();
         renderProducts(document.getElementById('search-input').value);
     }
     function filterProducts() { renderProducts(document.getElementById('search-input').value); }
@@ -1839,7 +2575,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             }
         }
     }
-    // Penanganan Terisolasi Scanner Desktop vs Scanner Floating Mobile
     function toggleScanner(target = 'cart') {
         scannerTarget = target;
         if (window.innerWidth < 768 || target === 'modal') {
@@ -1862,7 +2597,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         closeAddProductModal();
         toggleScanner('modal');
     }
-    // Fungsi Kamera Floating Mobile
     function startFloatingScanner() {
         if (html5QrScanner)
             return;
@@ -1937,7 +2671,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             });
         }
     }
-    // Fungsi Kamera Khusus Memenuhi Tab Keranjang Belanja (Revisi Ke-2)
     function toggleCartScanner(show) {
         const container = document.getElementById('cart-scanner-container');
         if (!container)
@@ -1962,7 +2695,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             const localProduct = rawCatalog.find(p => String(p.barcode) === String(decodedText));
             if (localProduct) {
                 addToCart(decodedText);
-                // Scanner tetap terbuka agar kasir bisa memindai item berikutnya
             }
             else {
                 toggleCartScanner(false);
@@ -2214,7 +2946,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                         </tr>
                     `;
                     });
-                    // Menambahkan cetak logo & biodata jika tersetting
                     const printLogo = document.getElementById('print-logo');
                     if (currentWarung.logo) {
                         printLogo.src = currentWarung.logo;
@@ -2285,7 +3016,6 @@ Kembalian: ${formatRupiah(finalKembalian)}`);
             }
         });
     }
-    // Fungsi Render Grafik Tren Penjualan Harian
     function renderSalesChart(filteredTrx) {
         const canvas = document.getElementById('sales-chart');
         if (!canvas)
@@ -2329,11 +3059,10 @@ Kembalian: ${formatRupiah(finalKembalian)}`);
             }
         });
     }
-    // Fungsi Export CSV Laporan Penjualan
     function exportToCSV() {
         if (historyData.length === 0)
             return showMsg('Info', 'Tidak ada data transaksi untuk diekspor.');
-        let csvContent = "\uFEFF"; // Enkoding BOM UTF-8 agar Excel langsung deteksi format desimal Indonesia
+        let csvContent = "\uFEFF";
         csvContent += "ID Transaksi,Waktu Transaksi,Total Bayar,Uang Diterima,Kembalian\n";
         historyData.forEach(trx => {
             const dateStr = new Date(trx.date).toLocaleString('id-ID');
@@ -2442,7 +3171,6 @@ Kembalian: ${formatRupiah(finalKembalian)}`);
             }
         });
     }
-    // Fungsi Mencetak Struk dari Rincian Riwayat Transaksi (Revisi Ke-1)
     function printActiveDetail() {
         if (!activeDetailTrx)
             return;
@@ -2482,9 +3210,7 @@ Kembalian: ${formatRupiah(finalKembalian)}`);
         document.getElementById('transaction-detail-modal').classList.add('pos-hidden');
         activeDetailTrx = null;
     }
-    // ==========================================
-    // SEKSI MODUL JAVASCRIPT PANEL ADMIN (REVISI BARU - UNTUK SUPERADMIN)
-    // ==========================================
+    let adminWarungCache = [];
     function loadAdminWarungList() {
         return __awaiter(this, void 0, void 0, function* () {
             if (!assertSuperAdminAction())
@@ -2500,6 +3226,7 @@ Kembalian: ${formatRupiah(finalKembalian)}`);
                     .order('id_warung', { ascending: true });
                 if (error)
                     throw error;
+                adminWarungCache = warungs || [];
                 tbody.innerHTML = '';
                 if (!warungs || warungs.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-gray-400">Tidak ada cabang terdaftar.</td></tr>';
@@ -2524,6 +3251,7 @@ Kembalian: ${formatRupiah(finalKembalian)}`);
                     <td class="p-3 text-center">${statusBadge}</td>
                     <td class="p-3 text-center">
                         <div class="flex justify-center gap-1.5">
+                            <button onclick='showAdminWarungAccountModal(${jsArg(w.id_warung)})' class="bg-blue-100 text-blue-700 hover:bg-blue-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition whitespace-nowrap"><i class="fas fa-user-gear text-[10px] mr-0.5"></i> Edit Akun</button>
                             <button onclick='adminTogglePremium(${jsArg(w.id_warung)}, ${isPremium})' class="${planBtnColor} px-3 py-1 rounded-lg text-xs font-bold transition whitespace-nowrap"><i class="fas fa-crown text-[10px] mr-0.5"></i> ${planBtnText}</button>
                             <button onclick='adminToggleSuspend(${jsArg(w.id_warung)}, ${jsArg(w.status)})' class="bg-gray-100 text-gray-700 hover:bg-gray-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition whitespace-nowrap"><i class="fas fa-power-off text-[10px] mr-0.5"></i> Suspend/Aktif</button>
                         </div>
@@ -2592,6 +3320,109 @@ Kembalian: ${formatRupiah(finalKembalian)}`);
             }
         });
     }
+
+    function switchAdminTab(tabName) {
+        if (!isSuperAdmin())
+            return;
+        const usersPanel = document.getElementById('admin-panel-users');
+        const productsPanel = document.getElementById('admin-panel-products');
+        const usersBtn = document.getElementById('admin-tab-users');
+        const productsBtn = document.getElementById('admin-tab-products');
+        const userActive = tabName !== 'products';
+        if (usersPanel) {
+            usersPanel.classList[userActive ? 'remove' : 'add']('pos-hidden');
+        }
+        if (productsPanel) {
+            productsPanel.classList[userActive ? 'add' : 'remove']('pos-hidden');
+        }
+        if (usersBtn) {
+            usersBtn.className = userActive
+                ? 'flex-1 bg-primary text-white font-black py-3 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2'
+                : 'flex-1 bg-gray-50 hover:bg-gray-100 text-gray-700 font-black py-3 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2';
+        }
+        if (productsBtn) {
+            productsBtn.className = userActive
+                ? 'flex-1 bg-gray-50 hover:bg-gray-100 text-gray-700 font-black py-3 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2'
+                : 'flex-1 bg-primary text-white font-black py-3 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2';
+        }
+        if (!userActive && adminProdukPusatCache.length === 0)
+            loadAdminProdukPusatList();
+    }
+    function showAdminWarungAccountModal(idWarung) {
+        if (!assertSuperAdminAction())
+            return;
+        const akun = adminWarungCache.find(w => String(w.id_warung) === String(idWarung));
+        if (!akun)
+            return showMsg('Info', 'Data akun warung tidak ditemukan. Silakan refresh data admin terlebih dahulu.');
+        document.getElementById('admin-account-id').value = akun.id_warung || '';
+        document.getElementById('admin-account-name').value = akun.nama_warung || '';
+        document.getElementById('admin-account-username').value = akun.username || '';
+        document.getElementById('admin-account-password').value = '';
+        document.getElementById('admin-warung-account-modal').classList.remove('pos-hidden');
+    }
+    function closeAdminWarungAccountModal() {
+        const modal = document.getElementById('admin-warung-account-modal');
+        if (modal)
+            modal.classList.add('pos-hidden');
+    }
+    function saveAdminWarungAccount() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!assertSuperAdminAction())
+                return;
+            const idWarung = document.getElementById('admin-account-id').value.trim();
+            const namaWarung = document.getElementById('admin-account-name').value.trim();
+            const username = document.getElementById('admin-account-username').value.trim();
+            const password = document.getElementById('admin-account-password').value;
+            if (!idWarung)
+                return showMsg('Peringatan', 'ID warung tidak ditemukan.');
+            if (!namaWarung)
+                return showMsg('Peringatan', 'Nama warung wajib diisi.');
+            if (!username)
+                return showMsg('Peringatan', 'Username wajib diisi.');
+            if (!/^[a-zA-Z0-9._-]{3,32}$/.test(username))
+                return showMsg('Peringatan', 'Username hanya boleh berisi huruf, angka, titik, underscore, atau minus dengan panjang 3-32 karakter.');
+            if (password && password.length < 6)
+                return showMsg('Peringatan', 'Password baru minimal 6 karakter.');
+            closeAdminWarungAccountModal();
+            showLoading('Menyimpan akun warung...');
+            try {
+                const { data: existing, error: duplicateErr } = yield supabaseClient
+                    .from('warung')
+                    .select('id_warung')
+                    .eq('username', username)
+                    .neq('id_warung', idWarung)
+                    .maybeSingle();
+                if (duplicateErr)
+                    throw duplicateErr;
+                if (existing)
+                    throw new Error('Username sudah digunakan oleh akun warung lain.');
+                const updateData = { username: username, nama_warung: namaWarung, updated_at: new Date() };
+                if (password)
+                    updateData.password_hash = yield hashPassword(password);
+                const { error } = yield supabaseClient
+                    .from('warung')
+                    .update(updateData)
+                    .eq('id_warung', idWarung);
+                if (error)
+                    throw error;
+                if (currentWarung && currentWarung.id === idWarung) {
+                    currentWarung.user = username;
+                    currentWarung.name = namaWarung;
+                    localStorage.setItem('pos_session', JSON.stringify(currentWarung));
+                    showAppUI();
+                }
+                showMsg('Sukses', 'Username dan kredensial akun warung berhasil diperbarui.');
+                yield loadAdminWarungList();
+            }
+            catch (err) {
+                showMsg('Gagal', err.message || 'Gagal memperbarui akun warung.');
+            }
+            finally {
+                hideLoading();
+            }
+        });
+    }
+
     let adminProdukPusatCache = [];
     function loadAdminData() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -2708,7 +3539,6 @@ Kembalian: ${formatRupiah(finalKembalian)}`);
             }
         });
     }
-    // Fungsi Pencadangan (Backup) Database ke File JSON Terpadu (Revisi Baru)
     function triggerDatabaseBackup() {
         return __awaiter(this, void 0, void 0, function* () {
             if (!assertSuperAdminAction())
@@ -2754,7 +3584,6 @@ Kembalian: ${formatRupiah(finalKembalian)}`);
             }
         });
     }
-    // --- INTEGRASI FITUR SHORTCUT KEYBOARD KASIR ---
     window.addEventListener('keydown', (e) => {
         if (['F1', 'F2', 'F3', 'F4', 'F8', 'F9'].includes(e.key)) {
             e.preventDefault();
@@ -2792,7 +3621,7 @@ Kembalian: ${formatRupiah(finalKembalian)}`);
             closeTransactionDetailModal();
             closeFloatingScanner();
             stopInlineScanner();
-            toggleCartScanner(false); // FIXED: ESC menutup scanner keranjang (Revisi Ke-3)
+            toggleCartScanner(false);
         }
         const paymentModal = document.getElementById('payment-modal');
         if (paymentModal && !paymentModal.classList.contains('pos-hidden')) {
@@ -2802,8 +3631,6 @@ Kembalian: ${formatRupiah(finalKembalian)}`);
             }
         }
     });
-    // Public API untuk handler inline HTML dan event dinamis.
-    // Fungsi tetap didefinisikan di dalam IIFE agar state aplikasi tidak bocor ke global.
     Object.assign(window, {
         showMsg: showMsg,
         closeMsg: closeMsg,
@@ -2886,6 +3713,10 @@ Kembalian: ${formatRupiah(finalKembalian)}`);
         loadAdminWarungList: loadAdminWarungList,
         adminTogglePremium: adminTogglePremium,
         adminToggleSuspend: adminToggleSuspend,
+        switchAdminTab: switchAdminTab,
+        showAdminWarungAccountModal: showAdminWarungAccountModal,
+        closeAdminWarungAccountModal: closeAdminWarungAccountModal,
+        saveAdminWarungAccount: saveAdminWarungAccount,
         loadAdminData: loadAdminData,
         loadAdminProdukPusatList: loadAdminProdukPusatList,
         renderAdminProdukPusatTable: renderAdminProdukPusatTable,
@@ -2895,7 +3726,6 @@ Kembalian: ${formatRupiah(finalKembalian)}`);
         triggerDatabaseBackup: triggerDatabaseBackup
     });
 }());
-}());
-</script>
+}());</script>
 </body>
 </html>
