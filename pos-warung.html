@@ -515,6 +515,15 @@
                     </div>
                 </div>
             </div>
+
+            <!-- PANEL KANAN KONTEKSTUAL DESKTOP -->
+            <div id="right-context-panel" class="hidden flex-col h-full w-full bg-gray-50 overflow-y-auto">
+                <div class="p-4 bg-white border-b border-gray-200 shadow-sm shrink-0">
+                    <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2" id="right-context-title"><i class="fas fa-layer-group text-primary"></i> Ringkasan</h2>
+                    <p class="text-xs text-gray-400 font-semibold mt-1" id="right-context-subtitle">Informasi cepat sesuai halaman aktif</p>
+                </div>
+                <div id="right-context-body" class="flex-1 p-4 space-y-4"></div>
+            </div>
             
             <!-- SCANNER OVERLAY YANG MEMENUHI TAB KERANJANG -->
             <div id="cart-scanner-container" class="absolute inset-0 bg-gray-900 hidden flex-col z-50 p-4">
@@ -811,6 +820,7 @@
     let categoryPopularity = {}; // Mengurutkan kategori terlaris
     let cart = [];
     let currentCategory = 'Semua';
+    let activeMainTab = 'katalog';
     let grandTotal = 0;
     let html5QrScanner = null; // Scanner Mengambang/Floating (Untuk modal input produk)
     let html5InlineScanner = null; // Scanner Desktop/Inline
@@ -1203,6 +1213,8 @@
             tabName = 'katalog';
         }
 
+        activeMainTab = tabName;
+
         document.querySelectorAll('nav > button').forEach(b => b.classList.remove('text-primary', 'font-bold'));
         const mobBtn = document.getElementById('nav-' + tabName);
         if(mobBtn) mobBtn.classList.add('text-primary', 'font-bold');
@@ -1228,16 +1240,37 @@
         const panelKeranjang = document.getElementById('panel-keranjang');
         const tabKeranjang = document.getElementById('tab-keranjang');
         const closeMobPanel = document.getElementById('close-mob-panel');
+        const rightContextPanel = document.getElementById('right-context-panel');
 
         if (window.innerWidth >= 768) {
-            if (panelKeranjang) panelKeranjang.classList.add('hidden');
-            if (tabKeranjang) tabKeranjang.classList.remove('hidden', 'md:hidden');
+            if (tabKeranjang) {
+                tabKeranjang.classList.remove('hidden', 'fixed', 'inset-0', 'z-50', 'md:hidden');
+                tabKeranjang.classList.add('flex');
+            }
+            if (closeMobPanel) closeMobPanel.classList.add('hidden');
+
             if (tabName === 'katalog') {
                 if (panelKeranjang) panelKeranjang.classList.remove('hidden');
+                if (rightContextPanel) {
+                    rightContextPanel.classList.add('hidden');
+                    rightContextPanel.classList.remove('flex');
+                }
             } else {
-                if (tabKeranjang) tabKeranjang.classList.add('hidden');
+                if (panelKeranjang) panelKeranjang.classList.add('hidden');
+                if (rightContextPanel) {
+                    rightContextPanel.classList.remove('hidden');
+                    rightContextPanel.classList.add('flex');
+                    renderRightContextPanel(tabName);
+                }
+                const scannerOverlay = document.getElementById('cart-scanner-container');
+                if (scannerOverlay && !scannerOverlay.classList.contains('hidden')) toggleCartScanner(false);
             }
         } else {
+            if (rightContextPanel) {
+                rightContextPanel.classList.add('hidden');
+                rightContextPanel.classList.remove('flex');
+            }
+
             if (tabName === 'keranjang') {
                 if (tabKeranjang) {
                     tabKeranjang.classList.remove('hidden');
@@ -1256,6 +1289,172 @@
         if (tabName === 'riwayat' && historyData.length === 0) loadHistory();
         if (tabName === 'stok') renderStockTable();
         if (tabName === 'admin') loadAdminData();
+        if (window.innerWidth >= 768 && tabName !== 'katalog') renderRightContextPanel(tabName);
+    }
+
+    function updateRightContextIfVisible() {
+        const rightContextPanel = document.getElementById('right-context-panel');
+        if (rightContextPanel && !rightContextPanel.classList.contains('hidden') && window.innerWidth >= 768) {
+            renderRightContextPanel(activeMainTab || 'katalog');
+        }
+    }
+
+    function contextMetricCard(label, value, icon, tone = 'text-primary') {
+        return `
+            <div class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
+                <div class="flex items-center justify-between gap-3">
+                    <div>
+                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">${escapeHtml(label)}</p>
+                        <p class="text-2xl font-black text-gray-900 mt-1">${escapeHtml(value)}</p>
+                    </div>
+                    <div class="w-11 h-11 rounded-xl bg-gray-50 flex items-center justify-center ${tone}"><i class="${escapeHtml(icon)} text-lg"></i></div>
+                </div>
+            </div>`;
+    }
+
+    function contextMiniList(title, items, emptyText = 'Belum ada data.', limit = 5) {
+        const visibleItems = (items || []).slice(0, limit);
+        return `
+            <div class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
+                <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-3">${escapeHtml(title)}</p>
+                ${visibleItems.length === 0 ? `<p class="text-xs text-gray-400 font-semibold py-3">${escapeHtml(emptyText)}</p>` : `
+                    <div class="space-y-2">
+                        ${visibleItems.map(item => `
+                            <div class="flex justify-between items-center gap-3 text-xs bg-gray-50 rounded-xl px-3 py-2">
+                                <span class="font-bold text-gray-700 truncate">${escapeHtml(item.label)}</span>
+                                <span class="font-black text-gray-900 whitespace-nowrap">${escapeHtml(item.value)}</span>
+                            </div>`).join('')}
+                    </div>`}
+            </div>`;
+    }
+
+    function renderRightContextPanel(tabName) {
+        const title = document.getElementById('right-context-title');
+        const subtitle = document.getElementById('right-context-subtitle');
+        const body = document.getElementById('right-context-body');
+        if (!title || !subtitle || !body) return;
+
+        if (tabName === 'stok') return renderStockSummaryPanel(title, subtitle, body);
+        if (tabName === 'riwayat') return renderSalesSummaryPanel(title, subtitle, body);
+        if (tabName === 'setelan') return renderSettingsInfoPanel(title, subtitle, body);
+        if (tabName === 'admin') return renderAdminSummaryPanel(title, subtitle, body);
+
+        title.innerHTML = '<i class="fas fa-layer-group text-primary"></i> Ringkasan';
+        subtitle.innerText = 'Informasi cepat sesuai halaman aktif';
+        body.innerHTML = `<div class="bg-white border border-dashed border-gray-200 rounded-2xl p-6 text-center text-sm font-bold text-gray-400">Tidak ada ringkasan untuk halaman ini.</div>`;
+    }
+
+    function renderStockSummaryPanel(title, subtitle, body) {
+        const totalProduk = rawCatalog.length;
+        const totalStok = rawCatalog.reduce((sum, p) => sum + (Number(p.stock) || 0), 0);
+        const stokKosong = rawCatalog.filter(p => (Number(p.stock) || 0) <= 0);
+        const stokMenipis = rawCatalog.filter(p => (Number(p.stock) || 0) > 0 && (Number(p.stock) || 0) <= 5).sort((a,b) => (Number(a.stock)||0) - (Number(b.stock)||0));
+        const produkTerlaris = [...rawCatalog]
+            .sort((a, b) => (popularityMap[b.barcode] || 0) - (popularityMap[a.barcode] || 0))
+            .filter(p => (popularityMap[p.barcode] || 0) > 0)
+            .map(p => ({ label: p.name || p.barcode, value: `${popularityMap[p.barcode] || 0} terjual` }));
+
+        title.innerHTML = '<i class="fas fa-warehouse text-primary"></i> Monitoring Stok';
+        subtitle.innerText = 'Ringkasan cepat kondisi produk cabang';
+        body.innerHTML = `
+            <div class="grid grid-cols-2 gap-3">
+                ${contextMetricCard('Produk', String(totalProduk), 'fas fa-boxes-stacked')}
+                ${contextMetricCard('Total Stok', String(totalStok), 'fas fa-cubes', 'text-green-600')}
+                ${contextMetricCard('Menipis', String(stokMenipis.length), 'fas fa-triangle-exclamation', 'text-amber-600')}
+                ${contextMetricCard('Kosong', String(stokKosong.length), 'fas fa-circle-xmark', 'text-red-600')}
+            </div>
+            ${contextMiniList('Stok paling perlu dicek', stokKosong.concat(stokMenipis).map(p => ({ label: p.name || p.barcode, value: `${Number(p.stock) || 0} stok` })), 'Tidak ada stok kosong atau menipis.')}
+            ${contextMiniList('Produk terlaris', produkTerlaris, 'Belum ada data penjualan produk.')}
+            <button onclick="showEditProductModal()" class="w-full bg-primary hover:opacity-90 text-white font-bold py-3 px-4 rounded-xl shadow-md transition"><i class="fas fa-plus mr-1"></i> Tambah Produk</button>`;
+    }
+
+    function localDateKey(dateValue) {
+        const d = new Date(dateValue);
+        if (Number.isNaN(d.getTime())) return '';
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+
+    function renderSalesSummaryPanel(title, subtitle, body) {
+        const now = new Date();
+        const todayKey = localDateKey(now);
+        const selectedMonth = document.getElementById('history-month')?.value || `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+        const trxHariIni = historyData.filter(trx => localDateKey(trx.date) === todayKey);
+        const trxBulanIni = historyData.filter(trx => {
+            const d = new Date(trx.date);
+            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` === selectedMonth;
+        });
+        const totalHariIni = trxHariIni.reduce((sum, trx) => sum + (Number(trx.total) || 0), 0);
+        const totalBulanIni = trxBulanIni.reduce((sum, trx) => sum + (Number(trx.total) || 0), 0);
+        const rataHariIni = trxHariIni.length ? Math.round(totalHariIni / trxHariIni.length) : 0;
+        const latestTrx = [...historyData].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5).map(trx => ({ label: trx.id || '-', value: formatRupiah(Number(trx.total) || 0) }));
+
+        title.innerHTML = '<i class="fas fa-chart-line text-primary"></i> Ringkasan Penjualan';
+        subtitle.innerText = 'Pantauan cepat transaksi dan omzet';
+        body.innerHTML = `
+            <div class="space-y-3">
+                ${contextMetricCard('Hari Ini', formatRupiah(totalHariIni), 'fas fa-sack-dollar', 'text-green-600')}
+                ${contextMetricCard('Transaksi Hari Ini', String(trxHariIni.length), 'fas fa-receipt')}
+                ${contextMetricCard('Rata-rata Nota', formatRupiah(rataHariIni), 'fas fa-calculator', 'text-blue-600')}
+                ${contextMetricCard('Bulan Terpilih', formatRupiah(totalBulanIni), 'fas fa-calendar-days', 'text-purple-600')}
+            </div>
+            ${contextMiniList('Transaksi terbaru', latestTrx, 'Belum ada transaksi.')}
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="loadHistory()" class="bg-primary text-white font-bold py-3 px-4 rounded-xl text-xs shadow-md"><i class="fas fa-sync mr-1"></i> Refresh</button>
+                <button onclick="exportToCSV()" class="bg-green-600 text-white font-bold py-3 px-4 rounded-xl text-xs shadow-md"><i class="fas fa-file-excel mr-1"></i> Export</button>
+            </div>`;
+    }
+
+    function renderSettingsInfoPanel(title, subtitle, body) {
+        const produkCount = rawCatalog.length;
+        const isPremium = currentWarung?.status === 'Premium' || currentWarung?.is_premium === true;
+        const batasProduk = isPremium ? 'Unlimited' : '10';
+        const sisaProduk = isPremium ? 'Unlimited' : Math.max(0, 10 - produkCount);
+        title.innerHTML = '<i class="fas fa-sliders text-primary"></i> Status Aplikasi';
+        subtitle.innerText = 'Informasi akun, paket, dan kelengkapan struk';
+        body.innerHTML = `
+            <div class="space-y-3">
+                ${contextMetricCard('Paket', isPremium ? 'Premium' : 'Free', 'fas fa-crown', isPremium ? 'text-amber-600' : 'text-gray-600')}
+                ${contextMetricCard('Produk Aktif', `${produkCount}/${batasProduk}`, 'fas fa-box')}
+                ${contextMetricCard('Sisa Slot', String(sisaProduk), 'fas fa-layer-group', 'text-blue-600')}
+            </div>
+            <div class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm space-y-3">
+                <p class="text-xs font-black text-gray-500 uppercase tracking-widest">Checklist Struk</p>
+                <div class="flex justify-between text-xs font-bold"><span>Nama Warung</span><span class="${currentWarung?.name ? 'text-green-600' : 'text-red-600'}">${currentWarung?.name ? 'Terisi' : 'Kosong'}</span></div>
+                <div class="flex justify-between text-xs font-bold"><span>Logo Struk</span><span class="${currentWarung?.logo ? 'text-green-600' : 'text-amber-600'}">${currentWarung?.logo ? 'Terisi' : 'Opsional'}</span></div>
+                <div class="flex justify-between text-xs font-bold"><span>Biodata/Alamat</span><span class="${currentWarung?.biodata ? 'text-green-600' : 'text-amber-600'}">${currentWarung?.biodata ? 'Terisi' : 'Opsional'}</span></div>
+            </div>
+            <button onclick="openWhatsAppUpgrade('settings')" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-xl shadow-md transition"><i class="fab fa-whatsapp mr-1"></i> Upgrade via WhatsApp</button>`;
+    }
+
+    function renderAdminSummaryPanel(title, subtitle, body) {
+        if (!isSuperAdmin()) {
+            title.innerHTML = '<i class="fas fa-lock text-red-600"></i> Admin Terkunci';
+            subtitle.innerText = 'Panel ini hanya untuk superadmin';
+            body.innerHTML = '<div class="bg-white border border-red-100 rounded-2xl p-5 text-sm font-bold text-red-600">Akses ditolak.</div>';
+            return;
+        }
+        const rows = Array.from(document.querySelectorAll('#admin-warung-table-body tr'));
+        const cabangRows = rows.filter(row => !row.querySelector('td[colspan]'));
+        const totalCabang = cabangRows.length;
+        const totalProdukPusat = adminProdukPusatCache.length;
+        const premiumCount = cabangRows.filter(row => row.innerText.toLowerCase().includes('premium')).length;
+        const nonaktifCount = cabangRows.filter(row => row.innerText.toLowerCase().includes('nonaktif')).length;
+        const recentProduk = [...adminProdukPusatCache].slice(0, 5).map(p => ({ label: p.nama_produk || p.barcode, value: p.kategori || 'Lainnya' }));
+
+        title.innerHTML = '<i class="fas fa-user-shield text-red-600"></i> Kontrol Admin';
+        subtitle.innerText = 'Ringkasan cepat lisensi dan produk pusat';
+        body.innerHTML = `
+            <div class="grid grid-cols-2 gap-3">
+                ${contextMetricCard('Cabang', String(totalCabang), 'fas fa-store')}
+                ${contextMetricCard('Premium', String(premiumCount), 'fas fa-crown', 'text-amber-600')}
+                ${contextMetricCard('Nonaktif', String(nonaktifCount), 'fas fa-ban', 'text-red-600')}
+                ${contextMetricCard('Produk Pusat', String(totalProdukPusat), 'fas fa-boxes-stacked', 'text-blue-600')}
+            </div>
+            ${contextMiniList('Produk pusat terbaru', recentProduk, 'Klik refresh admin untuk memuat produk pusat.')}
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="loadAdminData()" class="bg-primary text-white font-bold py-3 px-4 rounded-xl text-xs shadow-md"><i class="fas fa-sync mr-1"></i> Refresh</button>
+                <button onclick="triggerDatabaseBackup()" class="bg-green-600 text-white font-bold py-3 px-4 rounded-xl text-xs shadow-md"><i class="fas fa-database mr-1"></i> Backup</button>
+            </div>`;
     }
 
     // Paket Langganan: upgrade diarahkan ke admin WhatsApp resmi.
@@ -1493,6 +1692,7 @@
         
         if (filtered.length === 0) {
             tbody.innerHTML = `<tr><td colspan="5" class="text-center py-10 text-gray-400 font-bold bg-white">Produk masih kosong, tambahkan produkmu.</td></tr>`;
+            updateRightContextIfVisible();
             return;
         }
 
@@ -1529,6 +1729,7 @@
                 </td>
             </tr>`;
         });
+        updateRightContextIfVisible();
     }
 
     function filterCategory(cat) { 
@@ -2198,6 +2399,7 @@ Kembalian: ${formatRupiah(finalKembalian)}`
         if (mobSumTotal) mobSumTotal.innerText = formatRupiah(sumTotal);
         if (mobSumCount) mobSumCount.innerText = sumCount;
         renderSalesChart(filtered);
+        updateRightContextIfVisible();
     }
 
     async function showTransactionDetail(idTransaksi, dateStr, total, uang, kembalian) {
@@ -2326,6 +2528,8 @@ Kembalian: ${formatRupiah(finalKembalian)}`
             });
         } catch(err) {
             tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-red-500 font-bold">Gagal memuat data: ${escapeHtml(err.message || '')}</td></tr>`;
+        } finally {
+            updateRightContextIfVisible();
         }
     }
 
@@ -2417,6 +2621,7 @@ Kembalian: ${formatRupiah(finalKembalian)}`
 
         if (filtered.length === 0) {
             tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-400 font-bold bg-white">Produk pusat tidak ditemukan.</td></tr>';
+            updateRightContextIfVisible();
             return;
         }
 
@@ -2435,6 +2640,7 @@ Kembalian: ${formatRupiah(finalKembalian)}`
                 </td>
             </tr>`;
         });
+        updateRightContextIfVisible();
     }
 
     function showAdminProductEditModal(barcode) {
