@@ -414,12 +414,12 @@
             </div>
 
             <!-- TAB 5: PANEL ADMIN (Modul Manajemen Lisensi & Database - Khusus Superadmin) -->
-            <div id="tab-admin" class="absolute inset-0 flex-col w-full h-full bg-gray-50 overflow-hidden">
+            <div id="tab-admin" class="absolute inset-0 hidden flex-col w-full h-full bg-gray-50 overflow-hidden">
                 <div class="p-4 bg-white border-b border-gray-200 shadow-sm shrink-0 flex justify-between items-center">
                     <h2 class="text-lg font-bold text-gray-800 flex items-center"><i class="fas fa-user-shield text-red-600 mr-2"></i>Admin Console YzPOS</h2>
                     <div class="flex gap-2">
                         <button onclick="triggerDatabaseBackup()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-xl text-xs flex items-center gap-1.5 transition shadow"><i class="fas fa-database text-xs"></i> Backup Database</button>
-                        <button onclick="loadAdminWarungList()" class="bg-primary text-white font-bold text-xs py-2 px-4 rounded-xl shadow-sm transition"><i class="fas fa-sync mr-1"></i> Refresh</button>
+                        <button onclick="loadAdminData()" class="bg-primary text-white font-bold text-xs py-2 px-4 rounded-xl shadow-sm transition"><i class="fas fa-sync mr-1"></i> Refresh</button>
                     </div>
                 </div>
                 <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
@@ -440,6 +440,36 @@
                                 </thead>
                                 <tbody id="admin-warung-table-body" class="divide-y divide-gray-50">
                                     <tr><td colspan="6" class="text-center py-6 text-gray-400">Silakan klik Refresh untuk memuat daftar cabang.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Manajemen Produk Pusat -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-gray-100 pb-3 mb-4">
+                            <h3 class="text-sm font-black text-gray-800"><i class="fas fa-boxes-stacked mr-1.5 text-primary"></i> Daftar Produk Pusat</h3>
+                            <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+                                <div class="relative flex-1 md:w-72">
+                                    <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-xs"></i>
+                                    <input type="text" id="admin-product-search" placeholder="Cari barcode/nama/kategori..." onkeyup="renderAdminProdukPusatTable()" class="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-primary">
+                                </div>
+                                <button onclick="loadAdminProdukPusatList()" class="bg-primary text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-sm transition whitespace-nowrap"><i class="fas fa-sync mr-1"></i> Refresh Produk</button>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-4 leading-relaxed">Edit produk pusat akan memperbarui nama dan kategori pada tabel <strong>produk_induk</strong>. Perubahan otomatis terbaca oleh seluruh cabang yang memakai barcode tersebut.</p>
+                        <div class="overflow-x-auto w-full no-scrollbar">
+                            <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[650px]">
+                                <thead class="bg-gray-50 border-b border-gray-100 font-bold text-gray-500">
+                                    <tr>
+                                        <th class="p-3">Barcode</th>
+                                        <th class="p-3">Nama Produk Pusat</th>
+                                        <th class="p-3">Kategori</th>
+                                        <th class="p-3 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-product-table-body" class="divide-y divide-gray-50">
+                                    <tr><td colspan="4" class="text-center py-6 text-gray-400">Silakan klik Refresh Produk untuk memuat produk pusat.</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -607,6 +637,37 @@
     </div>
 </div>
 
+<!-- MODAL EDIT PRODUK PUSAT ADMIN -->
+<div id="admin-product-modal" class="fixed inset-0 bg-gray-900/70 hidden flex items-center justify-center z-[1550] p-4 backdrop-blur-sm">
+    <div class="bg-white p-6 w-full max-w-md rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
+        <div class="flex justify-between items-center pb-3 border-b border-gray-100 shrink-0">
+            <h3 class="text-lg font-black text-gray-900 flex items-center gap-2"><i class="fas fa-boxes-stacked text-primary"></i> Edit Produk Pusat</h3>
+            <button onclick="closeAdminProductModal()" class="text-gray-400 hover:text-gray-600 transition px-2 py-1"><i class="fas fa-times text-lg"></i></button>
+        </div>
+        <div class="py-4 space-y-4">
+            <div class="p-3 text-xs font-semibold bg-blue-50 text-blue-700 border-l-4 border-blue-500 rounded-r-lg leading-relaxed">
+                Barcode dikunci agar relasi stok, harga cabang, dan riwayat transaksi tidak rusak. Ubah nama/kategori untuk memperbaiki data produk pusat.
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Barcode Pusat</label>
+                <input type="text" id="admin-product-barcode" readonly class="w-full p-3 bg-gray-100 border border-gray-200 rounded-xl text-gray-600 font-mono font-bold outline-none">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nama Produk Pusat</label>
+                <input type="text" id="admin-product-name" class="w-full p-3 bg-white border border-gray-300 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none font-bold text-gray-800 transition" placeholder="Nama produk">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Kategori</label>
+                <input type="text" id="admin-product-category" list="category-options" class="w-full p-3 bg-white border border-gray-300 rounded-xl focus:border-primary outline-none font-medium text-gray-800" placeholder="Kategori produk">
+            </div>
+        </div>
+        <div class="flex gap-3 pt-3 border-t border-gray-100 shrink-0">
+            <button onclick="closeAdminProductModal()" class="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl transition">Batal</button>
+            <button onclick="saveAdminProdukPusat()" class="w-2/3 bg-primary hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition"><i class="fas fa-save mr-1"></i> Simpan Produk Pusat</button>
+        </div>
+    </div>
+</div>
+
 <!-- MODAL PEMBAYARAN -->
 <div id="payment-modal" class="fixed inset-0 bg-gray-900/70 hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white p-5 w-full max-w-md rounded-2xl shadow-2xl flex flex-col max-h-[95vh] overflow-y-auto font-sans">
@@ -753,6 +814,12 @@
     let activeDetailTrx = null; // Rincian aktif yang sedang dibuka
 
     const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+
+    function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>'"]/g, function(char) {
+            return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char];
+        });
+    }
 
     function showLoading(text = "Memproses...") {
         document.getElementById('loading-text').innerText = text;
@@ -1051,7 +1118,7 @@
 
         if (tabName === 'riwayat' && historyData.length === 0) loadHistory();
         if (tabName === 'stok') renderStockTable();
-        if (tabName === 'admin') loadAdminWarungList(); // Tarik otomatis data admin cabang (Revisi Baru)
+        if (tabName === 'admin') loadAdminData(); // Tarik otomatis data admin cabang dan produk pusat
     }
 
     // Paket Langganan: upgrade diarahkan ke admin WhatsApp resmi.
@@ -2137,6 +2204,122 @@
             await loadAdminWarungList();
         } catch(err) {
             showMsg('Gagal', err.message || 'Gagal mengubah status cabang.');
+        } finally {
+            hideLoading();
+        }
+    }
+
+    let adminProdukPusatCache = [];
+
+    async function loadAdminData() {
+        await Promise.allSettled([
+            loadAdminWarungList(),
+            loadAdminProdukPusatList()
+        ]);
+    }
+
+    async function loadAdminProdukPusatList() {
+        const tbody = document.getElementById('admin-product-table-body');
+        if (!tbody) return;
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center py-6 text-gray-400 font-bold">Memuat produk pusat...</td></tr>';
+
+        try {
+            const { data, error } = await supabaseClient
+                .from('produk_induk')
+                .select('*')
+                .order('nama_produk', { ascending: true });
+
+            if (error) throw error;
+            adminProdukPusatCache = data || [];
+            renderAdminProdukPusatTable();
+        } catch (err) {
+            tbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 text-red-500 font-bold">Gagal memuat produk pusat: ${escapeHtml(err.message)}</td></tr>`;
+        }
+    }
+
+    function renderAdminProdukPusatTable() {
+        const tbody = document.getElementById('admin-product-table-body');
+        if (!tbody) return;
+
+        const query = (document.getElementById('admin-product-search')?.value || '').toLowerCase().trim();
+        let filtered = [...adminProdukPusatCache];
+
+        if (query) {
+            filtered = filtered.filter(p =>
+                String(p.barcode || '').toLowerCase().includes(query) ||
+                String(p.nama_produk || '').toLowerCase().includes(query) ||
+                String(p.kategori || '').toLowerCase().includes(query)
+            );
+        }
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-400 font-bold bg-white">Produk pusat tidak ditemukan.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = '';
+        filtered.forEach(p => {
+            const barcode = String(p.barcode || '');
+            tbody.innerHTML += `
+            <tr class="hover:bg-gray-50 transition bg-white text-xs sm:text-sm">
+                <td class="p-3 font-mono font-bold text-gray-700">${escapeHtml(barcode)}</td>
+                <td class="p-3 font-bold text-gray-900">${escapeHtml(p.nama_produk || '-')}</td>
+                <td class="p-3 text-gray-600 font-semibold">${escapeHtml(p.kategori || 'Lainnya')}</td>
+                <td class="p-3 text-center">
+                    <button onclick='showAdminProductEditModal(${JSON.stringify(barcode)})' class="bg-primary/10 text-primary hover:bg-primary hover:text-white px-4 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap">
+                        <i class="fas fa-edit"></i> Edit Pusat
+                    </button>
+                </td>
+            </tr>`;
+        });
+    }
+
+    function showAdminProductEditModal(barcode) {
+        const produk = adminProdukPusatCache.find(p => String(p.barcode) === String(barcode));
+        if (!produk) return showMsg('Info', 'Data produk pusat tidak ditemukan. Silakan refresh produk terlebih dahulu.');
+
+        document.getElementById('admin-product-barcode').value = produk.barcode || '';
+        document.getElementById('admin-product-name').value = produk.nama_produk || '';
+        document.getElementById('admin-product-category').value = produk.kategori || 'Lainnya';
+        document.getElementById('admin-product-modal').classList.remove('hidden');
+    }
+
+    function closeAdminProductModal() {
+        const modal = document.getElementById('admin-product-modal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    async function saveAdminProdukPusat() {
+        const barcode = document.getElementById('admin-product-barcode').value.trim();
+        const namaProduk = document.getElementById('admin-product-name').value.trim();
+        const kategori = document.getElementById('admin-product-category').value.trim() || 'Lainnya';
+
+        if (!barcode) return showMsg('Peringatan', 'Barcode produk pusat tidak ditemukan.');
+        if (!namaProduk) return showMsg('Peringatan', 'Nama produk pusat wajib diisi.');
+
+        closeAdminProductModal();
+        showLoading('Menyimpan produk pusat...');
+        try {
+            const { error } = await supabaseClient
+                .from('produk_induk')
+                .update({
+                    nama_produk: namaProduk,
+                    kategori: kategori,
+                    updated_at: new Date()
+                })
+                .eq('barcode', barcode);
+
+            if (error) throw error;
+
+            showMsg('Sukses', `Produk pusat [${escapeHtml(barcode)}] berhasil diperbarui.`);
+            await loadAdminProdukPusatList();
+
+            // Refresh katalog lokal jika barcode ini sedang dipakai warung yang sedang login.
+            if (rawCatalog.some(p => String(p.barcode) === String(barcode))) {
+                await loadCatalog();
+            }
+        } catch (err) {
+            showMsg('Gagal', err.message || 'Gagal memperbarui produk pusat.');
         } finally {
             hideLoading();
         }
