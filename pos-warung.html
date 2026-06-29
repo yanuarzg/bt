@@ -9,271 +9,296 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
-            --ink: #101827;
-            --ink2: #1f2937;
+            --ink: #0f172a;
+            --ink2: #1e293b;
             --muted: #64748b;
             --line: #e2e8f0;
             --soft: #f8fafc;
-            --brand: #111827;
+            --brand: #0f172a;
             --brand2: #334155;
-            --green: #16a34a;
-            --blue: #2563eb;
+            --green: #10b981;
+            --blue: #3b82f6;
             --amber: #f59e0b;
             --red: #ef4444;
-            --radius: 26px;
-            --shadow: 0 22px 70px rgba(15, 23, 42, .12);
-            --shadow-sm: 0 10px 30px rgba(15, 23, 42, .08);
+            --radius: 24px;
+            --shadow: 0 20px 50px rgba(15, 23, 42, .08);
+            --shadow-sm: 0 8px 24px rgba(15, 23, 42, .04);
         }
         * { box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
             margin: 0;
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             background: #ffffff;
             color: var(--ink);
-            text-rendering: geometricPrecision;
+            text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
         }
-        a, button { transition: .3s ease; }
-        .wrap { width: min(1180px, calc(100% - 32px)); margin-inline: auto; }
+        a, button { transition: all .25s ease; }
+        .wrap { width: min(1200px, calc(100% - 32px)); margin-inline: auto; }
+        
         .hero-bg {
             background:
-                radial-gradient(circle at 12% 16%, rgba(37, 99, 235, .14), transparent 28rem),
-                radial-gradient(circle at 82% 12%, rgba(22, 163, 74, .14), transparent 26rem),
-                linear-gradient(180deg, #ffffff 0%, #f8fafc 58%, #eef2f7 100%);
+                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, .08), transparent 32rem),
+                radial-gradient(circle at 90% 10%, rgba(16, 185, 129, .08), transparent 28rem),
+                linear-gradient(180deg, #ffffff 0%, #f8fafc 60%, #f1f5f9 100%);
         }
+        
         .grid-bg {
             background-image:
-                linear-gradient(rgba(15,23,42,.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(15,23,42,.05) 1px, transparent 1px);
-            background-size: 28px 28px;
+                linear-gradient(rgba(15, 23, 42, .03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, .03) 1px, transparent 1px);
+            background-size: 32px 32px;
         }
+        
         .nav-glass {
-            background: rgba(255,255,255,.82);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border-bottom: 1px solid rgba(226,232,240,.9);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
         }
         
         /* Buttons & Badges */
         .btn-primary {
-            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-            min-height: 54px; padding: 0 24px; border-radius: 18px;
-            background: var(--brand); color: #fff; font-weight: 900;
-            box-shadow: 0 16px 34px rgba(17, 24, 39, .22);
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            min-height: 52px; padding: 0 24px; border-radius: 16px;
+            background: var(--brand); color: #fff; font-weight: 700;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, .15);
         }
-        .btn-primary:hover { transform: translateY(-3px); background: #020617; box-shadow: 0 20px 40px rgba(17, 24, 39, .3); }
+        .btn-primary:hover { transform: translateY(-2px); background: #1e293b; box-shadow: 0 14px 30px rgba(15, 23, 42, .2); }
+        
         .btn-secondary {
-            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-            min-height: 54px; padding: 0 24px; border-radius: 18px;
-            background: #fff; color: var(--ink); font-weight: 900;
-            border: 1px solid var(--line); box-shadow: 0 10px 22px rgba(15, 23, 42, .06);
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            min-height: 52px; padding: 0 24px; border-radius: 16px;
+            background: #fff; color: var(--ink); font-weight: 700;
+            border: 1px solid var(--line); box-shadow: 0 6px 18px rgba(15, 23, 42, .03);
         }
-        .btn-secondary:hover { transform: translateY(-3px); border-color: #cbd5e1; box-shadow: 0 14px 28px rgba(15, 23, 42, .1); }
+        .btn-secondary:hover { transform: translateY(-2px); border-color: #cbd5e1; box-shadow: 0 10px 24px rgba(15, 23, 42, .07); }
         
         .badge {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 8px 14px; border-radius: 999px;
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 12px; border-radius: 999px;
             background: #ffffff; border: 1px solid var(--line);
-            color: #475569; font-size: 13px; font-weight: 800;
-            box-shadow: 0 6px 18px rgba(15,23,42,.04);
-            white-space: nowrap; transition: 0.3s ease;
+            color: #475569; font-size: 13px; font-weight: 600;
+            box-shadow: 0 4px 12px rgba(15,23,42,.03);
         }
-        .badge:hover { transform: scale(1.05); }
-        
-        .mini-icon {
-            width: 20px; height: 20px; border-radius: 7px;
-            display: inline-flex; align-items: center; justify-content: center;
-            font-size: 10px; font-weight: 1000; line-height: 1;
-            color: #fff; background: #111827; flex: 0 0 auto;
-        }
-        .icon-box {
-            width: 54px; height: 54px; border-radius: 18px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 14px; font-weight: 1000; letter-spacing: -.03em;
-            color: #fff; background: var(--brand);
-            box-shadow: 0 14px 30px rgba(15,23,42,.12); flex: 0 0 auto;
-        }
-        
-        /* Gradients */
-        .icon-green { background: linear-gradient(135deg, #22c55e, #15803d); }
-        .icon-blue { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
-        .icon-amber { background: linear-gradient(135deg, #f59e0b, #b45309); }
-        .icon-red { background: linear-gradient(135deg, #ef4444, #b91c1c); }
-        .icon-purple { background: linear-gradient(135deg, #8b5cf6, #5b21b6); }
-        .icon-slate { background: linear-gradient(135deg, #1e293b, #0f172a); }
-        .text-gradient { background: linear-gradient(135deg, #2563eb, #16a34a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        /* Cards */
-        .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); transition: 0.3s; }
-        .card:hover { border-color: #cbd5e1; box-shadow: 0 16px 40px rgba(15, 23, 42, .1); }
-        .feature-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 32px; box-shadow: 0 12px 32px rgba(15, 23, 42, .05); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .feature-card:hover { transform: translateY(-8px); box-shadow: 0 24px 60px rgba(15, 23, 42, .12); border-color: #94a3b8; }
-        
-        .title-tight { letter-spacing: -.055em; }
-        .text-balance { text-wrap: balance; }
         
         /* Scanner UI & Animations */
-        .mock-shell { background: #0f172a; border-radius: 34px; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.12); overflow: hidden; }
-        .scanner-frame { position: relative; border-radius: 22px; overflow: hidden; background: linear-gradient(135deg, #020617, #1e293b); min-height: 180px; }
-        .scanner-frame::before { content: ""; position: absolute; inset: 22px; border: 3px solid rgba(34, 197, 94, .5); border-radius: 18px; filter: drop-shadow(0 0 12px rgba(34,197,94,.4)); }
+        .mock-shell { background: #0b0f19; border-radius: 30px; box-shadow: 0 25px 60px rgba(15,23,42,.25); border: 1px solid rgba(255,255,255,.08); overflow: hidden; }
+        .scanner-frame { position: relative; border-radius: 20px; overflow: hidden; background: linear-gradient(135deg, #020617, #0f172a); min-height: 180px; }
+        .scanner-frame::before { content: ""; position: absolute; inset: 16px; border: 2px solid rgba(16, 185, 129, 0.4); border-radius: 14px; }
         
-        /* Animated Scanner Line */
         @keyframes scan {
-            0%, 100% { top: 25%; opacity: 0; }
-            10%, 90% { opacity: 1; }
-            50% { top: 75%; }
+            0%, 100% { top: 20%; opacity: 0.3; }
+            50% { top: 80%; opacity: 1; }
         }
         .scanner-frame::after {
-            content: ""; position: absolute; left: 50%; width: 72%; height: 3px;
-            background: #4ade80; box-shadow: 0 0 20px 4px rgba(74, 222, 128, 0.6);
-            border-radius: 99px; transform: translateX(-50%);
-            animation: scan 3s infinite ease-in-out;
+            content: ""; position: absolute; left: 10%; width: 80%; height: 2px;
+            background: #10b981; box-shadow: 0 0 12px 3px rgba(16, 185, 129, 0.6);
+            border-radius: 99px;
+            animation: scan 2.5s infinite ease-in-out;
         }
 
-        .barcode-lines { display: flex; align-items: end; gap: 3px; height: 52px; padding: 0 10px; }
-        .barcode-lines span { display: block; width: 4px; background: #111827; border-radius: 2px; }
-        .barcode-lines span:nth-child(2n) { height: 40px; }
-        .barcode-lines span:nth-child(3n) { height: 52px; width: 7px; }
-        .barcode-lines span:nth-child(4n) { height: 32px; }
+        /* Scan Flash Animation trigger class */
+        .flash-active {
+            animation: flashEffect 0.4s ease-out;
+        }
+        @keyframes flashEffect {
+            0% { background-color: rgba(16, 185, 129, 0); }
+            30% { background-color: rgba(16, 185, 129, 0.2); }
+            100% { background-color: rgba(16, 185, 129, 0); }
+        }
+
+        .barcode-lines { display: flex; align-items: end; gap: 2px; height: 40px; }
+        .barcode-lines span { display: block; width: 3px; background: #1e293b; border-radius: 1px; }
+        .barcode-lines span:nth-child(even) { height: 28px; width: 1.5px; }
+        .barcode-lines span:nth-child(3n) { height: 40px; width: 4px; }
         
         /* Receipt */
-        .receipt { background: repeating-linear-gradient(180deg, #fff 0 24px, #f8fafc 24px 25px); border-radius: 22px; box-shadow: 0 18px 40px rgba(15, 23, 42, .12); position: relative; }
-        .receipt::after { content: ""; display: block; height: 12px; background: radial-gradient(circle at 6px 0, transparent 6px, #fff 7px) repeat-x; background-size: 16px 12px; margin: 20px -18px -18px; }
+        .receipt { background: repeating-linear-gradient(180deg, #ffffff 0 20px, #f8fafc 20px 21px); border-radius: 18px; box-shadow: 0 12px 30px rgba(15, 23, 42, .06); position: relative; }
+        .receipt::after { content: ""; display: block; height: 8px; background: radial-gradient(circle at 4px 0, transparent 4px, #fff 5px) repeat-x; background-size: 12px 8px; margin: 15px -16px -16px; }
         
-        /* Prices */
-        .price-card { border-radius: 30px; border: 1px solid var(--line); background: #fff; padding: 36px; box-shadow: 0 16px 40px rgba(15, 23, 42, .07); transition: 0.3s; }
-        .price-card:hover { transform: translateY(-5px); }
-        .price-featured { background: linear-gradient(150deg, #111827, #020617); color: #fff; border-color: rgba(255,255,255,.12); box-shadow: 0 30px 80px rgba(15, 23, 42, .22); }
-        .check { width: 24px; height: 24px; border-radius: 999px; background: #dcfce7; color: #15803d; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 1000; flex: 0 0 auto; }
-        .price-featured .check { background: rgba(34,197,94,.16); color: #4ade80; }
+        /* Cards & Accents */
+        .feature-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow-sm); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(15,23,42,.08); border-color: #cbd5e1; }
         
-        /* Reveal Animation Classes */
-        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        /* Custom Accordion FAQ styling */
+        details summary::-webkit-details-marker { display: none; }
+        details[open] summary svg { transform: rotate(180deg); }
+        
+        /* Reveal Animation */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
         .reveal-delay-1 { transition-delay: 0.1s; }
         .reveal-delay-2 { transition-delay: 0.2s; }
         .reveal-delay-3 { transition-delay: 0.3s; }
-
-        details { background: #fff; border: 1px solid var(--line); border-radius: 22px; padding: 20px 22px; box-shadow: 0 8px 24px rgba(15, 23, 42, .04); transition: 0.3s; }
-        details:hover { border-color: #94a3b8; }
-        summary { cursor: pointer; font-weight: 950; color: #111827; outline: none; }
-
-        @media (max-width: 768px) {
-            .hero-title { font-size: 40px !important; line-height: 1.05 !important; }
-            .wrap { width: min(100% - 24px, 1180px); }
-            .feature-card, .price-card { padding: 24px; }
-        }
     </style>
 </head>
-<body>
-    <a href="https://wa.me/6289507785333?text=Halo%20Admin%20YzPOS%2C%20saya%20ingin%20demo%20aplikasi%20kasir%20barcode%20untuk%20warung." target="_blank" rel="noopener" class="fixed right-5 bottom-5 z-50 btn-primary rounded-full px-5 min-h-[58px] shadow-[0_10px_25px_rgba(34,197,94,0.4)] hover:shadow-[0_15px_35px_rgba(34,197,94,0.6)]">
-        <span class="mini-icon icon-green">WA</span>
-        <span class="hidden sm:inline">Demo via WhatsApp</span>
+<body class="selection:bg-emerald-100 selection:text-emerald-900">
+
+    <!-- Floating WhatsApp Action -->
+    <a href="https://wa.me/6289507785333?text=Halo%20Admin%20YzPOS%2C%20saya%20ingin%20demo%20aplikasi%20kasir%20barcode%20untuk%20warung." target="_blank" rel="noopener" class="fixed right-6 bottom-6 z-50 inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full px-5 py-3.5 shadow-lg shadow-emerald-600/30 hover:shadow-emerald-600/40 hover:-translate-y-1 transition-all">
+        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.451 5.403.002 9.803-4.394 9.805-9.799.002-2.618-1.016-5.083-2.868-6.937C16.357 2.016 13.9 1.002 11.279 1c-5.39 0-9.778 4.388-9.78 9.784-.001 1.551.411 3.064 1.196 4.385l-.403 1.472 1.511-.396z"/>
+        </svg>
+        <span class="font-bold text-sm tracking-wide hidden sm:inline">Demo WhatsApp</span>
     </a>
 
+    <!-- Header Navigation -->
     <header class="sticky top-0 z-40 nav-glass">
         <div class="wrap h-20 flex items-center justify-between gap-4">
-            <a href="#top" class="flex items-center gap-3 font-black text-xl tracking-tight group">
-                <span class="icon-box icon-slate w-12 h-12 rounded-2xl group-hover:scale-105 transition-transform">YZ</span>
-                <span>YzPOS</span>
+            <a href="#top" class="flex items-center gap-2.5 font-extrabold text-xl tracking-tight group">
+                <div class="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white text-sm font-black transition-transform group-hover:scale-105">
+                    YZ
+                </div>
+                <span class="text-slate-900">YzPOS</span>
             </a>
-            <nav class="hidden lg:flex items-center gap-8 text-sm font-bold text-slate-500">
-                <a href="#barcode" class="hover:text-gray-900 transition-colors">Scan Barcode</a>
-                <a href="#database" class="hover:text-gray-900 transition-colors">Database Barang</a>
-                <a href="#fitur" class="hover:text-gray-900 transition-colors">Fitur</a>
-                <a href="#harga" class="hover:text-gray-900 transition-colors">Paket</a>
-                <a href="#faq" class="hover:text-gray-900 transition-colors">FAQ</a>
+            
+            <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-500">
+                <a href="#barcode" class="hover:text-slate-900 transition-colors">Scan Barcode</a>
+                <a href="#database" class="hover:text-slate-900 transition-colors">Database Barang</a>
+                <a href="#fitur" class="hover:text-slate-900 transition-colors">Fitur Utama</a>
+                <a href="#testimoni" class="hover:text-slate-900 transition-colors">Testimoni</a>
+                <a href="#harga" class="hover:text-slate-900 transition-colors">Paket Harga</a>
+                <a href="#faq" class="hover:text-slate-900 transition-colors">FAQ</a>
             </nav>
+
             <div class="flex items-center gap-3">
-                <a href="#harga" class="hidden sm:inline-flex btn-secondary min-h-0 py-2.5 px-5 text-sm">Lihat Paket</a>
-                <a href="https://wa.me/6289507785333?text=Halo%20Admin%20YzPOS%2C%20saya%20ingin%20tanya%20aplikasi%20kasir%20warung." target="_blank" rel="noopener" class="btn-primary min-h-0 py-2.5 px-5 text-sm"><span class="mini-icon icon-green">WA</span> Konsultasi</a>
+                <a href="#harga" class="hidden sm:inline-flex btn-secondary min-h-0 py-2.5 px-4 text-xs font-bold">Pilihan Paket</a>
+                <a href="https://wa.me/6289507785333?text=Halo%20Admin%20YzPOS%2C%20saya%20ingin%20konsultasi%20aplikasi%20kasir." target="_blank" rel="noopener" class="btn-primary min-h-0 py-2.5 px-4 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 shadow-emerald-600/10 hover:shadow-emerald-600/20">
+                    Konsultasi Gratis
+                </a>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+                </button>
             </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-slate-100 bg-white/95 backdrop-blur-md py-4 px-4 space-y-3 font-semibold text-slate-600 text-sm">
+            <a href="#barcode" class="block py-2 hover:text-slate-900 transition-colors">Scan Barcode</a>
+            <a href="#database" class="block py-2 hover:text-slate-900 transition-colors">Database Barang</a>
+            <a href="#fitur" class="block py-2 hover:text-slate-900 transition-colors">Fitur Utama</a>
+            <a href="#testimoni" class="block py-2 hover:text-slate-900 transition-colors">Testimoni</a>
+            <a href="#harga" class="block py-2 hover:text-slate-900 transition-colors">Paket Harga</a>
+            <a href="#faq" class="block py-2 hover:text-slate-900 transition-colors">FAQ</a>
         </div>
     </header>
 
     <main id="top">
-        <section class="hero-bg grid-bg py-20 lg:py-28 overflow-hidden">
-            <div class="wrap grid lg:grid-cols-[1.03fr_.97fr] gap-12 items-center">
+        <!-- Hero Section -->
+        <section class="hero-bg grid-bg py-16 lg:py-24 overflow-hidden">
+            <div class="wrap grid lg:grid-cols-[1.05fr_.95fr] gap-12 items-center">
                 <div class="reveal">
-                    <div class="flex flex-wrap gap-2 mb-7">
-                        <span class="badge"><span class="mini-icon icon-green">QR</span> Scan barcode cepat</span>
-                        <span class="badge"><span class="mini-icon icon-slate">58</span> Print struk 58mm</span>
-                        <span class="badge"><span class="mini-icon icon-blue">DB</span> Database barang umum</span>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="badge">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 
+                            Scan Barcode Cepat
+                        </span>
+                        <span class="badge">
+                            <span class="w-2 h-2 rounded-full bg-slate-900"></span> 
+                            Print Struk 58mm
+                        </span>
+                        <span class="badge">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span> 
+                            Database Barang Lengkap
+                        </span>
                     </div>
-                    <h1 class="hero-title text-5xl sm:text-6xl lg:text-7xl font-black leading-[.93] title-tight text-balance mb-7">
-                        Aplikasi kasir <span class="text-gradient">barcode pintar</span> untuk kelontong, Madura & UMKM.
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05] tracking-tight mb-6 text-slate-900">
+                        Aplikasi Kasir <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-blue-600">Barcode Pintar</span> untuk Kelontong & UMKM.
                     </h1>
-                    <p class="text-lg sm:text-xl text-slate-600 leading-relaxed font-semibold max-w-2xl mb-8">
-                        YzPOS membantu kasir melayani pembeli lebih cepat dengan scan barcode, database barang umum kolektif, print struk, kontrol stok, harga modal, laba, dan laporan cloud dalam satu sistem SaaS yang ringan.
+                    <p class="text-lg text-slate-600 leading-relaxed font-medium max-w-2xl mb-8">
+                        YzPOS membantu kasir melayani pelanggan lebih gesit dengan scan barcode kamera HP/PC, database kolektif ribuan barang siap pakai, kontrol stok, perhitungan modal otomatis, hingga laporan laba/rugi cloud terpusat.
                     </p>
-                    <div class="flex flex-col sm:flex-row gap-4 mb-10">
-                        <a href="https://wa.me/6289507785333?text=Halo%20Admin%20YzPOS%2C%20saya%20ingin%20demo%20YzPOS%20untuk%20warung%20kelontong%2FMadura." target="_blank" rel="noopener" class="btn-primary"><span class="mini-icon icon-green">WA</span> Minta Demo</a>
-                        <a href="#barcode" class="btn-secondary"><span class="mini-icon icon-blue">BC</span> Lihat Fitur Barcode</a>
+                    <div class="flex flex-col sm:flex-row gap-3.5 mb-10">
+                        <a href="https://wa.me/6289507785333?text=Halo%20Admin%20YzPOS%2C%20saya%20ingin%20demo%20YzPOS%20untuk%20warung%20kelontong." target="_blank" rel="noopener" class="btn-primary">
+                            <span>Minta Demo Sekarang</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                        <a href="#barcode" class="btn-secondary">Lihat Fitur Barcode</a>
                     </div>
-                    <div class="grid grid-cols-3 gap-4 max-w-2xl reveal reveal-delay-2">
-                        <div class="card p-4 text-center hover:-translate-y-1"><p class="text-3xl font-black text-slate-800">3x</p><p class="text-xs text-slate-500 font-bold mt-1">Lebih Cepat</p></div>
-                        <div class="card p-4 text-center hover:-translate-y-1"><p class="text-3xl font-black text-slate-800">58<span class="text-lg">mm</span></p><p class="text-xs text-slate-500 font-bold mt-1">Siap Struk</p></div>
-                        <div class="card p-4 text-center hover:-translate-y-1"><p class="text-3xl font-black text-slate-800">Cloud</p><p class="text-xs text-slate-500 font-bold mt-1">Data Aman</p></div>
+                    
+                    <div class="grid grid-cols-3 gap-4 max-w-xl">
+                        <div class="bg-white/70 backdrop-blur-sm p-4 rounded-2xl border border-slate-100 text-center shadow-sm">
+                            <p class="text-2xl font-black text-slate-900">3x Lipat</p>
+                            <p class="text-[11px] text-slate-500 font-bold uppercase tracking-wider mt-1">Lebih Cepat</p>
+                        </div>
+                        <div class="bg-white/70 backdrop-blur-sm p-4 rounded-2xl border border-slate-100 text-center shadow-sm">
+                            <p class="text-2xl font-black text-slate-900">58mm</p>
+                            <p class="text-[11px] text-slate-500 font-bold uppercase tracking-wider mt-1">Support Thermal</p>
+                        </div>
+                        <div class="bg-white/70 backdrop-blur-sm p-4 rounded-2xl border border-slate-100 text-center shadow-sm">
+                            <p class="text-2xl font-black text-slate-900">Cloud</p>
+                            <p class="text-[11px] text-slate-500 font-bold uppercase tracking-wider mt-1">Sistem SaaS</p>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Interactive Mockup Simulation -->
                 <div class="relative reveal reveal-delay-1">
-                    <div class="absolute -top-7 -right-8 w-40 h-40 bg-green-300 rounded-full blur-[60px] opacity-60 mix-blend-multiply"></div>
-                    <div class="absolute -bottom-10 -left-10 w-56 h-56 bg-blue-300 rounded-full blur-[70px] opacity-60 mix-blend-multiply"></div>
+                    <div class="absolute -top-6 -right-6 w-36 h-36 bg-emerald-100 rounded-full blur-[60px] opacity-70 mix-blend-multiply"></div>
+                    <div class="absolute -bottom-8 -left-8 w-48 h-48 bg-blue-100 rounded-full blur-[70px] opacity-70 mix-blend-multiply"></div>
                     
-                    <div class="mock-shell relative p-4 sm:p-5 transition-transform duration-700 hover:scale-[1.02]">
-                        <div class="flex items-center justify-between text-white mb-5">
-                            <div class="flex items-center gap-3">
-                                <span class="icon-box icon-green w-10 h-10 rounded-xl">POS</span>
+                    <div class="mock-shell relative p-4 sm:p-5 transition-transform duration-700 hover:scale-[1.01]">
+                        <div class="flex items-center justify-between text-white mb-4">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-black text-xs text-slate-900">
+                                    POS
+                                </div>
                                 <div>
-                                    <p class="text-sm font-black tracking-wide">Kasir Warung Madura</p>
-                                    <p class="text-[11px] text-slate-400 font-bold">Mode scan barcode aktif</p>
+                                    <p class="text-xs font-black tracking-wide">Kasir Kelontong Madura</p>
+                                    <p class="text-[10px] text-slate-400 font-bold">Simulator Scan Aktif</p>
                                 </div>
                             </div>
-                            <span class="px-3 py-1.5 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-[10px] font-black tracking-widest flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> ONLINE
+                            <span class="px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[10px] font-black tracking-widest flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> SIMULATOR
                             </span>
                         </div>
-                        <div class="grid md:grid-cols-[1.15fr_.85fr] gap-4">
-                            <div class="bg-white rounded-3xl p-4 shadow-inner">
-                                <div class="scanner-frame flex flex-col items-center justify-center text-center text-white mb-4">
-                                    <span class="text-[11px] font-black uppercase tracking-[.24em] text-green-300 mb-3 z-10">Scanner</span>
-                                    <p class="text-2xl font-black z-10 text-shadow">Arahkan ke Barcode</p>
-                                    <p class="text-xs text-slate-300 mt-2 font-bold z-10">Kamera HP/laptop langsung membaca kode</p>
+                        
+                        <div class="grid md:grid-cols-[1.1fr_.9fr] gap-4">
+                            <!-- Left: Interactive Scanner -->
+                            <div class="bg-white rounded-2xl p-4 shadow-inner">
+                                <div id="sim-scanner-frame" class="scanner-frame flex flex-col items-center justify-center text-center text-white mb-4 relative">
+                                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-300 mb-2 z-10">Kamera HP / Scanner USB</span>
+                                    <p id="sim-display-barcode" class="text-3xl font-black font-mono tracking-wider z-10">SCANNING...</p>
+                                    <p id="sim-display-name" class="text-xs text-slate-300 mt-2 font-bold z-10 px-3 bg-slate-900/40 py-1 rounded-full">Arahkan barcode produk</p>
                                 </div>
-                                <div class="grid grid-cols-3 gap-2">
-                                    <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3 hover:bg-slate-100 transition-colors">
-                                        <div class="barcode-lines mb-2"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-                                        <p class="text-[11px] font-black">Indomie</p><p class="text-[10px] text-slate-500 font-bold">Rp 3.500</p>
-                                    </div>
-                                    <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3 hover:bg-slate-100 transition-colors">
-                                        <div class="barcode-lines mb-2"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-                                        <p class="text-[11px] font-black">Aqua</p><p class="text-[10px] text-slate-500 font-bold">Rp 4.000</p>
-                                    </div>
-                                    <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3 hover:bg-slate-100 transition-colors">
-                                        <div class="barcode-lines mb-2"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-                                        <p class="text-[11px] font-black">Sabun</p><p class="text-[10px] text-slate-500 font-bold">Rp 5.000</p>
+                                <div class="space-y-2">
+                                    <p class="text-[11px] font-black uppercase text-slate-400 tracking-wider">Antrean Produk</p>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div class="rounded-xl bg-slate-50 border border-slate-100 p-2 text-left">
+                                            <div class="barcode-lines mb-1"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                                            <p class="text-[10px] font-extrabold text-slate-800 truncate">Mie Instan</p>
+                                        </div>
+                                        <div class="rounded-xl bg-slate-50 border border-slate-100 p-2 text-left">
+                                            <div class="barcode-lines mb-1"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                                            <p class="text-[10px] font-extrabold text-slate-800 truncate">Susu Kaleng</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="space-y-4">
-                                <div class="receipt p-5 hover:-translate-y-1 transition-transform">
-                                    <div class="text-center border-b border-dashed border-slate-300 pb-3 mb-3">
-                                        <p class="font-black text-slate-800">WARUNG BERKAH</p>
-                                        <p class="text-[10px] text-slate-500 font-bold">Struk Belanja</p>
+                            
+                            <!-- Right: Receipt & Profit Calculation -->
+                            <div class="space-y-3.5">
+                                <div class="receipt p-4 text-xs font-bold text-slate-700">
+                                    <div class="text-center border-b border-dashed border-slate-200 pb-2 mb-2">
+                                        <p class="font-extrabold text-slate-900 uppercase">Warung Barokah</p>
+                                        <p class="text-[9px] text-slate-400">Struk Transaksi Digital</p>
                                     </div>
-                                    <div class="space-y-2 text-xs font-bold text-slate-600">
-                                        <div class="flex justify-between"><span>Indomie x2</span><span>7.000</span></div>
-                                        <div class="flex justify-between"><span>Aqua x1</span><span>4.000</span></div>
-                                        <div class="flex justify-between"><span>Sabun x1</span><span>5.000</span></div>
-                                        <div class="border-t border-dashed border-slate-300 pt-2 flex justify-between text-base font-black text-slate-900"><span>Total</span><span>16.000</span></div>
+                                    <!-- Dynamic simulated receipt items -->
+                                    <div id="sim-receipt-list" class="space-y-1.5 min-h-[90px] text-[11px]">
+                                        <!-- Items will be injected by script -->
+                                    </div>
+                                    <div class="border-t border-dashed border-slate-200 pt-2 mt-2 flex justify-between text-sm font-extrabold text-slate-900">
+                                        <span>Total Belanja</span>
+                                        <span id="sim-receipt-total">Rp 0</span>
                                     </div>
                                 </div>
-                                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-3xl p-5 shadow-xl shadow-green-900/20 hover:scale-[1.02] transition-transform">
-                                    <p class="text-[11px] uppercase tracking-widest font-black text-green-100">Estimasi laba</p>
-                                    <p class="text-3xl font-black mt-2">Rp 184.000</p>
-                                    <p class="text-xs font-bold text-green-100 mt-1">Dari harga modal & jual</p>
+                                <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-2xl p-4 shadow-md">
+                                    <p class="text-[10px] uppercase tracking-wider font-extrabold text-emerald-100">Kalkulasi Laba Bersih</p>
+                                    <p id="sim-receipt-profit" class="text-2xl font-black mt-1">Rp 0</p>
+                                    <p class="text-[9px] text-emerald-100/80 mt-1 font-medium">Laba dihitung dari selisih Modal & Jual</p>
                                 </div>
                             </div>
                         </div>
@@ -282,183 +307,509 @@
             </div>
         </section>
 
-        <section class="py-12 bg-white border-y border-slate-200 overflow-hidden">
+        <!-- SME Support Strip -->
+        <section class="py-10 bg-white border-y border-slate-100 overflow-hidden">
             <div class="wrap reveal">
-                <p class="text-center text-xs font-black uppercase tracking-[.22em] text-slate-400 mb-6">Mendukung Berbagai Usaha Ritel & UMKM</p>
-                <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
-                    <div class="card p-4 text-center font-black text-sm hover:bg-slate-50">Warung Kelontong</div>
-                    <div class="card p-4 text-center font-black text-sm hover:bg-slate-50">Warung Madura</div>
-                    <div class="card p-4 text-center font-black text-sm hover:bg-slate-50">Toko Sembako</div>
-                    <div class="card p-4 text-center font-black text-sm hover:bg-slate-50">Minimarket Kecil</div>
-                    <div class="card p-4 text-center font-black text-sm hover:bg-slate-50">Kantin Koperasi</div>
-                    <div class="card p-4 text-center font-black text-sm hover:bg-slate-50">UMKM Ritel</div>
+                <p class="text-center text-[11px] font-extrabold uppercase tracking-widest text-slate-400 mb-5">Mendukung Berbagai Operasional Usaha Ritel & UMKM</p>
+                <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
+                    <div class="p-3.5 text-center font-bold text-xs bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-900 hover:text-white transition-all cursor-default">Warung Kelontong</div>
+                    <div class="p-3.5 text-center font-bold text-xs bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-900 hover:text-white transition-all cursor-default">Warung Madura</div>
+                    <div class="p-3.5 text-center font-bold text-xs bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-900 hover:text-white transition-all cursor-default">Toko Sembako</div>
+                    <div class="p-3.5 text-center font-bold text-xs bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-900 hover:text-white transition-all cursor-default">Minimarket Mandiri</div>
+                    <div class="p-3.5 text-center font-bold text-xs bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-900 hover:text-white transition-all cursor-default">Koperasi & Kantin</div>
+                    <div class="p-3.5 text-center font-bold text-xs bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-900 hover:text-white transition-all cursor-default">Agen / Grosir UMKM</div>
                 </div>
             </div>
         </section>
 
-        <section id="barcode" class="py-24 bg-slate-950 text-white overflow-hidden">
+        <!-- Focus Scan Barcode Section -->
+        <section id="barcode" class="py-20 bg-slate-950 text-white overflow-hidden">
             <div class="wrap grid lg:grid-cols-2 gap-16 items-center">
                 <div class="reveal">
-                    <span class="badge bg-white/10 border-white/10 text-white mb-6"><span class="mini-icon icon-green">QR</span> Fokus Scan Barcode</span>
-                    <h2 class="text-4xl sm:text-5xl font-black title-tight mb-6 text-balance">Kasir kilat untuk barang yang berbarcode.</h2>
-                    <p class="text-lg text-slate-400 font-semibold leading-relaxed mb-8">
-                        Tidak perlu mengetik nama barang satu per satu. Scan barcode dari kamera perangkat, produk langsung masuk keranjang, stok berkurang, total dihitung otomatis, lalu struk siap dicetak.
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold mb-5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 17h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+                        Fokus Scan Cepat
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-5 leading-tight">Proses Kasir Kilat, Bebas Ketik Nama Barang</h2>
+                    <p class="text-slate-400 leading-relaxed font-medium mb-8">
+                        Tidak perlu lagi mencari produk secara manual atau mengetik nama produk satu per satu. Cukup gunakan kamera bawaan perangkat atau sambungkan scanner USB murah Anda.
                     </p>
                     <div class="space-y-6">
-                        <div class="flex gap-4 group cursor-pointer"><span class="icon-box icon-green w-12 h-12 text-xs group-hover:scale-110 transition-transform">01</span><div><h3 class="font-black text-lg">Scan dari kamera HP/laptop</h3><p class="text-slate-400 font-semibold">Cocok untuk warung yang tidak punya scanner USB mahal.</p></div></div>
-                        <div class="flex gap-4 group cursor-pointer"><span class="icon-box icon-blue w-12 h-12 text-xs group-hover:scale-110 transition-transform">02</span><div><h3 class="font-black text-lg">Cari nama atau input manual</h3><p class="text-slate-400 font-semibold">Tetap fleksibel jika barcode rusak atau kamera sedang tidak dipakai.</p></div></div>
-                        <div class="flex gap-4 group cursor-pointer"><span class="icon-box icon-amber w-12 h-12 text-xs group-hover:scale-110 transition-transform">03</span><div><h3 class="font-black text-lg">Fastkey F7 untuk desktop</h3><p class="text-slate-400 font-semibold">Kasir PC bisa bekerja dengan cepat memanfaatkan tombol keyboard.</p></div></div>
-                    </div>
-                </div>
-                <div class="card p-5 bg-white text-slate-950 reveal reveal-delay-2">
-                    <div class="scanner-frame flex items-center justify-center text-white mb-5 min-h-[340px]">
-                        <div class="text-center relative z-10 bg-slate-900/60 backdrop-blur-sm p-6 rounded-3xl border border-white/10">
-                            <p class="text-[11px] font-black uppercase tracking-[.24em] text-green-400 mb-3 flex items-center justify-center gap-2">
-                                <span class="w-2 h-2 bg-red-500 rounded-full animate-ping"></span> Live Scanner
-                            </p>
-                            <p class="text-5xl font-black tracking-widest text-shadow-sm">8991001</p>
-                            <p class="text-sm text-slate-300 mt-3 font-bold bg-white/10 py-1.5 px-4 rounded-full">Indomie Goreng terdeteksi</p>
+                        <div class="flex gap-4 items-start">
+                            <div class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-xs font-bold text-emerald-400 shrink-0">01</div>
+                            <div>
+                                <h3 class="font-extrabold text-base text-slate-100">Kamera HP & Laptop</h3>
+                                <p class="text-slate-400 text-sm mt-1 font-medium">Bekerja langsung menggunakan kamera HP Android/iOS maupun webcam perangkat Anda tanpa alat eksternal.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <div class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-xs font-bold text-blue-400 shrink-0">02</div>
+                            <div>
+                                <h3 class="font-extrabold text-base text-slate-100">Tetap Fleksibel dengan Pencarian Manual</h3>
+                                <p class="text-slate-400 text-sm mt-1 font-medium">Jika barcode kemasan rusak, Anda tetap bisa mengetik kode barang atau memilih dari folder kategori produk secara instan.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <div class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-xs font-bold text-amber-400 shrink-0">03</div>
+                            <div>
+                                <h3 class="font-extrabold text-base text-slate-100">Fastkey Pintasan Keyboard</h3>
+                                <p class="text-slate-400 text-sm mt-1 font-medium">Gunakan tombol pintas F7 pada desktop untuk masuk ke mode scan tercepat tanpa harus banyak menggunakan kursor mouse.</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="grid sm:grid-cols-3 gap-3">
-                        <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4 hover:shadow-md transition-shadow"><p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Masuk Keranjang</p><p class="text-xl font-black mt-1 text-slate-800">Otomatis</p></div>
-                        <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4 hover:shadow-md transition-shadow"><p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Stok Barang</p><p class="text-xl font-black mt-1 text-slate-800">Berkurang</p></div>
-                        <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4 hover:shadow-md transition-shadow"><p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Struk Kasir</p><p class="text-xl font-black mt-1 text-slate-800">Siap Cetak</p></div>
+                </div>
+                <div class="bg-white text-slate-900 p-5 rounded-3xl shadow-2xl reveal reveal-delay-2 relative">
+                    <div class="scanner-frame flex items-center justify-center text-white mb-5 min-h-[300px]">
+                        <div class="text-center relative z-10 bg-slate-950/80 backdrop-blur-md p-6 rounded-2xl border border-white/10 max-w-[280px]">
+                            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-400 mb-2 flex items-center justify-center gap-1.5">
+                                <span class="w-2 h-2 bg-rose-500 rounded-full animate-ping"></span> SENSOR AKTIF
+                            </p>
+                            <p class="text-4xl font-mono font-black tracking-wider">8992002</p>
+                            <p class="text-xs text-slate-300 mt-2 font-semibold">Aqua 600ml Terbaca</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <p class="text-[9px] font-bold uppercase text-slate-400">Keranjang</p>
+                            <p class="text-xs font-extrabold text-slate-800 mt-1">Otomatis</p>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <p class="text-[9px] font-bold uppercase text-slate-400">Stok Gudang</p>
+                            <p class="text-xs font-extrabold text-slate-800 mt-1">Real-Time</p>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <p class="text-[9px] font-bold uppercase text-slate-400">Cetak Struk</p>
+                            <p class="text-xs font-extrabold text-slate-800 mt-1">Siap Instan</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="database" class="py-24 bg-white">
+        <!-- Database Kolektif Section -->
+        <section id="database" class="py-20 bg-white">
             <div class="wrap grid lg:grid-cols-[.95fr_1.05fr] gap-16 items-center">
                 <div class="reveal">
-                    <span class="badge mb-6"><span class="mini-icon icon-blue">DB</span> Database Kolektif</span>
-                    <h2 class="text-4xl sm:text-5xl font-black title-tight mb-6 text-balance">Tidak perlu <span class="text-gradient">mulai dari nol</span>.</h2>
-                    <p class="text-lg text-slate-600 leading-relaxed font-semibold mb-8">
-                        Superadmin mengelola produk pusat berisi nama, barcode, dan kategori untuk barang yang sering dijual di warung: mie instan, minuman, sabun, dan sembako. Anda tinggal pakai!
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 text-xs font-bold mb-5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.58 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.58 4 8 4s8-1.79 8-4M4 7c0-2.21 3.58-4 8-4s8 1.79 8 4m0 5c0 2.21-3.58 4-8 4s-8-1.79-8-4"/></svg>
+                        Database Kolektif Pusat
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-5 text-slate-900 leading-tight">Tak Perlu Mengisi Data Produk dari Nol</h2>
+                    <p class="text-slate-600 leading-relaxed font-medium mb-8">
+                        Superadmin kami menyediakan ribuan pustaka barang ritel umum (mie instan, detergen, minuman kemasan, sachet kopi, rokok, dll). Anda tinggal salin/copy dan sesuaikan harga modal serta harga jual sesuai warung Anda sendiri.
                     </p>
-                    <div class="grid sm:grid-cols-2 gap-5">
-                        <div class="feature-card p-6"><span class="icon-box icon-blue mb-5">DB</span><h3 class="font-black text-lg mb-2">Produk Pusat</h3><p class="text-sm text-slate-600 font-semibold">Nama dan kategori barang distandardkan agar data lebih rapi.</p></div>
-                        <div class="feature-card p-6"><span class="icon-box icon-green mb-5">BC</span><h3 class="font-black text-lg mb-2">Barcode Kolektif</h3><p class="text-sm text-slate-600 font-semibold">Barcode barang umum bisa di-copy ke database warung Anda.</p></div>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div class="feature-card">
+                            <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold mb-4">DB</div>
+                            <h3 class="font-extrabold text-slate-900 mb-1">Standardisasi Nama</h3>
+                            <p class="text-slate-600 text-xs leading-relaxed font-semibold">Nama dan kategori produk terstandar agar laporan pembukuan usaha rapi dan tidak ganda.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold mb-4">CS</div>
+                            <h3 class="font-extrabold text-slate-900 mb-1">Copy Sekali Klik</h3>
+                            <p class="text-slate-600 text-xs leading-relaxed font-semibold">Cukup masukkan barcode produk, sistem otomatis mengenali data umum. Sangat efisien.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="card p-6 overflow-hidden reveal reveal-delay-2">
-                    <div class="flex items-center justify-between mb-6">
-                        <div><p class="text-xs font-black text-slate-400 uppercase tracking-widest">Contoh Database</p><h3 class="text-2xl font-black mt-1">Produk Umum Warung</h3></div>
-                        <span class="badge shadow-sm"><span class="mini-icon icon-green">ON</span> Cloud Sync</span>
+                
+                <!-- Database UI Preview -->
+                <div class="bg-white border border-slate-200/80 p-5 rounded-3xl shadow-lg reveal reveal-delay-2 overflow-hidden">
+                    <div class="flex items-center justify-between mb-5">
+                        <div>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Katalog Pusat</p>
+                            <h3 class="text-lg font-extrabold mt-0.5 text-slate-900">Database Barang Ritel</h3>
+                        </div>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-100">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Live Sync
+                        </span>
                     </div>
                     <div class="overflow-x-auto rounded-xl border border-slate-100">
-                        <table class="w-full text-sm">
-                            <thead class="bg-slate-50"><tr class="text-left text-slate-500 text-[11px] font-black uppercase tracking-widest"><th class="py-4 px-4">Barcode</th><th class="px-4">Barang</th><th class="px-4">Kategori</th><th class="text-right px-4">Aksi</th></tr></thead>
-                            <tbody class="font-bold divide-y divide-slate-100">
-                                <tr class="hover:bg-slate-50/50 transition-colors"><td class="py-4 px-4 font-mono text-slate-600">8991001</td><td class="px-4 text-slate-900">Indomie Goreng</td><td class="px-4 text-slate-500">Mie Instan</td><td class="text-right px-4"><button class="text-green-600 hover:text-green-700 bg-green-50 px-3 py-1 rounded-full font-black text-xs">Pakai</button></td></tr>
-                                <tr class="hover:bg-slate-50/50 transition-colors"><td class="py-4 px-4 font-mono text-slate-600">8992002</td><td class="px-4 text-slate-900">Aqua 600ml</td><td class="px-4 text-slate-500">Minuman</td><td class="text-right px-4"><button class="text-green-600 hover:text-green-700 bg-green-50 px-3 py-1 rounded-full font-black text-xs">Pakai</button></td></tr>
-                                <tr class="hover:bg-slate-50/50 transition-colors"><td class="py-4 px-4 font-mono text-slate-600">8993003</td><td class="px-4 text-slate-900">Kopi Sachet</td><td class="px-4 text-slate-500">Kopi & Teh</td><td class="text-right px-4"><button class="text-green-600 hover:text-green-700 bg-green-50 px-3 py-1 rounded-full font-black text-xs">Pakai</button></td></tr>
-                                <tr class="hover:bg-slate-50/50 transition-colors"><td class="py-4 px-4 font-mono text-slate-600">8994004</td><td class="px-4 text-slate-900">Sabun Mandi</td><td class="px-4 text-slate-500">Keb. Rumah</td><td class="text-right px-4"><button class="text-green-600 hover:text-green-700 bg-green-50 px-3 py-1 rounded-full font-black text-xs">Pakai</button></td></tr>
+                        <table class="w-full text-xs">
+                            <thead class="bg-slate-50 border-b border-slate-100">
+                                <tr class="text-left text-slate-500 font-extrabold">
+                                    <th class="py-3 px-3">Barcode</th>
+                                    <th class="px-3">Nama Barang</th>
+                                    <th class="px-3">Kategori</th>
+                                    <th class="text-right px-3">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="font-semibold divide-y divide-slate-100 text-slate-700">
+                                <tr class="hover:bg-slate-50/50 transition-colors">
+                                    <td class="py-3 px-3 font-mono">8991001</td>
+                                    <td class="px-3 text-slate-900 font-bold">Indomie Goreng</td>
+                                    <td class="px-3 text-slate-400">Mie Instan</td>
+                                    <td class="text-right px-3"><button class="text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg font-bold">Pakai</button></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/50 transition-colors">
+                                    <td class="py-3 px-3 font-mono">8992002</td>
+                                    <td class="px-3 text-slate-900 font-bold">Aqua Botol 600ml</td>
+                                    <td class="px-3 text-slate-400">Minuman Kemasan</td>
+                                    <td class="text-right px-3"><button class="text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg font-bold">Pakai</button></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/50 transition-colors">
+                                    <td class="py-3 px-3 font-mono">8993003</td>
+                                    <td class="px-3 text-slate-900 font-bold">Kopi Kapal Api Sachet</td>
+                                    <td class="px-3 text-slate-400">Kopi & Teh</td>
+                                    <td class="text-right px-3"><button class="text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg font-bold">Pakai</button></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/50 transition-colors">
+                                    <td class="py-3 px-3 font-mono">8994004</td>
+                                    <td class="px-3 text-slate-900 font-bold">Sabun Lifebuoy</td>
+                                    <td class="px-3 text-slate-400">Kebutuhan Mandi</td>
+                                    <td class="text-right px-3"><button class="text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg font-bold">Pakai</button></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="mt-5 p-4 bg-slate-50 rounded-xl border border-slate-100 flex gap-3 items-start">
-                        <span class="text-lg">💡</span>
-                        <p class="text-xs text-slate-600 font-semibold leading-relaxed">Harga jual, harga modal, dan stok tetap diatur secara mandiri (berbeda) oleh masing-masing pemilik warung.</p>
+                    <div class="mt-4 p-3 bg-amber-50 rounded-xl border border-amber-100 flex gap-2 items-start">
+                        <span class="text-amber-700 text-sm">💡</span>
+                        <p class="text-[11px] text-amber-800 font-semibold leading-relaxed">Pemberitahuan: Stok barang, modal dasar, dan harga jual akhir tetap ditentukan secara mandiri dan aman oleh masing-masing pemilik warung.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="fitur" class="py-24 bg-slate-50 border-y border-slate-200">
+        <!-- Fitur Section -->
+        <section id="fitur" class="py-20 bg-slate-50 border-y border-slate-100">
             <div class="wrap">
-                <div class="max-w-3xl mb-14 reveal">
-                    <span class="badge mb-5"><span class="mini-icon icon-slate">SA</span> Fitur Lengkap SaaS</span>
-                    <h2 class="text-4xl sm:text-5xl font-black title-tight mb-5 text-balance">Ekosistem lengkap untuk operasional harian.</h2>
-                    <p class="text-lg text-slate-600 font-semibold leading-relaxed">Didesain khusus untuk pemilik UMKM dan kasir warung yang butuh aplikasi cepat, jelas, dan tidak ribet.</p>
+                <div class="max-w-2xl mb-12 reveal">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/5 border border-slate-900/10 text-slate-700 text-xs font-bold mb-4">Fitur Ekosistem SaaS</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">Dirancang Sederhana, Sangat Mudah Digunakan</h2>
+                    <p class="text-slate-600 mt-2 font-medium">Bekerja penuh di laptop, PC kasir, maupun HP dengan performa cepat dan andal.</p>
                 </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 reveal reveal-delay-1">
-                    <div class="feature-card"><span class="icon-box icon-slate mb-6">POS</span><h3 class="text-xl font-black mb-3 text-slate-900">Kasir Cepat</h3><p class="text-slate-600 font-semibold leading-relaxed text-sm">Keranjang, pembayaran tunai, uang pas, kembalian otomatis, dan checkout cepat.</p></div>
-                    <div class="feature-card"><span class="icon-box icon-green mb-6">BC</span><h3 class="text-xl font-black mb-3 text-slate-900">Scan Barcode</h3><p class="text-slate-600 font-semibold leading-relaxed text-sm">Pindai barcode lewat kamera, cari manual, percepat transaksi barang harian.</p></div>
-                    <div class="feature-card"><span class="icon-box icon-amber mb-6">58</span><h3 class="text-xl font-black mb-3 text-slate-900">Print Struk</h3><p class="text-slate-600 font-semibold leading-relaxed text-sm">Cetak struk belanja thermal 58mm dengan rincian nama warung dan alamat.</p></div>
-                    <div class="feature-card"><span class="icon-box icon-purple mb-6">STK</span><h3 class="text-xl font-black mb-3 text-slate-900">Stok & Gudang</h3><p class="text-slate-600 font-semibold leading-relaxed text-sm">Pantau stok kosong, stok menipis, kategori produk, dan sortir dengan mudah.</p></div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5 reveal reveal-delay-1">
+                    <div class="feature-card">
+                        <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center mb-5">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <h3 class="font-extrabold text-slate-900 text-lg mb-2">Kasir Pembayaran</h3>
+                        <p class="text-slate-600 font-semibold text-xs leading-relaxed">Hitung kembalian belanja secara otomatis, mendukung opsi nominal uang pas, dan cetak kilat.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center mb-5">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                        </div>
+                        <h3 class="font-extrabold text-slate-900 text-lg mb-2">Kontrol Stok & Barang</h3>
+                        <p class="text-slate-600 font-semibold text-xs leading-relaxed">Notifikasi otomatis apabila ada stok yang menipis atau kosong agar Anda dapat belanja barang tepat waktu.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center mb-5">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                        </div>
+                        <h3 class="font-extrabold text-slate-900 text-lg mb-2">Thermal Print Struk</h3>
+                        <p class="text-slate-600 font-semibold text-xs leading-relaxed">Cetak langsung ke printer thermal struk 58mm via Bluetooth maupun USB tanpa settingan rumit.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center mb-5">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        </div>
+                        <h3 class="font-extrabold text-slate-900 text-lg mb-2">Laporan Laba/Rugi</h3>
+                        <p class="text-slate-600 font-semibold text-xs leading-relaxed">Analisis laba bersih berdasarkan margin modal vs harga jual per hari, minggu, hingga bulanan.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="harga" class="py-24 bg-white border-b border-slate-200">
+        <!-- Testimonial Section -->
+        <section id="testimoni" class="py-20 bg-white">
             <div class="wrap">
-                <div class="max-w-3xl text-center mx-auto mb-16 reveal">
-                    <span class="badge mb-5"><span class="mini-icon icon-green">Rp</span> Paket Harga Fleksibel</span>
-                    <h2 class="text-4xl sm:text-5xl font-black title-tight mb-5 text-balance">Mulai gratis, upgrade saat warung <span class="text-gradient">makin ramai</span>.</h2>
+                <div class="max-w-2xl mx-auto text-center mb-12 reveal">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-bold mb-4">Pengalaman Pengguna</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">Dipercaya Pemilik Toko & Warung</h2>
                 </div>
-                <div class="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto reveal reveal-delay-2">
-                    <div class="price-card flex flex-col">
-                        <p class="text-sm font-black text-slate-400 uppercase tracking-widest">Free Plan</p>
-                        <h3 class="text-3xl font-black mt-2 mb-2">Mulai Gratis</h3>
-                        <p class="text-slate-600 font-semibold mb-6">Cocok untuk validasi sistem kasir dasar.</p>
-                        <div class="text-5xl font-black mb-7 text-slate-900">Rp 0</div>
-                        <ul class="space-y-4 font-bold text-slate-700 mb-8 flex-1">
-                            <li class="flex gap-3 items-center"><span class="check">✓</span> Maksimal 10 produk</li>
-                            <li class="flex gap-3 items-center"><span class="check">✓</span> Kasir & transaksi standar</li>
-                            <li class="flex gap-3 items-center"><span class="check">✓</span> Riwayat transaksi</li>
-                        </ul>
-                        <a href="https://wa.me/6289507785333?text=Halo%20Admin%20YzPOS%2C%20saya%20ingin%20coba%20paket%20Free." target="_blank" rel="noopener" class="btn-secondary w-full">Coba Free Sekarang</a>
+                <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto reveal reveal-delay-1">
+                    <div class="bg-slate-50 border border-slate-100 rounded-2xl p-6 relative">
+                        <p class="text-slate-600 font-semibold text-xs leading-relaxed italic">"Dulu pusing kalau mau menghitung laba bersih bulanan secara manual. Pakai YzPOS tinggal scan-scan saja pas layani pembeli, laba langsung muncul rapi di HP saya."</p>
+                        <div class="mt-4 flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-700">W</div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">Warung Madura Berkah</p>
+                                <p class="text-[9px] text-slate-400">Surabaya, Jawa Timur</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="price-card price-featured relative overflow-hidden flex flex-col">
-                        <div class="absolute top-6 right-6 px-4 py-1.5 rounded-full bg-green-500 text-white text-[10px] uppercase tracking-widest font-black shadow-lg shadow-green-500/30">Rekomendasi</div>
-                        <p class="text-sm font-black text-slate-400 uppercase tracking-widest">Premium</p>
-                        <h3 class="text-3xl font-black mt-2 mb-2">Produk Tanpa Batas</h3>
-                        <p class="text-slate-400 font-semibold mb-6">Untuk UMKM yang serius ekspansi database.</p>
-                        <div class="text-5xl font-black mb-2 text-white">Unlimited</div>
-                        <p class="text-xs text-slate-400 font-bold mb-7 bg-white/10 inline-block py-1.5 px-3 rounded-lg w-fit">Biaya maintenance Rp 7.500/bulan</p>
-                        <ul class="space-y-4 font-bold text-slate-200 mb-8 flex-1">
-                            <li class="flex gap-3 items-center"><span class="check">✓</span> Input produk tanpa batas</li>
-                            <li class="flex gap-3 items-center"><span class="check">✓</span> Fitur Barcode & Database Kolektif</li>
-                            <li class="flex gap-3 items-center"><span class="check">✓</span> Laporan Laba/Rugi & Cloud Backup</li>
-                        </ul>
-                        <a href="https://wa.me/6289507785333?text=Halo%20Admin%20YzPOS%2C%20saya%20ingin%20upgrade%20ke%20Premium%20Unlimited%20YzPOS." target="_blank" rel="noopener" class="btn-primary bg-white text-slate-900 hover:bg-slate-100 w-full"><span class="mini-icon icon-green">WA</span> Upgrade via WhatsApp</a>
+                    <div class="bg-slate-50 border border-slate-100 rounded-2xl p-6 relative">
+                        <p class="text-slate-600 font-semibold text-xs leading-relaxed italic">"Aplikasi ini enteng sekali dibuka dari laptop bekas saya di kasir. Karyawan baru pun gampang pakainya, hanya 10 menit belajar sudah langsung bisa bantu jaga toko."</p>
+                        <div class="mt-4 flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-700">T</div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">Toko Sembako Bu Sri</p>
+                                <p class="text-[9px] text-slate-400">Bandung, Jawa Barat</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-100 rounded-2xl p-6 relative">
+                        <p class="text-slate-600 font-semibold text-xs leading-relaxed italic">"Fitur salin database dari produk pusat sangat menolong. Saya tidak usah pusing ketik nama mie, rokok, sabun satu-satu saat setup awal. Benar-benar efisien."</p>
+                        <div class="mt-4 flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-700">M</div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">Minimarket Mandiri</p>
+                                <p class="text-[9px] text-slate-400">Medan, Sumatra Utara</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="py-24 bg-slate-950 text-white text-center">
-            <div class="wrap max-w-4xl reveal">
-                <span class="badge bg-white/10 border-white/10 text-white mb-6"><span class="mini-icon icon-green">WA</span> Konsultasi Cepat</span>
-                <h2 class="text-4xl sm:text-6xl font-black title-tight mb-6 text-balance">Siap membuat operasional warung lebih rapi?</h2>
-                <p class="text-lg text-slate-400 font-semibold leading-relaxed mb-10">Tinggalkan cara manual. Mulai kelola stok dan hitung laba bersih Anda dengan sistem terpusat kami.</p>
-                <div class="flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="https://wa.me/6289507785333?text=Halo%20Admin%20YzPOS%2C%20saya%20ingin%20demo%20dan%20aktivasi." target="_blank" rel="noopener" class="btn-primary bg-green-600 hover:bg-green-500 shadow-lg shadow-green-600/20"><span class="mini-icon icon-slate">WA</span> Hubungi via WhatsApp</a>
+        <!-- Pricing Section -->
+        <section id="harga" class="py-20 bg-slate-50 border-y border-slate-100">
+            <div class="wrap">
+                <div class="max-w-2xl text-center mx-auto mb-12 reveal">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-bold mb-4">Pilihan Paket Harga</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">Mulai Gratis, Upgrade saat Usaha Berkembang</h2>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-6 max-w-4xl mx-auto reveal reveal-delay-2">
+                    <!-- Free Plan -->
+                    <div class="bg-white border border-slate-200 rounded-3xl p-8 flex flex-col hover:shadow-lg transition-all">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Free Plan</p>
+                        <h3 class="text-2xl font-black text-slate-900 mt-1 mb-1">Coba Gratis</h3>
+                        <p class="text-slate-500 font-semibold text-xs mb-5">Untuk validasi sistem kasir awal.</p>
+                        <div class="text-4xl font-extrabold text-slate-900 mb-6">Rp 0</div>
+                        <ul class="space-y-3.5 font-semibold text-xs text-slate-600 mb-8 flex-1">
+                            <li class="flex gap-2.5 items-center">
+                                <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-[10px] font-bold">✓</span>
+                                Batas input maksimal 10 produk
+                            </li>
+                            <li class="flex gap-2.5 items-center">
+                                <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-[10px] font-bold">✓</span>
+                                Fitur kasir standar & hitung kembalian
+                            </li>
+                            <li class="flex gap-2.5 items-center">
+                                <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-[10px] font-bold">✓</span>
+                                Riwayat transaksi lokal harian
+                            </li>
+                        </ul>
+                        <a href="https://wa.me/6289507785333?text=Halo%20Admin%20YzPOS%2C%20saya%20ingin%20mencoba%20Free%20Plan." target="_blank" rel="noopener" class="btn-secondary w-full justify-center">Mulai Gratis</a>
+                    </div>
+                    <!-- Premium Unlimited -->
+                    <div class="bg-slate-900 text-white rounded-3xl p-8 flex flex-col relative overflow-hidden hover:shadow-xl transition-all border border-slate-800">
+                        <div class="absolute top-6 right-6 px-3 py-1 rounded-full bg-emerald-500 text-white text-[9px] uppercase tracking-wider font-extrabold">Rekomendasi</div>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Premium Plan</p>
+                        <h3 class="text-2xl font-black text-white mt-1 mb-1">Produk Tanpa Batas</h3>
+                        <p class="text-slate-400 font-semibold text-xs mb-5">Untuk bisnis yang serius bertumbuh.</p>
+                        <div class="text-4xl font-extrabold text-white mb-1">Unlimited</div>
+                        <p class="text-[10px] text-slate-400 font-bold mb-6">Biaya server & pemeliharaan: <span class="text-emerald-400">Rp 7.500 / bulan</span></p>
+                        <ul class="space-y-3.5 font-semibold text-xs text-slate-200 mb-8 flex-1">
+                            <li class="flex gap-2.5 items-center">
+                                <span class="w-5 h-5 rounded-full bg-emerald-500/25 text-emerald-400 flex items-center justify-center text-[10px] font-bold">✓</span>
+                                Unggah/Input produk tanpa batas
+                            </li>
+                            <li class="flex gap-2.5 items-center">
+                                <span class="w-5 h-5 rounded-full bg-emerald-500/25 text-emerald-400 flex items-center justify-center text-[10px] font-bold">✓</span>
+                                Akses Pustaka Database Kolektif Pusat
+                            </li>
+                            <li class="flex gap-2.5 items-center">
+                                <span class="w-5 h-5 rounded-full bg-emerald-500/25 text-emerald-400 flex items-center justify-center text-[10px] font-bold">✓</span>
+                                Analisis Laporan Laba Bersih & Stok real-time
+                            </li>
+                            <li class="flex gap-2.5 items-center">
+                                <span class="w-5 h-5 rounded-full bg-emerald-500/25 text-emerald-400 flex items-center justify-center text-[10px] font-bold">✓</span>
+                                Cloud Backup berkala aman jika perangkat hilang
+                            </li>
+                        </ul>
+                        <a href="https://wa.me/6289507785333?text=Halo%20Admin%20YzPOS%2C%20saya%20ingin%20langganan%20Premium%20Plan." target="_blank" rel="noopener" class="btn-primary w-full justify-center bg-emerald-600 hover:bg-emerald-500 shadow-emerald-600/20">Langganan via WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="py-20 bg-white">
+            <div class="wrap max-w-4xl">
+                <div class="text-center mb-12 reveal">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/5 border border-slate-900/10 text-slate-700 text-xs font-bold mb-4">Pertanyaan Umum</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">Ada Pertanyaan?</h2>
+                </div>
+                <div class="space-y-4 reveal reveal-delay-1">
+                    <details class="group bg-slate-50 border border-slate-100 rounded-2xl p-5 [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex justify-between items-center font-bold text-slate-900 text-sm sm:text-base cursor-pointer">
+                            <span>Apakah saya harus membeli alat scanner tambahan?</span>
+                            <span class="text-slate-400 transition-transform group-open:rotate-180">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </span>
+                        </summary>
+                        <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mt-3 font-semibold">
+                            Tidak wajib. YzPOS dirancang fleksibel sehingga Anda dapat memanfaatkan kamera internal dari ponsel pintar atau laptop langsung untuk memindai barcode. Namun, jika Anda memiliki budget lebih, aplikasi kami juga mendukung scanner barcode USB standar.
+                        </p>
+                    </details>
+                    
+                    <details class="group bg-slate-50 border border-slate-100 rounded-2xl p-5 [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex justify-between items-center font-bold text-slate-900 text-sm sm:text-base cursor-pointer">
+                            <span>Bagaimana jika produk jualan saya tidak memiliki kode barcode?</span>
+                            <span class="text-slate-400 transition-transform group-open:rotate-180">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </span>
+                        </summary>
+                        <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mt-3 font-semibold">
+                            Anda tetap bisa memasukkannya secara manual! Caranya adalah dengan mengetikkan nama produk di kolom kasir atau memilah melalui folder kategori barang yang sudah disediakan (misalnya kategori sembako curah).
+                        </p>
+                    </details>
+
+                    <details class="group bg-slate-50 border border-slate-100 rounded-2xl p-5 [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex justify-between items-center font-bold text-slate-900 text-sm sm:text-base cursor-pointer">
+                            <span>Mengapa ada biaya pemeliharaan server Rp 7.500 / bulan?</span>
+                            <span class="text-slate-400 transition-transform group-open:rotate-180">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </span>
+                        </summary>
+                        <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mt-3 font-semibold">
+                            Biaya yang sangat terjangkau ini dialokasikan penuh untuk menyewa infrastruktur komputasi awan (cloud server). Hal ini menjamin database warung Anda selalu tersinkronisasi, aman, dan dapat diakses dari mana saja tanpa khawatir kehilangan data bila perangkat HP/laptop kasir rusak.
+                        </p>
+                    </details>
+
+                    <details class="group bg-slate-50 border border-slate-100 rounded-2xl p-5 [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex justify-between items-center font-bold text-slate-900 text-sm sm:text-base cursor-pointer">
+                            <span>Apakah data transaksi saya dijamin keamanannya?</span>
+                            <span class="text-slate-400 transition-transform group-open:rotate-180">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </span>
+                        </summary>
+                        <p class="text-slate-600 text-xs sm:text-sm leading-relaxed mt-3 font-semibold">
+                            Ya, privasi dan data warung Anda adalah prioritas kami. Semua catatan stok, modal, harga jual, dan omset harian disimpan dalam database terenkripsi milik masing-masing akun, dan tidak dibagikan kepada pihak mana pun.
+                        </p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section class="py-20 bg-slate-950 text-white text-center">
+            <div class="wrap max-w-2xl reveal">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold mb-5">Hubungi Konsultan Kami</span>
+                <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-5 leading-tight text-balance">Saatnya Pembukuan Warung Lebih Rapi & Profesional</h2>
+                <p class="text-slate-400 font-medium leading-relaxed mb-8">Ucapkan selamat tinggal pada hitungan manual di buku kertas yang mudah hilang. Mulai kelola usaha Anda secara digital bersama YzPOS.</p>
+                <div class="flex justify-center">
+                    <a href="https://wa.me/6289507785333?text=Halo%20Admin%20YzPOS%2C%20saya%20ingin%20konsultasi%20langsung." target="_blank" rel="noopener" class="btn-primary bg-emerald-600 hover:bg-emerald-500 shadow-xl shadow-emerald-600/10">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.451 5.403.002 9.803-4.394 9.805-9.799.002-2.618-1.016-5.083-2.868-6.937C16.357 2.016 13.9 1.002 11.279 1c-5.39 0-9.778 4.388-9.78 9.784-.001 1.551.411 3.064 1.196 4.385l-.403 1.472 1.511-.396z"/>
+                        </svg>
+                        <span>Hubungi CS via WhatsApp</span>
+                    </a>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-white py-10 border-t border-slate-200">
-        <div class="wrap flex flex-col md:flex-row justify-between gap-5 items-center text-center md:text-left">
-            <div class="flex items-center gap-3">
-                <span class="icon-box icon-slate w-10 h-10 rounded-xl text-xs">YZ</span>
-                <div><p class="font-black text-slate-900">YzPOS</p></div>
+    <!-- Footer -->
+    <footer class="bg-white py-8 border-t border-slate-100">
+        <div class="wrap flex flex-col md:flex-row justify-between gap-4 items-center text-center md:text-left">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center text-white text-xs font-black">
+                    YZ
+                </div>
+                <p class="font-extrabold text-sm text-slate-900">YzPOS</p>
             </div>
-            <p class="text-xs text-slate-500 font-bold">© <span id="year"></span> YzPOS. Dibuat untuk UMKM Indonesia.</p>
+            <p class="text-xs text-slate-400 font-bold">© <span id="year"></span> YzPOS. Dibuat dengan dedikasi untuk kemajuan UMKM Ritel Indonesia.</p>
         </div>
     </footer>
 
+    <!-- Interactive Simulation Script & Setup -->
     <script>
         (function() {
-            // Update Tahun Footer
+            // Update Tahun Otomatis di Footer
             const yearEl = document.getElementById('year');
-            if(yearEl) yearEl.textContent = new Date().getFullYear();
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-            // Intersection Observer untuk Animasi Scroll (Reveal Effect)
+            // Mobile Menu Toggle
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+                mobileMenu.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            }
+
+            // Interactive Live Scan Simulator
+            const sampleProducts = [
+                { barcode: "8991001", name: "Indomie Goreng", price: 3500, cost: 2800 },
+                { barcode: "8992002", name: "Aqua Botol 600ml", price: 4000, cost: 1500 },
+                { barcode: "8993003", name: "Kopi Sachet Kapal Api", price: 2000, cost: 1200 },
+                { barcode: "8994004", name: "Sabun Mandi Nuvo", price: 5000, cost: 3800 }
+            ];
+
+            const simFrame = document.getElementById('sim-scanner-frame');
+            const simBarcode = document.getElementById('sim-display-barcode');
+            const simName = document.getElementById('sim-display-name');
+            const simList = document.getElementById('sim-receipt-list');
+            const simTotal = document.getElementById('sim-receipt-total');
+            const simProfit = document.getElementById('sim-receipt-profit');
+
+            let currentReceiptItems = [];
+
+            function formatRupiah(num) {
+                return 'Rp ' + num.toLocaleString('id-ID');
+            }
+
+            function triggerScanSimulator() {
+                if (!simFrame || !simBarcode || !simName || !simList) return;
+
+                // Pick random product
+                const randProd = sampleProducts[Math.floor(Math.random() * sampleProducts.length)];
+
+                // 1. Visual flash effect
+                simFrame.classList.add('flash-active');
+                setTimeout(() => simFrame.classList.remove('flash-active'), 400);
+
+                // 2. Update scanner UI details
+                simBarcode.textContent = randProd.barcode;
+                simName.textContent = randProd.name + ' - ' + formatRupiah(randProd.price);
+
+                // 3. Add to simulated receipt array
+                const existing = currentReceiptItems.find(item => item.barcode === randProd.barcode);
+                if (existing) {
+                    existing.qty += 1;
+                } else {
+                    currentReceiptItems.push({ ...randProd, qty: 1 });
+                }
+
+                // Keep receipt maximum items clean (reset if more than 3)
+                if (currentReceiptItems.length > 3) {
+                    currentReceiptItems = [{ ...randProd, qty: 1 }];
+                }
+
+                // 4. Render Receipt items to UI
+                simList.innerHTML = '';
+                let totalBelanja = 0;
+                let totalProfit = 0;
+
+                currentReceiptItems.forEach(item => {
+                    const subtotal = item.price * item.qty;
+                    totalBelanja += subtotal;
+                    totalProfit += (item.price - item.cost) * item.qty;
+
+                    const row = document.createElement('div');
+                    row.className = 'flex justify-between items-center py-1 border-b border-slate-50';
+                    row.innerHTML = `
+                        <span class="text-slate-800 truncate max-w-[120px]">${item.name} <span class="text-[9px] text-slate-400">x${item.qty}</span></span>
+                        <span class="text-slate-900 font-bold font-mono">${formatRupiah(subtotal)}</span>
+                    `;
+                    simList.appendChild(row);
+                });
+
+                // 5. Update calculations
+                simTotal.textContent = formatRupiah(totalBelanja);
+                simProfit.textContent = formatRupiah(totalProfit);
+            }
+
+            // Initialize and loop simulation every 4.5 seconds
+            triggerScanSimulator();
+            setInterval(triggerScanSimulator, 4500);
+
+            // Intersection Observer for Scroll Reveal animations
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
-                threshold: 0.15
+                threshold: 0.12
             };
 
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
-                        // Opsional: Unobserve setelah ter-trigger agar animasi hanya sekali
                         observer.unobserve(entry.target);
                     }
                 });
