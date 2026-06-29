@@ -42,6 +42,16 @@
             z-index: 1; 
         }
 
+        /* desktop-nav tersembunyi di mobile & muncul flex di desktop tanpa class hiddent di HTML */
+        #desktop-nav {
+            display: none;
+        }
+        @media (min-width: 768px) {
+            #desktop-nav {
+                display: flex !important;
+            }
+        }
+
         /* ISOLASI SCROLLBAR - Khusus elemen di dalam POS */
         .pos-viewport-wrapper ::-webkit-scrollbar { width: 5px; height: 5px; }
         .pos-viewport-wrapper ::-webkit-scrollbar-track { background: transparent; }
@@ -114,7 +124,7 @@
     </div>
 </div>
 
-<!-- MODAL UPGRADE PREMIUM (Revisi Ke-3) -->
+<!-- MODAL UPGRADE PREMIUM -->
 <div id="premium-upgrade-modal" class="fixed inset-0 bg-gray-900/70 hidden flex items-center justify-center z-[1600] p-4 backdrop-blur-sm">
     <div class="bg-white p-6 w-full max-w-sm rounded-2xl shadow-2xl flex flex-col text-center">
         <div class="w-16 h-16 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
@@ -204,11 +214,13 @@
                 <span id="header-warung-name">Warung</span>
             </h1>
             
-            <div id="desktop-nav" class="md:flex gap-6 items-center font-bold"> <!-- FIXED: Navigasi Desktop disembunyikan di mobile (Revisi Ke-4) -->
+            <div id="desktop-nav" class="md:flex gap-6 items-center font-bold font-sans text-sm"> 
                 <button onclick="switchTab('katalog')" id="desk-katalog" class="pb-1 border-b-2 border-primary text-primary font-bold transition px-4 py-1">Katalog</button>
                 <button onclick="switchTab('stok')" id="desk-stok" class="pb-1 border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition px-2 py-1">Stok</button>
                 <button onclick="switchTab('riwayat')" id="desk-riwayat" class="pb-1 border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition px-2">Riwayat</button>
                 <button onclick="switchTab('setelan')" id="desk-setelan" class="pb-1 border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition px-2">Pengaturan</button>
+                <!-- Tombol Admin Panel Desktop (Hidden By Default) -->
+                <button onclick="switchTab('admin')" id="desk-admin" class="pb-1 border-b-2 border-transparent text-red-600 hover:text-red-800 transition px-2">Admin</button>
             </div>
         </div>
         
@@ -273,7 +285,6 @@
                 </div>
                 
                 <div class="flex-1 overflow-y-auto p-4">
-                    <!-- FIXED: Pembungkus tabel agar responsif geser horizontal (Revisi Ke-6) -->
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="overflow-x-auto w-full no-scrollbar">
                             <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[600px] sm:min-w-full">
@@ -336,7 +347,7 @@
                     <h2 class="text-lg font-bold text-gray-800 flex items-center"><i class="fas fa-cogs text-primary mr-2"></i>Pengaturan Warung</h2>
                 </div>
                 <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
-                    <!-- Paket Langganan: Upgrade diarahkan ke WhatsApp admin -->
+                    <!-- Paket Langganan -->
                     <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 class="text-sm font-bold text-gray-700 mb-4 flex items-center gap-2"><i class="fas fa-crown text-amber-500"></i> Paket Langganan</h3>
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-50 p-4 rounded-xl border border-gray-100 gap-3">
@@ -401,16 +412,50 @@
                     </div>
                 </div>
             </div>
+
+            <!-- TAB 5: PANEL ADMIN (Modul Manajemen Lisensi & Database - Khusus Superadmin) -->
+            <div id="tab-admin" class="absolute inset-0 flex-col w-full h-full bg-gray-50 overflow-hidden">
+                <div class="p-4 bg-white border-b border-gray-200 shadow-sm shrink-0 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-gray-800 flex items-center"><i class="fas fa-user-shield text-red-600 mr-2"></i>Admin Console YzPOS</h2>
+                    <div class="flex gap-2">
+                        <button onclick="triggerDatabaseBackup()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-xl text-xs flex items-center gap-1.5 transition shadow"><i class="fas fa-database text-xs"></i> Backup Database</button>
+                        <button onclick="loadAdminWarungList()" class="bg-primary text-white font-bold text-xs py-2 px-4 rounded-xl shadow-sm transition"><i class="fas fa-sync mr-1"></i> Refresh</button>
+                    </div>
+                </div>
+                <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
+                    <!-- Manajemen Lisensi Warung -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                        <h3 class="text-sm font-black text-gray-800 mb-4 border-b border-gray-100 pb-3"><i class="fas fa-users mr-1.5 text-primary"></i> Daftar Cabang & Lisensi Paket</h3>
+                        <div class="overflow-x-auto w-full no-scrollbar">
+                            <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[600px]">
+                                <thead class="bg-gray-50 border-b border-gray-100 font-bold text-gray-500">
+                                    <tr>
+                                        <th class="p-3">ID Warung</th>
+                                        <th class="p-3">Nama Warung</th>
+                                        <th class="p-3">Username</th>
+                                        <th class="p-3 text-center">Paket Lisensi</th>
+                                        <th class="p-3 text-center">Status</th>
+                                        <th class="p-3 text-center">Aksi Paket</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-warung-table-body" class="divide-y divide-gray-50">
+                                    <tr><td colspan="6" class="text-center py-6 text-gray-400">Silakan klik Refresh untuk memuat daftar cabang.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- PANEL KANAN (KERANJANG) -->
-        <div id="tab-keranjang" class="hidden md:flex flex-col w-full md:w-[350px] lg:w-[400px] bg-white h-full z-20 md:z-10 shadow-2xl md:shadow-[rgba(0,0,0,0.05)_-4px_0px_10px_0px] absolute md:relative inset-0 md:inset-auto transition-transform shrink-0 border-l border-gray-200">
+        <div id="tab-keranjang" class="hidden md:flex flex-col w-full md:w-[350px] lg:w-[400px] bg-white h-full z-20 md:z-10 shadow-2xl md:shadow-[rgba(0,0,0,0.05)_-4px_0px_10px_0px] absolute md:relative inset-0 md:inset-auto transition-transform shrink-0 border-l border-gray-200 relative">
             <div id="panel-keranjang" class="flex flex-col h-full w-full">
                 <div class="p-4 bg-primary text-white flex justify-between items-center shadow-md shrink-0">
                     <h2 class="text-lg font-bold flex items-center gap-1.5"><i class="fas fa-shopping-basket"></i> Keranjang</h2>
                     <div class="flex gap-2">
                         <!-- Tombol Scan Barcode Keranjang Mobile -->
-                        <button onclick="toggleScanner('cart')" class="md:hidden bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-4 py-1.5 rounded-lg transition flex items-center gap-1"><i class="fas fa-qrcode"></i> Scan</button>
+                        <button onclick="toggleCartScanner(true)" class="md:hidden bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-4 py-1.5 rounded-lg transition flex items-center gap-1"><i class="fas fa-qrcode"></i> Scan</button>
                         <button onclick="clearCart()" class="bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-4 py-1.5 rounded-lg transition flex items-center gap-1"><i class="fas fa-trash-alt"></i> Bersihkan</button>
                     </div>
                 </div>
@@ -423,15 +468,36 @@
                     <div id="cart-items" class="space-y-2 relative z-10 pb-20 md:pb-0"></div>
                 </div>
 
-                <div class="p-4 bg-white border-t border-gray-200 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.05)] shrink-0">
+                <div class="p-4 bg-white border-t border-gray-200 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.05)] shrink-0 font-sans">
                     <div class="flex justify-between items-center font-black text-2xl text-gray-900 mb-4">
                         <span class="text-sm text-gray-500 uppercase tracking-widest">Total Bayar</span>
                         <span id="total-display" class="text-primary">Rp 0</span>
                     </div>
-                    <button onclick="showPaymentModal()" class="w-full bg-primary hover:opacity-90 text-white font-bold py-4 px-6 rounded-xl shadow-lg shadow-primary/30 transition flex items-center justify-center gap-2 transform active:scale-95">
-                        <i class="fas fa-wallet text-xl"></i> Lanjut Pembayaran
-                    </button>
+                    <!-- Flex container penyeimbang tombol checkout & scan -->
+                    <div class="flex gap-2 shrink-0">
+                        <!-- Tombol Scan Barcode di Samping Lanjut Pembayaran -->
+                        <button onclick="toggleCartScanner(true)" class="bg-gray-800 hover:opacity-90 text-white font-bold p-4 rounded-xl shadow-lg transition flex items-center justify-center aspect-square shrink-0 transform active:scale-95" title="Scan Barcode">
+                            <i class="fas fa-qrcode text-xl"></i>
+                        </button>
+                        <button onclick="showPaymentModal()" class="flex-1 bg-primary hover:opacity-90 text-white font-bold py-4 px-6 rounded-xl shadow-lg shadow-primary/30 transition flex items-center justify-center gap-2 transform active:scale-95">
+                            <i class="fas fa-wallet text-xl"></i> Lanjut Pembayaran
+                        </button>
+                    </div>
                 </div>
+            </div>
+            
+            <!-- SCANNER OVERLAY YANG MEMENUHI TAB KERANJANG -->
+            <div id="cart-scanner-container" class="absolute inset-0 bg-gray-900 hidden flex-col z-50 p-4">
+                <div class="flex justify-between items-center mb-3 shrink-0">
+                    <h3 class="text-white font-bold text-sm flex items-center gap-1.5">
+                        <i class="fas fa-qrcode text-primary"></i> Scan Produk Ke Keranjang
+                    </h3>
+                    <button onclick="toggleCartScanner(false)" class="text-gray-400 hover:text-white px-3 py-1"><i class="fas fa-times text-lg"></i></button>
+                </div>
+                <div class="flex-1 flex items-center justify-center overflow-hidden rounded-xl bg-black relative">
+                    <div id="cart-reader" class="w-full h-full bg-black"></div>
+                </div>
+                <button onclick="toggleCartScanner(false)" class="mt-4 w-full text-white font-bold bg-red-600 rounded-xl py-3.5 px-6 hover:bg-red-700 transition shrink-0">Tutup Scanner</button>
             </div>
             
             <button id="close-mob-panel" onclick="closeMobPanel()" class="md:hidden absolute bottom-4 left-4 right-4 bg-gray-800 text-white font-bold py-3.5 px-6 rounded-xl z-50 shadow-lg hidden"><i class="fas fa-times mr-2"></i>Tutup Keranjang</button>
@@ -456,6 +522,10 @@
         <button id="nav-setelan" onclick="switchTab('setelan')" class="min-w-[76px] flex-1 h-full flex flex-col items-center justify-center gap-1.5 transition">
             <i class="fas fa-cog text-2xl"></i><span>Setelan</span>
         </button>
+        <!-- Tombol Admin Panel Mobile (Hidden By Default) -->
+        <button id="nav-admin" onclick="switchTab('admin')" class="hidden min-w-[76px] flex-1 h-full flex flex-col items-center justify-center gap-1.5 text-red-600 transition">
+            <i class="fas fa-user-shield text-2xl"></i><span>Admin</span>
+        </button>
     </nav>
 
     <!-- SHORTCUT HELPER (DESKTOP) -->
@@ -473,7 +543,7 @@
     </div>
 </div>
 
-<!-- MODAL DETAIL TRANSAKSI (Mendukung cetak struk dari riwayat) -->
+<!-- MODAL DETAIL TRANSAKSI -->
 <div id="transaction-detail-modal" class="fixed inset-0 bg-gray-900/70 hidden flex items-center justify-center z-[1500] p-4 backdrop-blur-sm">
     <div class="bg-white p-5 w-full max-w-md rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
         <div class="flex justify-between items-center pb-3 border-b border-gray-100 shrink-0">
@@ -500,7 +570,7 @@
                 <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Barcode (Unik)</label>
                 <div class="flex gap-2">
                     <input type="text" id="new-barcode" class="w-full p-2.5 bg-gray-50 border border-gray-200 text-gray-800 font-mono font-bold rounded-xl outline-none focus:border-primary focus:bg-white" placeholder="Otomatis Jika Kosong">
-                    <button type="button" onclick="openScannerForModal()" class="bg-gray-800 text-white px-4 rounded-xl hover:bg-gray-700 transition flex items-center justify-center shadow-md"><i class="fas fa-qrcode"></i></button>
+                    <button type="button" onclick="openScannerForModal()" class="bg-gray-800 text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition flex items-center justify-center shadow-md"><i class="fas fa-qrcode"></i></button>
                 </div>
             </div>
             
@@ -553,7 +623,7 @@
         </div>
         
         <!-- TOMBOL UANG CEPAT -->
-        <div class="grid grid-cols-4 gap-2 mb-6 shrink-0">
+        <div class="grid grid-cols-4 gap-2 mb-6 shrink-0 font-bold">
             <button onclick="setUang('Pas')" class="bg-gray-100 text-gray-800 font-bold py-2 px-2 rounded-lg border text-sm hover:bg-gray-200">Pas</button>
             <button onclick="setUang(2000)" class="bg-white text-primary font-bold py-2 px-2 rounded-lg border text-sm hover:bg-gray-50">2k</button>
             <button onclick="setUang(5000)" class="bg-white text-primary font-bold py-2 px-2 rounded-lg border text-sm hover:bg-gray-50">5k</button>
@@ -675,11 +745,12 @@
     let cart = [];
     let currentCategory = 'Semua';
     let grandTotal = 0;
-    let html5QrScanner = null; // Scanner Mengambang/Floating
+    let html5QrScanner = null; // Scanner Mengambang/Floating (Untuk modal input produk)
     let html5InlineScanner = null; // Scanner Desktop/Inline
+    let html5CartScanner = null; // Scanner Keranjang Belanja (Revisi Ke-2)
     let scannerTarget = 'cart'; 
     let salesChart = null; 
-    let activeDetailTrx = null; // Untuk rekam detail transaksi aktif yang sedang dibuka (Revisi Ke-1)
+    let activeDetailTrx = null; // Rincian aktif yang sedang dibuka
 
     const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
 
@@ -706,9 +777,6 @@
         const savedSession = localStorage.getItem('pos_session');
         if (savedSession) {
             currentWarung = JSON.parse(savedSession);
-            // Hapus status premium lama dari simulasi lokal agar upgrade tidak bisa dimanipulasi dari Settings.
-            delete currentWarung.is_premium;
-            localStorage.setItem('pos_session', JSON.stringify(currentWarung));
             await applyTheme(currentWarung.theme || 'dark');
             showAppUI();
             await loadCatalog();
@@ -738,6 +806,17 @@
         // Memuat data logo & biodata struk kustom
         document.getElementById('set-logo').value = currentWarung.logo || '';
         document.getElementById('set-biodata').value = currentWarung.biodata || '';
+
+        // Tampilkan Tombol Panel Admin hanya jika Peran Akun adalah Superadmin
+        const deskAdmin = document.getElementById('desk-admin');
+        const navAdmin = document.getElementById('nav-admin');
+        if (currentWarung && currentWarung.role === 'superadmin') {
+            if (deskAdmin) deskAdmin.classList.remove('hidden');
+            if (navAdmin) navAdmin.classList.remove('hidden');
+        } else {
+            if (deskAdmin) deskAdmin.classList.add('hidden');
+            if (navAdmin) navAdmin.classList.add('hidden');
+        }
 
         renderPlanStatus(); // Menampilkan satus paket berlangganan free / premium
         handleResize();
@@ -807,6 +886,7 @@
                     nama_warung: name,
                     tema: 'dark',
                     status: 'Aktif',
+                    role: 'user', // Default pendaftar baru adalah user biasa
                     updated_at: new Date()
                 });
 
@@ -861,7 +941,9 @@
                     id: warung.id_warung,
                     user: warung.username,
                     name: warung.nama_warung,
-                    theme: warung.tema || 'dark'
+                    theme: warung.tema || 'dark',
+                    role: warung.role || 'user',      // Rekam Peran Sesi (Revisi Baru)
+                    status: warung.status || 'Aktif'  // Rekam Lisensi Sesi (Revisi Baru)
                 };
                 localStorage.setItem('pos_session', JSON.stringify(currentWarung));
                 await applyTheme(currentWarung.theme);
@@ -881,7 +963,7 @@
     function logout() { 
         showMsg('Konfirmasi', 'Keluar dari aplikasi dan hapus semua data sesi?', 'confirm', () => {
             localStorage.clear(); // Bersihkan seluruh isi local storage
-            location.reload();    // Pemuatan bersih kembali ke layar login
+            location.reload();    // Pemuatan bersih kembali keti layar login
         });
     }
 
@@ -929,8 +1011,8 @@
             deskBtn.classList.remove('border-transparent', 'text-gray-500');
         }
 
-        // Penanganan Switch Tab Manajemen Baru
-        ['katalog', 'riwayat', 'setelan', 'stok'].forEach(v => {
+        // Penanganan Switch Tab Manajemen Baru (Ditambahkan Tab Admin Panel)
+        ['katalog', 'riwayat', 'setelan', 'stok', 'admin'].forEach(v => {
             const el = document.getElementById('tab-' + v);
             if (el) { 
                 if (v === tabName) { el.classList.remove('hidden'); el.classList.add('flex'); } 
@@ -969,10 +1051,10 @@
 
         if (tabName === 'riwayat' && historyData.length === 0) loadHistory();
         if (tabName === 'stok') renderStockTable();
+        if (tabName === 'admin') loadAdminWarungList(); // Tarik otomatis data admin cabang (Revisi Baru)
     }
 
-    // Paket Langganan: tidak ada simulasi premium di sisi client.
-    // Upgrade diarahkan ke WhatsApp admin resmi.
+    // Paket Langganan: upgrade diarahkan ke admin WhatsApp resmi.
     function openWhatsAppUpgrade(source = 'settings') {
         const warungName = currentWarung?.name || '-';
         const username = currentWarung?.user || '-';
@@ -988,10 +1070,20 @@
         const status = document.getElementById('set-plan-status');
         const btn = document.getElementById('btn-toggle-plan');
         if (status && btn) {
-            status.innerText = "Free (Maks 10 Produk)";
-            btn.innerHTML = `<i class="fab fa-whatsapp mr-1"></i> Upgrade via WA`;
-            btn.className = "bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-5 rounded-xl text-xs transition shadow-md whitespace-nowrap";
-            btn.onclick = () => openWhatsAppUpgrade('settings');
+            // Tampilan status paket yang dinamis mengevaluasi database Superadmin / Premium (Revisi Baru)
+            if (currentWarung && currentWarung.role === 'superadmin') {
+                status.innerHTML = `<span class="text-red-600 font-bold"><i class="fas fa-user-shield text-red-500 mr-1"></i> Superadmin (Unlimited)</span>`;
+                btn.classList.add('hidden');
+            } else if (currentWarung && currentWarung.status === 'Premium') {
+                status.innerHTML = `<span class="text-green-600 font-black flex items-center gap-1"><i class="fas fa-crown text-amber-500 mr-1"></i> Premium Unlimited</span>`;
+                btn.classList.add('hidden');
+            } else {
+                status.innerText = "Free (Maks 10 Produk)";
+                btn.innerHTML = `<i class="fab fa-whatsapp mr-1"></i> Upgrade via WA`;
+                btn.className = "bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-5 rounded-xl text-xs transition shadow-md whitespace-nowrap";
+                btn.onclick = () => openWhatsAppUpgrade('settings');
+                btn.classList.remove('hidden');
+            }
         }
     }
 
@@ -1385,36 +1477,48 @@
         }
     }
 
-    function closeFloatingScanner() {
-        document.getElementById('floating-scanner').classList.add('hidden');
-        stopFloatingScanner();
+    // Fungsi Kamera Khusus Memenuhi Tab Keranjang Belanja (Revisi Ke-2)
+    function toggleCartScanner(show) {
+        const container = document.getElementById('cart-scanner-container');
+        if (!container) return;
+
+        if (show) {
+            container.classList.remove('hidden');
+            container.classList.add('flex');
+            startCartScanner();
+        } else {
+            container.classList.add('hidden');
+            container.classList.remove('flex');
+            stopCartScanner();
+        }
     }
 
-    // Fungsi Kamera Inline Desktop
-    function startInlineScanner() {
-        if (html5InlineScanner) return;
-        html5InlineScanner = new Html5Qrcode("reader");
-        html5InlineScanner.start({ facingMode: "environment" }, { fps: 15, qrbox: { width: 250, height: 200 } }, 
+    function startCartScanner() {
+        if (html5CartScanner) return;
+        html5CartScanner = new Html5Qrcode("cart-reader");
+        html5CartScanner.start({ facingMode: "environment" }, { fps: 15, qrbox: { width: 220, height: 220 } }, 
             (decodedText) => {
+                playCoinSound();
                 const localProduct = rawCatalog.find(p => String(p.barcode) === String(decodedText));
-                if(localProduct) { 
-                    addToCart(decodedText); 
-                } else { 
-                    toggleScanner();
-                    processNewBarcode(decodedText); 
+                if (localProduct) {
+                    addToCart(decodedText);
+                    // Scanner tetap terbuka agar kasir bisa memindai item berikutnya
+                } else {
+                    toggleCartScanner(false);
+                    processNewBarcode(decodedText);
                 }
             }, () => {}
-        ).catch(() => {
+        ).catch((err) => {
             showMsg('Info', "Kamera gagal diakses.");
-            toggleScanner();
+            toggleCartScanner(false);
         });
     }
 
-    function stopInlineScanner() {
-        if (html5InlineScanner) {
-            html5InlineScanner.stop().then(() => {
-                html5InlineScanner.clear();
-                html5InlineScanner = null;
+    function stopCartScanner() {
+        if (html5CartScanner) {
+            html5CartScanner.stop().then(() => {
+                html5CartScanner.clear();
+                html5CartScanner = null;
             }).catch(()=>{});
         }
     }
@@ -1441,8 +1545,9 @@
     }
 
     function setupProductModal(mode, barcode) {
-        // Aturan Proteksi Paket Free: upgrade diarahkan ke admin WhatsApp.
-        if (mode === 'add' && rawCatalog.length >= 10) {
+        // Aturan Proteksi Paket Free: Superadmin & Status Premium dinamis mem-bypass (Revisi Baru)
+        const isPremium = (currentWarung.status === 'Premium' || currentWarung.role === 'superadmin');
+        if (mode === 'add' && rawCatalog.length >= 10 && !isPremium) {
             document.getElementById('premium-upgrade-modal').classList.remove('hidden');
             return;
         }
@@ -1930,6 +2035,154 @@
         activeDetailTrx = null;
     }
 
+    // ==========================================
+    // SEKSI MODUL JAVASCRIPT PANEL ADMIN (REVISI BARU - UNTUK SUPERADMIN)
+    // ==========================================
+    async function loadAdminWarungList() {
+        const tbody = document.getElementById('admin-warung-table-body');
+        if (!tbody) return;
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-gray-400 font-bold">Memuat data cabang...</td></tr>';
+        
+        try {
+            const { data: warungs, error } = await supabaseClient
+                .from('warung')
+                .select('*')
+                .order('id_warung', { ascending: true });
+                
+            if (error) throw error;
+            
+            tbody.innerHTML = '';
+            if (!warungs || warungs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-gray-400">Tidak ada cabang terdaftar.</td></tr>';
+                return;
+            }
+            
+            warungs.forEach(w => {
+                const isPremium = w.status === 'Premium';
+                const planBadge = isPremium 
+                    ? `<span class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-black text-xs inline-flex items-center gap-1"><i class="fas fa-crown text-amber-500 text-[10px]"></i> Premium</span>`
+                    : `<span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full font-bold text-xs inline-flex items-center">Free</span>`;
+                
+                const statusBadge = w.status === 'Aktif' || w.status === 'Premium'
+                    ? `<span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full font-bold text-[11px]">Aktif</span>`
+                    : `<span class="bg-red-100 text-red-800 px-2.5 py-0.5 rounded-full font-bold text-[11px]">Suspend</span>`;
+                
+                const planBtnText = isPremium ? 'Downgrade Free' : 'Upgrade Premium';
+                const planBtnColor = isPremium ? 'bg-amber-100 text-amber-700 hover:bg-amber-600 hover:text-white' : 'bg-green-100 text-green-700 hover:bg-green-600 hover:text-white';
+                
+                tbody.innerHTML += `
+                <tr class="hover:bg-gray-50 transition bg-white text-xs sm:text-sm">
+                    <td class="p-3 font-mono font-bold text-gray-700">${w.id_warung}</td>
+                    <td class="p-3 font-bold text-gray-900">${w.nama_warung}</td>
+                    <td class="p-3 text-gray-600 font-semibold">${w.username}</td>
+                    <td class="p-3 text-center">${planBadge}</td>
+                    <td class="p-3 text-center">${statusBadge}</td>
+                    <td class="p-3 text-center">
+                        <div class="flex justify-center gap-1.5">
+                            <button onclick="adminTogglePremium('${w.id_warung}', ${isPremium})" class="${planBtnColor} px-3 py-1 rounded-lg text-xs font-bold transition whitespace-nowrap">
+                                <i class="fas fa-crown text-[10px] mr-0.5"></i> ${planBtnText}
+                            </button>
+                            <button onclick="adminToggleSuspend('${w.id_warung}', '${w.status}')" class="bg-gray-100 text-gray-700 hover:bg-gray-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition whitespace-nowrap">
+                                <i class="fas fa-power-off text-[10px] mr-0.5"></i> Suspend/Aktif
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
+            });
+        } catch(err) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-red-500 font-bold">Gagal memuat data: ${err.message}</td></tr>`;
+        }
+    }
+
+    async function adminTogglePremium(idWarung, isPremium) {
+        showLoading("Memproses paket lisensi...");
+        try {
+            const nextStatus = isPremium ? 'Aktif' : 'Premium';
+            const { error } = await supabaseClient
+                .from('warung')
+                .update({ status: nextStatus, updated_at: new Date() })
+                .eq('id_warung', idWarung);
+            
+            if (error) throw error;
+            
+            showMsg('Sukses', `Berhasil merubah lisensi warung [${idWarung}] ke paket ${nextStatus === 'Premium' ? 'Premium' : 'Free'}.`);
+            
+            // Jika akun yang diubah adalah akun superadmin yang sedang login, update sesi localnya
+            if (currentWarung && currentWarung.id === idWarung) {
+                currentWarung.status = nextStatus;
+                localStorage.setItem('pos_session', JSON.stringify(currentWarung));
+                renderPlanStatus();
+            }
+            
+            await loadAdminWarungList();
+        } catch(err) {
+            showMsg('Gagal', err.message || 'Gagal mengubah lisensi paket.');
+        } finally {
+            hideLoading();
+        }
+    }
+
+    async function adminToggleSuspend(idWarung, currentStatus) {
+        showLoading("Memproses status cabang...");
+        try {
+            const nextStatus = (currentStatus === 'Nonaktif') ? 'Aktif' : 'Nonaktif';
+            const { error } = await supabaseClient
+                .from('warung')
+                .update({ status: nextStatus, updated_at: new Date() })
+                .eq('id_warung', idWarung);
+            
+            if (error) throw error;
+            
+            showMsg('Sukses', `Status akun warung [${idWarung}] berhasil diubah menjadi ${nextStatus}.`);
+            await loadAdminWarungList();
+        } catch(err) {
+            showMsg('Gagal', err.message || 'Gagal mengubah status cabang.');
+        } finally {
+            hideLoading();
+        }
+    }
+
+    // Fungsi Pencadangan (Backup) Database ke File JSON Terpadu (Revisi Baru)
+    async function triggerDatabaseBackup() {
+        showLoading("Mengekspor database...");
+        try {
+            const [warungRes, produkRes, hargaRes, transaksiRes, detailRes] = await Promise.all([
+                supabaseClient.from('warung').select('*'),
+                supabaseClient.from('produk_induk').select('*'),
+                supabaseClient.from('harga_warung').select('*'),
+                supabaseClient.from('transaksi').select('*'),
+                supabaseClient.from('detail_transaksi').select('*')
+            ]);
+
+            const backupData = {
+                system: "YzPOS-Database-Backup",
+                backup_at: new Date().toISOString(),
+                exported_by: currentWarung ? currentWarung.user : 'superadmin',
+                tables: {
+                    warung: warungRes.data || [],
+                    produk_induk: produkRes.data || [],
+                    harga_warung: hargaRes.data || [],
+                    transaksi: transaksiRes.data || [],
+                    detail_transaksi: detailRes.data || []
+                }
+            };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `yzpos_db_backup_${new Date().toISOString().slice(0, 10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+
+            showMsg('Ekspor Berhasil', 'Seluruh data 5 tabel utama berhasil diekspor ke file JSON cadangan.');
+        } catch (err) {
+            showMsg('Gagal', err.message || 'Terjadi gangguan saat mencadangkan database.');
+        } finally {
+            hideLoading();
+        }
+    }
+
     // --- INTEGRASI FITUR SHORTCUT KEYBOARD KASIR ---
     window.addEventListener('keydown', (e) => {
         if (['F1', 'F2', 'F3', 'F4', 'F8', 'F9'].includes(e.key)) {
@@ -1964,6 +2217,7 @@
             closeTransactionDetailModal();
             closeFloatingScanner();
             stopInlineScanner();
+            toggleCartScanner(false); // FIXED: ESC menutup scanner keranjang (Revisi Ke-3)
         }
 
         const paymentModal = document.getElementById('payment-modal');
