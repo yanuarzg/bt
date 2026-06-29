@@ -6,7 +6,10 @@
     <title>Sistem Warung YzPOS - Pro Cashier Supabase</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = { theme: { extend: { colors: { primary: 'var(--primary)' } } } }
+        (function () {
+            'use strict';
+            tailwind.config = { theme: { extend: { colors: { primary: 'var(--primary)' } } } };
+        }());
     </script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
@@ -17,6 +20,16 @@
 
     <style>
         :root { --primary: #1f2937; }
+        /* Utility khusus POS: mengganti class global `hidden` agar tidak bentrok dengan CSS website induk */
+        .pos-hidden { display: none !important; }
+        @media (min-width: 640px) {
+            .sm\:pos-inline { display: inline !important; }
+        }
+        @media (min-width: 768px) {
+            .pos-md-hidden { display: none !important; }
+            .md\:pos-flex { display: flex !important; }
+            .md\:pos-inline { display: inline !important; }
+        }
         
         /* ISOLASI CSS */
         .pos-app-active {
@@ -98,13 +111,13 @@
 </head>
 <body>
 
-<div id="loading-overlay" class="fixed inset-0 bg-white bg-opacity-90 z-[2000] hidden flex-col items-center justify-center backdrop-blur-sm">
+<div id="loading-overlay" class="fixed inset-0 bg-white bg-opacity-90 z-[2000] pos-hidden flex-col items-center justify-center backdrop-blur-sm">
     <div class="pos-loader mb-4"></div>
     <p class="text-gray-800 font-bold animate-pulse text-lg" id="loading-text">Memproses...</p>
 </div>
 
 <!-- Custom Modal -->
-<div id="msg-box-modal" class="fixed inset-0 bg-gray-900 bg-opacity-60 hidden flex items-center justify-center z-[2500] p-4 backdrop-blur-sm transition-opacity">
+<div id="msg-box-modal" class="fixed inset-0 bg-gray-900 bg-opacity-60 pos-hidden flex items-center justify-center z-[2500] p-4 backdrop-blur-sm transition-opacity">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden transform scale-100 transition-transform z-[1500]">
         <div id="msg-box-header" class="p-4 font-black text-lg text-gray-800 border-b border-gray-100 flex items-center gap-2">Title</div>
         <div id="msg-box-body" class="p-5 text-gray-600 text-sm leading-relaxed">Message</div>
@@ -113,7 +126,7 @@
 </div>
 
 <!-- FLOATING SCANNER OVERLAY MOBILE -->
-<div id="floating-scanner" class="fixed inset-0 bg-black/90 hidden flex flex-col items-center justify-center z-[3000] p-4">
+<div id="floating-scanner" class="fixed inset-0 bg-black/90 pos-hidden flex flex-col items-center justify-center z-[3000] p-4">
     <div class="w-full max-w-sm bg-gray-900 rounded-2xl overflow-hidden shadow-2xl p-4 flex flex-col">
         <div class="flex justify-between items-center mb-3">
             <h3 class="text-white font-bold text-sm"><i class="fas fa-qrcode text-primary"></i> Pindai Barcode</h3>
@@ -125,7 +138,7 @@
 </div>
 
 <!-- MODAL UPGRADE PREMIUM -->
-<div id="premium-upgrade-modal" class="fixed inset-0 bg-gray-900/70 hidden flex items-center justify-center z-[1600] p-4 backdrop-blur-sm">
+<div id="premium-upgrade-modal" class="fixed inset-0 bg-gray-900/70 pos-hidden flex items-center justify-center z-[1600] p-4 backdrop-blur-sm">
     <div class="bg-white p-6 w-full max-w-sm rounded-2xl shadow-2xl flex flex-col text-center">
         <div class="w-16 h-16 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
             <i class="fas fa-crown text-3xl"></i>
@@ -175,7 +188,7 @@
         </div>
 
         <!-- SUB-MODUL 2: REGISTRASI -->
-        <div id="register-form-wrapper" class="hidden space-y-4">
+        <div id="register-form-wrapper" class="pos-hidden space-y-4">
             <div class="text-center mb-8">
                 <i class="fas fa-user-plus text-6xl text-primary mb-4 drop-shadow-md"></i>
                 <h1 class="text-2xl font-black text-gray-900 tracking-tight">Registrasi Pengguna</h1>
@@ -205,7 +218,7 @@
 </div>
 
 <!-- App Container -->
-<div id="app-container" class="hidden pos-viewport-wrapper">
+<div id="app-container" class="pos-hidden pos-viewport-wrapper">
     <!-- HEADER -->
     <header class="bg-white border-b border-gray-200 p-3 md:p-4 flex justify-between items-center z-10 shadow-sm shrink-0">
         <div class="flex items-center gap-4 md:gap-8">
@@ -214,7 +227,7 @@
                 <span id="header-warung-name">Warung</span>
             </h1>
             
-            <div id="desktop-nav" class="md:flex gap-6 items-center font-bold font-sans text-sm"> 
+            <div id="desktop-nav" class="md:pos-flex gap-6 items-center font-bold font-sans text-sm"> 
                 <button onclick="switchTab('katalog')" id="desk-katalog" class="pb-1 border-b-2 border-primary text-primary font-bold transition px-4 py-1">Katalog</button>
                 <button onclick="switchTab('stok')" id="desk-stok" class="pb-1 border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition px-2 py-1">Stok</button>
                 <button onclick="switchTab('riwayat')" id="desk-riwayat" class="pb-1 border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition px-2">Riwayat</button>
@@ -225,8 +238,8 @@
         </div>
         
         <div class="flex items-center gap-2">
-            <button onclick="toggleFullScreen()" class="text-sm bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100 px-4 py-1.5 md:px-5 md:py-2 rounded-lg transition font-semibold flex items-center gap-2"><i class="fas fa-expand"></i><span class="hidden md:inline">Fullscreen</span></button>
-            <button onclick="logout()" class="text-sm bg-red-50 text-red-600 border border-red-100 hover:bg-red-100 px-4 py-1.5 md:px-5 md:py-2 rounded-lg transition font-semibold flex items-center gap-2"><i class="fas fa-sign-out-alt"></i><span class="hidden md:inline">Keluar</span></button>
+            <button onclick="toggleFullScreen()" class="text-sm bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100 px-4 py-1.5 md:px-5 md:py-2 rounded-lg transition font-semibold flex items-center gap-2"><i class="fas fa-expand"></i><span class="pos-hidden md:pos-inline">Fullscreen</span></button>
+            <button onclick="logout()" class="text-sm bg-red-50 text-red-600 border border-red-100 hover:bg-red-100 px-4 py-1.5 md:px-5 md:py-2 rounded-lg transition font-semibold flex items-center gap-2"><i class="fas fa-sign-out-alt"></i><span class="pos-hidden md:pos-inline">Keluar</span></button>
         </div>
     </header>
 
@@ -244,16 +257,16 @@
                         <i class="fas fa-search absolute left-3.5 top-3.5 text-gray-400"></i>
                         <input type="text" id="search-input" placeholder="Cari nama atau barcode..." class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary transition" onkeyup="filterProducts()">
                     </div>
-                    <button onclick="toggleScanner()" class="bg-gray-800 text-white px-5 py-2.5 rounded-xl hover:opacity-90 shadow-md transition font-bold flex items-center gap-2"><i class="fas fa-qrcode"></i> <span class="hidden sm:inline">Scan</span></button>
+                    <button onclick="toggleScanner()" class="bg-gray-800 text-white px-5 py-2.5 rounded-xl hover:opacity-90 shadow-md transition font-bold flex items-center gap-2"><i class="fas fa-qrcode"></i> <span class="pos-hidden sm:pos-inline">Scan</span></button>
                 </div>
 
                 <!-- Banner Pemberitahuan Stok Menipis -->
-                <div id="stock-warning-banner" class="hidden mx-3 mt-3 p-3 bg-amber-50 border-l-4 border-amber-500 text-amber-800 rounded-r-xl text-xs font-bold flex justify-between items-center shrink-0"></div>
+                <div id="stock-warning-banner" class="pos-hidden mx-3 mt-3 p-3 bg-amber-50 border-l-4 border-amber-500 text-amber-800 rounded-r-xl text-xs font-bold flex justify-between items-center shrink-0"></div>
 
                 <!-- Baris Kategori: Mendukung scroll horizontal dinamis -->
                 <div id="category-bar" class="flex overflow-x-auto p-3 gap-2 bg-white border-b border-gray-100 no-scrollbar shrink-0 justify-start items-center"></div>
 
-                <div id="scanner-container" class="hidden p-4 bg-gray-900 border-b border-gray-800 shrink-0">
+                <div id="scanner-container" class="pos-hidden p-4 bg-gray-900 border-b border-gray-800 shrink-0">
                     <div id="reader" class="w-full max-w-sm mx-auto overflow-hidden rounded-xl bg-black"></div>
                     <button onclick="toggleScanner()" class="mt-3 w-full text-white font-bold bg-red-600 rounded-xl py-2 px-6 hover:bg-red-700 transition font-mono">Tutup Kamera</button>
                 </div>
@@ -264,7 +277,7 @@
             </div>
 
             <!-- TAB 2: MANAJEMEN STOK -->
-            <div id="tab-stok" class="absolute inset-0 hidden flex-col w-full h-full bg-gray-50 overflow-hidden">
+            <div id="tab-stok" class="absolute inset-0 pos-hidden flex-col w-full h-full bg-gray-50 overflow-hidden">
                 <div class="p-3 md:p-4 bg-white border-b border-gray-100 shadow-sm z-10 flex gap-2 shrink-0 justify-between items-center">
                     <div class="relative flex-1 max-w-xs sm:max-w-sm">
                         <i class="fas fa-search absolute left-3.5 top-3.5 text-gray-400"></i>
@@ -281,7 +294,7 @@
                         <option value="stock">Stok Terendah</option>
                     </select>
 
-                    <button onclick="showEditProductModal()" class="bg-primary text-white px-5 py-2.5 rounded-xl hover:opacity-90 transition font-bold flex items-center gap-2 text-xs sm:text-sm shrink-0"><i class="fas fa-plus"></i> <span class="hidden sm:inline">Tambah Produk</span></button>
+                    <button onclick="showEditProductModal()" class="bg-primary text-white px-5 py-2.5 rounded-xl hover:opacity-90 transition font-bold flex items-center gap-2 text-xs sm:text-sm shrink-0"><i class="fas fa-plus"></i> <span class="pos-hidden sm:pos-inline">Tambah Produk</span></button>
                 </div>
                 
                 <div class="flex-1 overflow-y-auto p-4">
@@ -305,7 +318,7 @@
             </div>
 
             <!-- TAB 3: RIWAYAT & KEUANGAN -->
-            <div id="tab-riwayat" class="absolute inset-0 hidden flex-col w-full h-full bg-gray-50 overflow-hidden">
+            <div id="tab-riwayat" class="absolute inset-0 pos-hidden flex-col w-full h-full bg-gray-50 overflow-hidden">
                 <div class="p-4 bg-white border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shadow-sm shrink-0">
                     <h2 class="text-lg font-bold text-gray-800 flex items-center"><i class="fas fa-history text-primary mr-2"></i>Keuangan & Laporan</h2>
                     <div class="flex gap-2 w-full sm:w-auto">
@@ -342,7 +355,7 @@
             </div>
 
             <!-- TAB 4: PENGATURAN -->
-            <div id="tab-setelan" class="absolute inset-0 hidden flex-col w-full h-full bg-gray-50 overflow-hidden">
+            <div id="tab-setelan" class="absolute inset-0 pos-hidden flex-col w-full h-full bg-gray-50 overflow-hidden">
                 <div class="p-4 bg-white border-b border-gray-200 shadow-sm shrink-0">
                     <h2 class="text-lg font-bold text-gray-800 flex items-center"><i class="fas fa-cogs text-primary mr-2"></i>Pengaturan Warung</h2>
                 </div>
@@ -386,7 +399,7 @@
                                 <div>
                                     <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Logo Warung (Kustom Struk)</label>
                                     <div class="flex gap-2">
-                                        <input type="file" id="set-logo-file" accept="image/*" onchange="convertLogoToBase64()" class="hidden">
+                                        <input type="file" id="set-logo-file" accept="image/*" onchange="convertLogoToBase64()" class="pos-hidden">
                                         <button type="button" onclick="document.getElementById('set-logo-file').click()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg text-xs font-bold border transition whitespace-nowrap"><i class="fas fa-upload"></i> Upload</button>
                                         <input type="text" id="set-logo" class="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:border-primary text-xs" placeholder="Base64/URL Logo">
                                     </div>
@@ -414,7 +427,7 @@
             </div>
 
             <!-- TAB 5: PANEL ADMIN (Modul Manajemen Lisensi & Database - Khusus Superadmin) -->
-            <div id="tab-admin" class="absolute inset-0 hidden flex-col w-full h-full bg-gray-50 overflow-hidden">
+            <div id="tab-admin" class="absolute inset-0 pos-hidden flex-col w-full h-full bg-gray-50 overflow-hidden">
                 <div class="p-4 bg-white border-b border-gray-200 shadow-sm shrink-0 flex justify-between items-center">
                     <h2 class="text-lg font-bold text-gray-800 flex items-center"><i class="fas fa-user-shield text-red-600 mr-2"></i>Admin Console YzPOS</h2>
                     <div class="flex gap-2">
@@ -479,13 +492,13 @@
         </div>
 
         <!-- PANEL KANAN (KERANJANG) -->
-        <div id="tab-keranjang" class="hidden md:flex flex-col w-full md:w-[350px] lg:w-[400px] bg-white h-full z-20 md:z-10 shadow-2xl md:shadow-[rgba(0,0,0,0.05)_-4px_0px_10px_0px] absolute md:relative inset-0 md:inset-auto transition-transform shrink-0 border-l border-gray-200 relative">
+        <div id="tab-keranjang" class="pos-hidden md:pos-flex flex-col w-full md:w-[350px] lg:w-[400px] bg-white h-full z-20 md:z-10 shadow-2xl md:shadow-[rgba(0,0,0,0.05)_-4px_0px_10px_0px] absolute md:relative inset-0 md:inset-auto transition-transform shrink-0 border-l border-gray-200 relative">
             <div id="panel-keranjang" class="flex flex-col h-full w-full">
                 <div class="p-4 bg-primary text-white flex justify-between items-center shadow-md shrink-0">
                     <h2 class="text-lg font-bold flex items-center gap-1.5"><i class="fas fa-shopping-basket"></i> Keranjang</h2>
                     <div class="flex gap-2">
                         <!-- Tombol Scan Barcode Keranjang Mobile -->
-                        <button onclick="toggleCartScanner(true)" class="md:hidden bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-4 py-1.5 rounded-lg transition flex items-center gap-1"><i class="fas fa-qrcode"></i> Scan</button>
+                        <button onclick="toggleCartScanner(true)" class="pos-md-hidden bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-4 py-1.5 rounded-lg transition flex items-center gap-1"><i class="fas fa-qrcode"></i> Scan</button>
                         <button onclick="clearCart()" class="bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-4 py-1.5 rounded-lg transition flex items-center gap-1"><i class="fas fa-trash-alt"></i> Bersihkan</button>
                     </div>
                 </div>
@@ -517,7 +530,7 @@
             </div>
 
             <!-- PANEL KANAN KONTEKSTUAL DESKTOP -->
-            <div id="right-context-panel" class="hidden flex-col h-full w-full bg-gray-50 overflow-y-auto">
+            <div id="right-context-panel" class="pos-hidden flex-col h-full w-full bg-gray-50 overflow-y-auto">
                 <div class="p-4 bg-white border-b border-gray-200 shadow-sm shrink-0">
                     <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2" id="right-context-title"><i class="fas fa-layer-group text-primary"></i> Ringkasan</h2>
                     <p class="text-xs text-gray-400 font-semibold mt-1" id="right-context-subtitle">Informasi cepat sesuai halaman aktif</p>
@@ -526,7 +539,7 @@
             </div>
             
             <!-- SCANNER OVERLAY YANG MEMENUHI TAB KERANJANG -->
-            <div id="cart-scanner-container" class="absolute inset-0 bg-gray-900 hidden flex-col z-50 p-4">
+            <div id="cart-scanner-container" class="absolute inset-0 bg-gray-900 pos-hidden flex-col z-50 p-4">
                 <div class="flex justify-between items-center mb-3 shrink-0">
                     <h3 class="text-white font-bold text-sm flex items-center gap-1.5">
                         <i class="fas fa-qrcode text-primary"></i> Scan Produk Ke Keranjang
@@ -539,18 +552,18 @@
                 <button onclick="toggleCartScanner(false)" class="mt-4 w-full text-white font-bold bg-red-600 rounded-xl py-3.5 px-6 hover:bg-red-700 transition shrink-0">Tutup Scanner</button>
             </div>
             
-            <button id="close-mob-panel" onclick="closeMobPanel()" class="md:hidden absolute bottom-4 left-4 right-4 bg-gray-800 text-white font-bold py-3.5 px-6 rounded-xl z-50 shadow-lg hidden"><i class="fas fa-times mr-2"></i>Tutup Keranjang</button>
+            <button id="close-mob-panel" onclick="closeMobPanel()" class="pos-md-hidden absolute bottom-4 left-4 right-4 bg-gray-800 text-white font-bold py-3.5 px-6 rounded-xl z-50 shadow-lg pos-hidden"><i class="fas fa-times mr-2"></i>Tutup Keranjang</button>
         </div>
     </div>
 
     <!-- NAVIGASI BAWAH (MOBILE) -->
-    <nav class="md:hidden fixed bottom-0 w-full h-[76px] pb-1 bg-white border-t border-gray-200 flex overflow-x-auto no-scrollbar justify-start items-center text-[10px] text-gray-400 z-50 shadow-[0_-4px_15px_-1px_rgba(0,0,0,0.05)] shrink-0">
+    <nav class="pos-md-hidden fixed bottom-0 w-full h-[76px] pb-1 bg-white border-t border-gray-200 flex overflow-x-auto no-scrollbar justify-start items-center text-[10px] text-gray-400 z-50 shadow-[0_-4px_15px_-1px_rgba(0,0,0,0.05)] shrink-0">
         <button id="nav-katalog" onclick="switchTab('katalog')" class="min-w-[76px] flex-1 h-full flex flex-col items-center justify-center gap-1.5 text-primary font-bold transition">
             <i class="fas fa-box text-2xl"></i><span>Katalog</span>
         </button>
         <button id="nav-keranjang" onclick="switchTab('keranjang')" class="min-w-[76px] flex-1 h-full flex flex-col items-center justify-center gap-1.5 relative transition">
             <i class="fas fa-shopping-cart text-2xl"></i><span>Keranjang</span>
-            <span id="cart-badge" class="absolute top-2 right-1/4 translate-x-2 bg-red-500 text-white rounded-full h-4.5 w-4.5 min-w-[18px] text-[10px] font-bold flex items-center justify-center hidden ring-2 ring-white">0</span>
+            <span id="cart-badge" class="absolute top-2 right-1/4 translate-x-2 bg-red-500 text-white rounded-full h-4.5 w-4.5 min-w-[18px] text-[10px] font-bold flex items-center justify-center pos-hidden ring-2 ring-white">0</span>
         </button>
         <button id="nav-stok" onclick="switchTab('stok')" class="min-w-[76px] flex-1 h-full flex flex-col items-center justify-center gap-1.5 transition">
             <i class="fas fa-warehouse text-2xl"></i><span>Stok</span>
@@ -562,13 +575,13 @@
             <i class="fas fa-cog text-2xl"></i><span>Setelan</span>
         </button>
         <!-- Tombol Admin Panel Mobile (Hidden By Default) -->
-        <button id="nav-admin" onclick="switchTab('admin')" class="hidden min-w-[76px] flex-1 h-full flex flex-col items-center justify-center gap-1.5 text-red-600 transition">
+        <button id="nav-admin" onclick="switchTab('admin')" class="pos-hidden min-w-[76px] flex-1 h-full flex flex-col items-center justify-center gap-1.5 text-red-600 transition">
             <i class="fas fa-user-shield text-2xl"></i><span>Admin</span>
         </button>
     </nav>
 
     <!-- SHORTCUT HELPER (DESKTOP) -->
-    <div class="hidden md:flex bg-gray-100 border-t border-gray-200 px-4 py-2 text-[11px] text-gray-500 justify-between items-center shrink-0">
+    <div class="pos-hidden md:pos-flex bg-gray-100 border-t border-gray-200 px-4 py-2 text-[11px] text-gray-500 justify-between items-center shrink-0">
         <div class="flex flex-wrap gap-4 font-semibold text-gray-600">
             <span><kbd class="bg-white border border-gray-300 rounded px-1.5 py-0.5 shadow-sm text-gray-800">F1</kbd> Katalog</span>
             <span><kbd class="bg-white border border-gray-300 rounded px-1.5 py-0.5 shadow-sm text-gray-800">F2</kbd> Stok</span>
@@ -583,7 +596,7 @@
 </div>
 
 <!-- MODAL DETAIL TRANSAKSI -->
-<div id="transaction-detail-modal" class="fixed inset-0 bg-gray-900/70 hidden flex items-center justify-center z-[1500] p-4 backdrop-blur-sm">
+<div id="transaction-detail-modal" class="fixed inset-0 bg-gray-900/70 pos-hidden flex items-center justify-center z-[1500] p-4 backdrop-blur-sm">
     <div class="bg-white p-5 w-full max-w-md rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
         <div class="flex justify-between items-center pb-3 border-b border-gray-100 shrink-0">
             <h3 class="text-lg font-black text-gray-900 flex items-center gap-2"><i class="fas fa-file-invoice text-primary"></i> <span id="detail-trx-title">Detail Transaksi</span></h3>
@@ -598,12 +611,12 @@
 </div>
 
 <!-- MODAL EDIT/TAMBAH PRODUK -->
-<div id="add-product-modal" class="fixed inset-0 bg-gray-900/70 hidden flex items-center justify-center z-[1500] p-4 backdrop-blur-sm">
+<div id="add-product-modal" class="fixed inset-0 bg-gray-900/70 pos-hidden flex items-center justify-center z-[1500] p-4 backdrop-blur-sm">
     <div class="bg-white p-6 w-full max-w-sm rounded-2xl shadow-2xl transform transition-all overflow-hidden flex flex-col max-h-[90vh]">
         <h3 class="text-xl font-black text-gray-900 mb-2 shrink-0" id="modal-product-title">Setup Produk</h3>
         
         <div class="flex-1 overflow-y-auto space-y-4 pr-1">
-            <div id="modal-status-banner" class="p-3 text-sm font-semibold border-l-4 rounded-r-lg bg-gray-50 hidden"></div>
+            <div id="modal-status-banner" class="p-3 text-sm font-semibold border-l-4 rounded-r-lg bg-gray-50 pos-hidden"></div>
             
             <div>
                 <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Barcode (Unik)</label>
@@ -647,7 +660,7 @@
 </div>
 
 <!-- MODAL EDIT PRODUK PUSAT ADMIN -->
-<div id="admin-product-modal" class="fixed inset-0 bg-gray-900/70 hidden flex items-center justify-center z-[1550] p-4 backdrop-blur-sm">
+<div id="admin-product-modal" class="fixed inset-0 bg-gray-900/70 pos-hidden flex items-center justify-center z-[1550] p-4 backdrop-blur-sm">
     <div class="bg-white p-6 w-full max-w-md rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
         <div class="flex justify-between items-center pb-3 border-b border-gray-100 shrink-0">
             <h3 class="text-lg font-black text-gray-900 flex items-center gap-2"><i class="fas fa-boxes-stacked text-primary"></i> Edit Produk Pusat</h3>
@@ -678,7 +691,7 @@
 </div>
 
 <!-- MODAL PEMBAYARAN -->
-<div id="payment-modal" class="fixed inset-0 bg-gray-900/70 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+<div id="payment-modal" class="fixed inset-0 bg-gray-900/70 pos-hidden flex items-center justify-center p-4 backdrop-blur-sm">
     <div class="bg-white p-5 w-full max-w-md rounded-2xl shadow-2xl flex flex-col max-h-[95vh] overflow-y-auto font-sans">
         <h2 class="text-xl font-black mb-4 text-center text-gray-900 uppercase tracking-widest shrink-0">Pembayaran Kasir</h2>
         
@@ -721,9 +734,9 @@
 <!-- AREA CETAK -->
 <div id="print-section">
     <div class="pos-struk-header">
-        <img id="print-logo" class="mx-auto max-h-12 mb-2 hidden" src="" alt="Logo">
+        <img id="print-logo" class="mx-auto max-h-12 mb-2 pos-hidden" src="" alt="Logo">
         <h2 id="print-nama-warung">WARUNG</h2>
-        <p id="print-biodata" class="whitespace-pre-line text-[9px] text-gray-600 mt-1 hidden"></p>
+        <p id="print-biodata" class="whitespace-pre-line text-[9px] text-gray-600 mt-1 pos-hidden"></p>
         <p class="border-t border-dashed border-black pt-1">SistemPOS</p>
         <p id="print-tanggal"></p>
     </div>
@@ -740,19 +753,30 @@
 </div>
 
 <script>
+(function () {
+    'use strict';
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+(function () {
+    'use strict';
     // ==========================================
     // KREDENSIAL SUPABASE RESMI PROYEK ANDA
     // ==========================================
-    const SUPABASE_URL = 'https://jbwlnscywfltsxnfwvma.supabase.co'; 
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impid2xuc2N5d2ZsdHN4bmZ3dm1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2NTUxMTgsImV4cCI6MjA5ODIzMTExOH0.v8rhZ_USgitx1dBlEJngAW_1lfv2BJqmI3M8LscnqYY'; 
-    
+    const SUPABASE_URL = 'https://jbwlnscywfltsxnfwvma.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impid2xuc2N5d2ZsdHN4bmZ3dm1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2NTUxMTgsImV4cCI6MjA5ODIzMTExOH0.v8rhZ_USgitx1dBlEJngAW_1lfv2BJqmI3M8LscnqYY';
     // Inisialisasi library tanpa bentrok
     const { createClient } = window.supabase;
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
     let isCheckoutRunning = false;
     const PREMIUM_WA_NUMBER = '6289507785333';
-
     // --- CUSTOM MSGBOX ---
     function showMsg(title, msg, type = 'info', onConfirm = null, allowHtml = false) {
         const headerIcon = type === 'confirm'
@@ -760,63 +784,69 @@
             : `<i class="fas fa-info-circle text-blue-500"></i>`;
         document.getElementById('msg-box-header').innerHTML = `${headerIcon} ${escapeHtml(title)}`;
         const body = document.getElementById('msg-box-body');
-        body.innerHTML = allowHtml === true ? String(msg ?? '') : escapeHtml(msg).replace(/\n/g, '<br>');
-
+        body.innerHTML = allowHtml === true ? String(msg !== null && msg !== undefined ? msg : '') : escapeHtml(msg).replace(/\n/g, '<br>');
         const footer = document.getElementById('msg-box-footer');
         if (type === 'confirm') {
             footer.innerHTML = `<button onclick="closeMsg()" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg font-bold hover:bg-gray-50">Batal</button>
                                 <button onclick="execConfirm()" class="px-4 py-2 bg-primary text-white rounded-lg font-bold hover:opacity-90">Ya, Lanjutkan</button>`;
             window.pendingConfirm = onConfirm;
-        } else {
+        }
+        else {
             footer.innerHTML = `<button onclick="closeMsg()" class="px-5 py-2 bg-primary text-white rounded-lg font-bold hover:opacity-90">Tutup</button>`;
             window.pendingConfirm = null;
         }
-        document.getElementById('msg-box-modal').classList.remove('hidden');
+        document.getElementById('msg-box-modal').classList.remove('pos-hidden');
     }
-    function closeMsg() { document.getElementById('msg-box-modal').classList.add('hidden'); }
-    function execConfirm() { closeMsg(); if(window.pendingConfirm) window.pendingConfirm(); }
-
+    function closeMsg() { document.getElementById('msg-box-modal').classList.add('pos-hidden'); }
+    function execConfirm() { closeMsg(); if (window.pendingConfirm)
+        window.pendingConfirm(); }
     // --- TEMA & AUDIO ---
     const themeColors = { 'dark': '#1f2937', 'blue': '#2563eb', 'green': '#16a34a', 'red': '#dc2626', 'purple': '#9333ea' };
-    
-    async function applyTheme(colorKey) {
-        const hex = themeColors[colorKey] || themeColors['dark'];
-        document.documentElement.style.setProperty('--primary', hex);
-        if(currentWarung) { 
-            currentWarung.theme = colorKey; 
-            localStorage.setItem('pos_session', JSON.stringify(currentWarung)); 
-        }
+    function applyTheme(colorKey) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const hex = themeColors[colorKey] || themeColors['dark'];
+            document.documentElement.style.setProperty('--primary', hex);
+            if (currentWarung) {
+                currentWarung.theme = colorKey;
+                localStorage.setItem('pos_session', JSON.stringify(currentWarung));
+            }
+        });
     }
     function playCoinSound() {
-        try { new Audio('https://actions.google.com/sounds/v1/foley/coins_in_hand.ogg').play(); } catch(e){}
+        try {
+            new Audio('https://actions.google.com/sounds/v1/foley/coins_in_hand.ogg').play();
+        }
+        catch (e) { }
     }
-
     // --- FULLSCREEN LOGIC ---
     function toggleFullScreen() {
         if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen().catch(err => {
                 showMsg('Gagal', `Layar penuh tidak didukung di peramban ini.`);
             });
-        } else {
-            if (document.exitFullscreen) { document.exitFullscreen(); }
+        }
+        else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
         }
     }
-
     // --- HASH PASSWORD HELPER (SHA-256) ---
-    async function hashPassword(password) {
-        const msgBuffer = new TextEncoder().encode(password);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    function hashPassword(password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const msgBuffer = new TextEncoder().encode(password);
+            const hashBuffer = yield crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => leftPad(b.toString(16), 2, '0')).join('');
+        });
     }
-
     // --- STATE & VARIABEL ---
     let currentWarung = null;
-    let localCatalog = []; 
-    let rawCatalog = [];   
+    let localCatalog = [];
+    let rawCatalog = [];
     let masterDB = {};
     let historyData = [];
-    let popularityMap = {}; 
+    let popularityMap = {};
     let categoryPopularity = {}; // Mengurutkan kategori terlaris
     let cart = [];
     let currentCategory = 'Semua';
@@ -825,27 +855,29 @@
     let html5QrScanner = null; // Scanner Mengambang/Floating (Untuk modal input produk)
     let html5InlineScanner = null; // Scanner Desktop/Inline
     let html5CartScanner = null; // Scanner Keranjang Belanja (Revisi Ke-2)
-    let scannerTarget = 'cart'; 
-    let salesChart = null; 
+    let scannerTarget = 'cart';
+    let salesChart = null;
     let activeDetailTrx = null; // Rincian aktif yang sedang dibuka
-
     const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
-
+    function leftPad(value, targetLength, padString) {
+        const str = String(value);
+        const pad = String(padString || ' ');
+        const needed = Number(targetLength) - str.length;
+        if (needed <= 0)
+            return str;
+        return new Array(needed + 1).join(pad).slice(0, needed) + str;
+    }
     function escapeHtml(value) {
-        return String(value ?? '').replace(/[&<>'"]/g, function(char) {
+        return String(value !== null && value !== undefined ? value : '').replace(/[&<>'"]/g, function (char) {
             return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char];
         });
     }
-
-
     function jsArg(value) {
-        return JSON.stringify(String(value ?? ''));
+        return JSON.stringify(String(value !== null && value !== undefined ? value : ''));
     }
-
     function isSuperAdmin() {
         return currentWarung && currentWarung.role === 'superadmin';
     }
-
     function assertSuperAdminAction() {
         if (!isSuperAdmin()) {
             showMsg('Akses ditolak', 'Panel admin hanya dapat digunakan oleh akun superadmin. Silakan login ulang menggunakan akun superadmin yang valid.');
@@ -853,241 +885,240 @@
         }
         return true;
     }
-
-    async function refreshSessionFromDB() {
-        if (!currentWarung || !currentWarung.id) return false;
-        try {
-            const { data: warung, error } = await supabaseClient
-                .from('warung')
-                .select('*')
-                .eq('id_warung', currentWarung.id)
-                .maybeSingle();
-
-            if (error || !warung || warung.status === 'Nonaktif') {
+    function refreshSessionFromDB() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!currentWarung || !currentWarung.id)
+                return false;
+            try {
+                const { data: warung, error } = yield supabaseClient
+                    .from('warung')
+                    .select('*')
+                    .eq('id_warung', currentWarung.id)
+                    .maybeSingle();
+                if (error || !warung || warung.status === 'Nonaktif') {
+                    localStorage.removeItem('pos_session');
+                    currentWarung = null;
+                    return false;
+                }
+                currentWarung = {
+                    id: warung.id_warung,
+                    user: warung.username,
+                    name: warung.nama_warung,
+                    theme: warung.tema || 'dark',
+                    role: warung.role || 'user',
+                    status: warung.status || 'Aktif',
+                    logo: warung.logo || '',
+                    biodata: warung.biodata || ''
+                };
+                localStorage.setItem('pos_session', JSON.stringify(currentWarung));
+                return true;
+            }
+            catch (err) {
                 localStorage.removeItem('pos_session');
                 currentWarung = null;
                 return false;
             }
-
-            currentWarung = {
-                id: warung.id_warung,
-                user: warung.username,
-                name: warung.nama_warung,
-                theme: warung.tema || 'dark',
-                role: warung.role || 'user',
-                status: warung.status || 'Aktif',
-                logo: warung.logo || '',
-                biodata: warung.biodata || ''
-            };
-            localStorage.setItem('pos_session', JSON.stringify(currentWarung));
-            return true;
-        } catch (err) {
-            localStorage.removeItem('pos_session');
-            currentWarung = null;
-            return false;
-        }
+        });
     }
-
     function showLoading(text = "Memproses...") {
         document.getElementById('loading-text').innerText = text;
         const overlay = document.getElementById('loading-overlay');
         if (overlay) {
-            overlay.classList.remove('hidden');
+            overlay.classList.remove('pos-hidden');
             overlay.classList.add('flex');
         }
     }
     function hideLoading() {
         const overlay = document.getElementById('loading-overlay');
         if (overlay) {
-            overlay.classList.add('hidden');
+            overlay.classList.add('pos-hidden');
             overlay.classList.remove('flex');
         }
     }
-
-    window.onload = async () => {
+    window.onload = () => __awaiter(this, void 0, void 0, function* () {
         document.documentElement.classList.add('pos-app-active');
         document.body.classList.add('pos-app-active');
-
         const savedSession = localStorage.getItem('pos_session');
         if (savedSession) {
             try {
                 currentWarung = JSON.parse(savedSession);
-                const sessionValid = await refreshSessionFromDB();
+                const sessionValid = yield refreshSessionFromDB();
                 if (sessionValid) {
-                    await applyTheme(currentWarung.theme || 'dark');
+                    yield applyTheme(currentWarung.theme || 'dark');
                     showAppUI();
-                    await loadCatalog();
+                    yield loadCatalog();
                 }
-            } catch (err) {
+            }
+            catch (err) {
                 localStorage.removeItem('pos_session');
                 currentWarung = null;
             }
         }
         const d = new Date();
-        const yyyyMm = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+        const yyyyMm = `${d.getFullYear()}-${leftPad(d.getMonth() + 1, 2, '0')}`;
         document.getElementById('history-month').value = yyyyMm;
         window.addEventListener('resize', handleResize);
-    };
-
+    });
     function showAppUI() {
         const loginScreen = document.getElementById('login-screen');
         const appContainer = document.getElementById('app-container');
-        if (loginScreen) loginScreen.classList.add('hidden');
+        if (loginScreen)
+            loginScreen.classList.add('pos-hidden');
         if (appContainer) {
-            appContainer.classList.remove('hidden');
+            appContainer.classList.remove('pos-hidden');
             appContainer.classList.add('flex');
         }
         document.getElementById('header-warung-name').textContent = currentWarung.name || 'Warung';
         document.getElementById('print-nama-warung').innerText = String(currentWarung.name || 'Warung').toUpperCase();
-        
         document.getElementById('set-name').value = currentWarung.name || '';
         document.getElementById('set-user').value = currentWarung.user || '';
         document.getElementById('set-pass').value = '';
-        document.getElementById('set-pass').placeholder = 'Kosongkan jika tidak diubah';            
+        document.getElementById('set-pass').placeholder = 'Kosongkan jika tidak diubah';
         document.getElementById('set-logo').value = currentWarung.logo || '';
         document.getElementById('set-biodata').value = currentWarung.biodata || '';
-
         const deskAdmin = document.getElementById('desk-admin');
         const navAdmin = document.getElementById('nav-admin');
         if (isSuperAdmin()) {
-            if (deskAdmin) deskAdmin.classList.remove('hidden');
-            if (navAdmin) navAdmin.classList.remove('hidden');
-        } else {
-            if (deskAdmin) deskAdmin.classList.add('hidden');
-            if (navAdmin) navAdmin.classList.add('hidden');
+            if (deskAdmin)
+                deskAdmin.classList.remove('pos-hidden');
+            if (navAdmin)
+                navAdmin.classList.remove('pos-hidden');
         }
-
+        else {
+            if (deskAdmin)
+                deskAdmin.classList.add('pos-hidden');
+            if (navAdmin)
+                navAdmin.classList.add('pos-hidden');
+        }
         renderPlanStatus();
         handleResize();
     }
-
     // Switch Panel Login & Registrasi
     function toggleLoginRegister(isRegister) {
         const loginForm = document.getElementById('login-form-wrapper');
         const registerForm = document.getElementById('register-form-wrapper');
         if (isRegister) {
-            loginForm.classList.add('hidden');
-            registerForm.classList.remove('hidden');
-        } else {
-            loginForm.classList.remove('hidden');
-            registerForm.classList.add('hidden');
+            loginForm.classList.add('pos-hidden');
+            registerForm.classList.remove('pos-hidden');
+        }
+        else {
+            loginForm.classList.remove('pos-hidden');
+            registerForm.classList.add('pos-hidden');
         }
     }
-
     // Konversi logo berkas lokal ke Base64
     function convertLogoToBase64() {
         const file = document.getElementById('set-logo-file').files[0];
-        if (!file) return;
+        if (!file)
+            return;
         const reader = new FileReader();
-        reader.onloadend = function() {
+        reader.onloadend = function () {
             document.getElementById('set-logo').value = reader.result;
-        }
+        };
         reader.readAsDataURL(file);
     }
-
-    async function saveSettings() {
-        const name = document.getElementById('set-name').value.trim();
-        const user = document.getElementById('set-user').value.trim();
-        const pass = document.getElementById('set-pass').value;
-        const logo = document.getElementById('set-logo').value.trim();
-        const biodata = document.getElementById('set-biodata').value.trim();
-
-        if (!currentWarung || !currentWarung.id) return showMsg('Sesi tidak valid', 'Silakan login ulang.');
-        if (!name || !user) return showMsg('Peringatan', 'Nama warung dan username wajib diisi.');
-        if (pass && pass.length < 6) return showMsg('Peringatan', 'Password baru minimal 6 karakter.');
-
-        showLoading('Menyimpan pengaturan...');
-        try {
-            if (user !== currentWarung.user) {
-                const { data: existing, error: checkErr } = await supabaseClient
-                    .from('warung')
-                    .select('id_warung')
-                    .eq('username', user)
-                    .neq('id_warung', currentWarung.id)
-                    .maybeSingle();
-                if (checkErr) throw checkErr;
-                if (existing) {
-                    hideLoading();
-                    return showMsg('Username dipakai', 'Username tersebut sudah digunakan cabang lain.');
+    function saveSettings() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const name = document.getElementById('set-name').value.trim();
+            const user = document.getElementById('set-user').value.trim();
+            const pass = document.getElementById('set-pass').value;
+            const logo = document.getElementById('set-logo').value.trim();
+            const biodata = document.getElementById('set-biodata').value.trim();
+            if (!currentWarung || !currentWarung.id)
+                return showMsg('Sesi tidak valid', 'Silakan login ulang.');
+            if (!name || !user)
+                return showMsg('Peringatan', 'Nama warung dan username wajib diisi.');
+            if (pass && pass.length < 6)
+                return showMsg('Peringatan', 'Password baru minimal 6 karakter.');
+            showLoading('Menyimpan pengaturan...');
+            try {
+                if (user !== currentWarung.user) {
+                    const { data: existing, error: checkErr } = yield supabaseClient
+                        .from('warung')
+                        .select('id_warung')
+                        .eq('username', user)
+                        .neq('id_warung', currentWarung.id)
+                        .maybeSingle();
+                    if (checkErr)
+                        throw checkErr;
+                    if (existing) {
+                        hideLoading();
+                        return showMsg('Username dipakai', 'Username tersebut sudah digunakan cabang lain.');
+                    }
                 }
-            }
-
-            const payload = {
-                nama_warung: name,
-                username: user,
-                tema: currentWarung.theme || 'dark',
-                logo: logo,
-                biodata: biodata,
-                updated_at: new Date()
-            };
-            if (pass) payload.password_hash = await hashPassword(pass);
-
-            let { error } = await supabaseClient
-                .from('warung')
-                .update(payload)
-                .eq('id_warung', currentWarung.id);
-
-            // Fallback jika database lama belum memiliki kolom logo/biodata.
-            if (error && /logo|biodata/i.test(error.message || '')) {
-                delete payload.logo;
-                delete payload.biodata;
-                const retry = await supabaseClient
+                const payload = {
+                    nama_warung: name,
+                    username: user,
+                    tema: currentWarung.theme || 'dark',
+                    logo: logo,
+                    biodata: biodata,
+                    updated_at: new Date()
+                };
+                if (pass)
+                    payload.password_hash = yield hashPassword(pass);
+                let { error } = yield supabaseClient
                     .from('warung')
                     .update(payload)
                     .eq('id_warung', currentWarung.id);
-                error = retry.error;
+                // Fallback jika database lama belum memiliki kolom logo/biodata.
+                if (error && /logo|biodata/i.test(error.message || '')) {
+                    delete payload.logo;
+                    delete payload.biodata;
+                    const retry = yield supabaseClient
+                        .from('warung')
+                        .update(payload)
+                        .eq('id_warung', currentWarung.id);
+                    error = retry.error;
+                }
+                if (error)
+                    throw error;
+                currentWarung.name = name;
+                currentWarung.user = user;
+                currentWarung.logo = logo;
+                currentWarung.biodata = biodata;
+                localStorage.setItem('pos_session', JSON.stringify(currentWarung));
+                showAppUI();
+                showMsg('Berhasil', 'Pengaturan akun dan struk berhasil disimpan.');
             }
-            if (error) throw error;
-
-            currentWarung.name = name;
-            currentWarung.user = user;
-            currentWarung.logo = logo;
-            currentWarung.biodata = biodata;
-            localStorage.setItem('pos_session', JSON.stringify(currentWarung));
-            showAppUI();
-            showMsg('Berhasil', 'Pengaturan akun dan struk berhasil disimpan.');
-        } catch (err) {
-            showMsg('Gagal', err.message || 'Pengaturan gagal disimpan.');
-        } finally {
-            hideLoading();
-        }
-    }
-
-
-    // Fungsi Mendaftar Pengguna Baru Secara Instan
-    async function prosesRegistrasi() {
-        const name = document.getElementById('reg-name').value.trim();
-        const user = document.getElementById('reg-user').value.trim();
-        const pass = document.getElementById('reg-pass').value;
-
-        if (!name || !user || !pass) {
-            return showMsg('Perhatian', 'Seluruh kolom pendaftaran wajib diisi!');
-        }
-        if (pass.length < 6) {
-            return showMsg('Perhatian', 'Password harus terdiri dari minimal 6 karakter!');
-        }
-
-        showLoading("Mendaftarkan Cabang...");
-        try {
-            // Validasi duplikasi username
-            const { data: existing, error: checkErr } = await supabaseClient
-                .from('warung')
-                .select('id_warung')
-                .eq('username', user)
-                .maybeSingle();
-
-            if (checkErr) throw checkErr;
-            if (existing) {
+            catch (err) {
+                showMsg('Gagal', err.message || 'Pengaturan gagal disimpan.');
+            }
+            finally {
                 hideLoading();
-                return showMsg('Gagal Pendaftaran', 'Username sudah terpakai. Silakan gunakan username lainnya.');
             }
-
-            const hashedPassword = await hashPassword(pass);
-            const newId = 'W' + String(new Date().getTime()).slice(-4); 
-
-            const { error: insertErr } = await supabaseClient
-                .from('warung')
-                .insert({
+        });
+    }
+    // Fungsi Mendaftar Pengguna Baru Secara Instan
+    function prosesRegistrasi() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const name = document.getElementById('reg-name').value.trim();
+            const user = document.getElementById('reg-user').value.trim();
+            const pass = document.getElementById('reg-pass').value;
+            if (!name || !user || !pass) {
+                return showMsg('Perhatian', 'Seluruh kolom pendaftaran wajib diisi!');
+            }
+            if (pass.length < 6) {
+                return showMsg('Perhatian', 'Password harus terdiri dari minimal 6 karakter!');
+            }
+            showLoading("Mendaftarkan Cabang...");
+            try {
+                // Validasi duplikasi username
+                const { data: existing, error: checkErr } = yield supabaseClient
+                    .from('warung')
+                    .select('id_warung')
+                    .eq('username', user)
+                    .maybeSingle();
+                if (checkErr)
+                    throw checkErr;
+                if (existing) {
+                    hideLoading();
+                    return showMsg('Gagal Pendaftaran', 'Username sudah terpakai. Silakan gunakan username lainnya.');
+                }
+                const hashedPassword = yield hashPassword(pass);
+                const newId = 'W' + String(new Date().getTime()).slice(-4);
+                const { error: insertErr } = yield supabaseClient
+                    .from('warung')
+                    .insert({
                     id_warung: newId,
                     username: user,
                     password_hash: hashedPassword,
@@ -1097,208 +1128,213 @@
                     role: 'user', // Default pendaftar baru adalah user biasa
                     updated_at: new Date()
                 });
-
-            if (insertErr) throw insertErr;
-
-            hideLoading();
-            showMsg('Pendaftaran Berhasil', 'Akun cabang warung berhasil dibuat! Silakan masuk menggunakan Akun tersebut.', 'info', () => {
-                document.getElementById('reg-name').value = '';
-                document.getElementById('reg-user').value = '';
-                document.getElementById('reg-pass').value = '';
-                toggleLoginRegister(false);
-            });
-
-        } catch (err) {
-            hideLoading();
-            showMsg('Error', err.message || 'Gagal mendaftarkan akun warung baru.');
-        }
-    }
-
-    async function prosesLogin() {
-        const user = document.getElementById('login-user').value.trim();
-        const pass = document.getElementById('login-pass').value;
-        if(!user || !pass) return showMsg('Perhatian', 'Isi username & password!');
-
-        showLoading("Memverifikasi...");
-        try {
-            const { data: warung, error } = await supabaseClient
-                .from('warung')
-                .select('*')
-                .eq('username', user)
-                .eq('status', 'Aktif')
-                .maybeSingle();
-
-            if (error) throw error;
-            if (!warung) {
+                if (insertErr)
+                    throw insertErr;
                 hideLoading();
-                return showMsg('Gagal Login', 'Username atau password salah.');
+                showMsg('Pendaftaran Berhasil', 'Akun cabang warung berhasil dibuat! Silakan masuk menggunakan Akun tersebut.', 'info', () => {
+                    document.getElementById('reg-name').value = '';
+                    document.getElementById('reg-user').value = '';
+                    document.getElementById('reg-pass').value = '';
+                    toggleLoginRegister(false);
+                });
             }
-
-            const hashedInput = await hashPassword(pass);
-            const isMatch = (warung.password_hash === pass || warung.password_hash === hashedInput);
-
-            if (isMatch) {
-                if (warung.password_hash === pass) {
-                    await supabaseClient
-                        .from('warung')
-                        .update({ password_hash: hashedInput, updated_at: new Date() })
-                        .eq('id_warung', warung.id_warung);
+            catch (err) {
+                hideLoading();
+                showMsg('Error', err.message || 'Gagal mendaftarkan akun warung baru.');
+            }
+        });
+    }
+    function prosesLogin() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = document.getElementById('login-user').value.trim();
+            const pass = document.getElementById('login-pass').value;
+            if (!user || !pass)
+                return showMsg('Perhatian', 'Isi username & password!');
+            showLoading("Memverifikasi...");
+            try {
+                const { data: warung, error } = yield supabaseClient
+                    .from('warung')
+                    .select('*')
+                    .eq('username', user)
+                    .eq('status', 'Aktif')
+                    .maybeSingle();
+                if (error)
+                    throw error;
+                if (!warung) {
+                    hideLoading();
+                    return showMsg('Gagal Login', 'Username atau password salah.');
                 }
-
-                currentWarung = {
-                    id: warung.id_warung,
-                    user: warung.username,
-                    name: warung.nama_warung,
-                    theme: warung.tema || 'dark',
-                    role: warung.role || 'user',      // Rekam Peran Sesi (Revisi Baru)
-                    status: warung.status || 'Aktif',  // Rekam Lisensi Sesi (Revisi Baru)
-                    logo: warung.logo || '',
-                    biodata: warung.biodata || ''
-                };
-                localStorage.setItem('pos_session', JSON.stringify(currentWarung));
-                await applyTheme(currentWarung.theme);
-                showAppUI();
-                await loadCatalog();
-            } else {
-                hideLoading();
-                showMsg('Gagal Login', 'Username atau password salah.');
+                const hashedInput = yield hashPassword(pass);
+                const isMatch = (warung.password_hash === pass || warung.password_hash === hashedInput);
+                if (isMatch) {
+                    if (warung.password_hash === pass) {
+                        yield supabaseClient
+                            .from('warung')
+                            .update({ password_hash: hashedInput, updated_at: new Date() })
+                            .eq('id_warung', warung.id_warung);
+                    }
+                    currentWarung = {
+                        id: warung.id_warung,
+                        user: warung.username,
+                        name: warung.nama_warung,
+                        theme: warung.tema || 'dark',
+                        role: warung.role || 'user', // Rekam Peran Sesi (Revisi Baru)
+                        status: warung.status || 'Aktif', // Rekam Lisensi Sesi (Revisi Baru)
+                        logo: warung.logo || '',
+                        biodata: warung.biodata || ''
+                    };
+                    localStorage.setItem('pos_session', JSON.stringify(currentWarung));
+                    yield applyTheme(currentWarung.theme);
+                    showAppUI();
+                    yield loadCatalog();
+                }
+                else {
+                    hideLoading();
+                    showMsg('Gagal Login', 'Username atau password salah.');
+                }
             }
-        } catch (err) {
-            hideLoading();
-            showMsg('Error', err.message || 'Gagal menghubungi server.');
-        }
+            catch (err) {
+                hideLoading();
+                showMsg('Error', err.message || 'Gagal menghubungi server.');
+            }
+        });
     }
-
     // Fungsi perbaikan signout handal dengan hapus total local storage (Revisi Ke-5)
-    function logout() { 
+    function logout() {
         showMsg('Konfirmasi', 'Keluar dari aplikasi dan hapus data sesi?', 'confirm', () => {
             localStorage.removeItem('pos_session');
             currentWarung = null;
             location.reload();
         });
     }
-
     function handleResize() {
-        if(window.innerWidth >= 768) {
+        if (window.innerWidth >= 768) {
             const tabKeranjang = document.getElementById('tab-keranjang');
             const closeMobPanel = document.getElementById('close-mob-panel');
             if (tabKeranjang) {
-                tabKeranjang.classList.remove('hidden');
+                tabKeranjang.classList.remove('pos-hidden');
                 tabKeranjang.classList.add('flex');
             }
             if (closeMobPanel) {
-                closeMobPanel.classList.add('hidden');
+                closeMobPanel.classList.add('pos-hidden');
             }
-            const activeDeskTab = document.querySelector('.border-primary[id^="desk-"]')?.id.replace('desk-','') || 'katalog';
+            const activeDeskTab = (document.querySelector('.border-primary[id^="desk-"]') ? document.querySelector('.border-primary[id^="desk-"]').id.replace('desk-', '') : 'katalog');
             switchTab(activeDeskTab);
         }
     }
-
     function closeMobPanel() {
         const tabKeranjang = document.getElementById('tab-keranjang');
         const closeMobPanel = document.getElementById('close-mob-panel');
         if (tabKeranjang) {
             tabKeranjang.classList.remove('fixed', 'inset-0', 'z-50', 'flex');
-            tabKeranjang.classList.add('hidden');
+            tabKeranjang.classList.add('pos-hidden');
         }
         if (closeMobPanel) {
-            closeMobPanel.classList.add('hidden');
+            closeMobPanel.classList.add('pos-hidden');
         }
         switchTab('katalog');
     }
-
     function switchTab(tabName) {
         if (tabName === 'admin' && !isSuperAdmin()) {
             showMsg('Akses ditolak', 'Panel admin hanya dapat dibuka oleh akun superadmin.');
             tabName = 'katalog';
         }
-
         activeMainTab = tabName;
-
         document.querySelectorAll('nav > button').forEach(b => b.classList.remove('text-primary', 'font-bold'));
         const mobBtn = document.getElementById('nav-' + tabName);
-        if(mobBtn) mobBtn.classList.add('text-primary', 'font-bold');
-
+        if (mobBtn)
+            mobBtn.classList.add('text-primary', 'font-bold');
         document.querySelectorAll('#desktop-nav > button').forEach(b => {
             b.classList.remove('border-primary', 'text-primary', 'font-bold');
             b.classList.add('border-transparent', 'text-gray-500');
         });
         const deskBtn = document.getElementById('desk-' + tabName);
-        if(deskBtn) {
+        if (deskBtn) {
             deskBtn.classList.add('border-primary', 'text-primary', 'font-bold');
             deskBtn.classList.remove('border-transparent', 'text-gray-500');
         }
-
         ['katalog', 'riwayat', 'setelan', 'stok', 'admin'].forEach(v => {
             const el = document.getElementById('tab-' + v);
-            if (el) { 
-                if (v === tabName) { el.classList.remove('hidden'); el.classList.add('flex'); } 
-                else { el.classList.remove('flex'); el.classList.add('hidden'); } 
+            if (el) {
+                if (v === tabName) {
+                    el.classList.remove('pos-hidden');
+                    el.classList.add('flex');
+                }
+                else {
+                    el.classList.remove('flex');
+                    el.classList.add('pos-hidden');
+                }
             }
         });
-
         const panelKeranjang = document.getElementById('panel-keranjang');
         const tabKeranjang = document.getElementById('tab-keranjang');
         const closeMobPanel = document.getElementById('close-mob-panel');
         const rightContextPanel = document.getElementById('right-context-panel');
-
         if (window.innerWidth >= 768) {
             if (tabKeranjang) {
-                tabKeranjang.classList.remove('hidden', 'fixed', 'inset-0', 'z-50', 'md:hidden');
+                tabKeranjang.classList.remove('pos-hidden', 'fixed', 'inset-0', 'z-50', 'pos-md-hidden');
                 tabKeranjang.classList.add('flex');
             }
-            if (closeMobPanel) closeMobPanel.classList.add('hidden');
-
+            if (closeMobPanel)
+                closeMobPanel.classList.add('pos-hidden');
             if (tabName === 'katalog') {
-                if (panelKeranjang) panelKeranjang.classList.remove('hidden');
+                if (panelKeranjang)
+                    panelKeranjang.classList.remove('pos-hidden');
                 if (rightContextPanel) {
-                    rightContextPanel.classList.add('hidden');
+                    rightContextPanel.classList.add('pos-hidden');
                     rightContextPanel.classList.remove('flex');
                 }
-            } else {
-                if (panelKeranjang) panelKeranjang.classList.add('hidden');
+            }
+            else {
+                if (panelKeranjang)
+                    panelKeranjang.classList.add('pos-hidden');
                 if (rightContextPanel) {
-                    rightContextPanel.classList.remove('hidden');
+                    rightContextPanel.classList.remove('pos-hidden');
                     rightContextPanel.classList.add('flex');
                     renderRightContextPanel(tabName);
                 }
                 const scannerOverlay = document.getElementById('cart-scanner-container');
-                if (scannerOverlay && !scannerOverlay.classList.contains('hidden')) toggleCartScanner(false);
+                if (scannerOverlay && !scannerOverlay.classList.contains('pos-hidden'))
+                    toggleCartScanner(false);
             }
-        } else {
+        }
+        else {
             if (rightContextPanel) {
-                rightContextPanel.classList.add('hidden');
+                rightContextPanel.classList.add('pos-hidden');
                 rightContextPanel.classList.remove('flex');
             }
-
             if (tabName === 'keranjang') {
                 if (tabKeranjang) {
-                    tabKeranjang.classList.remove('hidden');
+                    tabKeranjang.classList.remove('pos-hidden');
                     tabKeranjang.classList.add('fixed', 'inset-0', 'z-50', 'flex');
                 }
-                if (panelKeranjang) panelKeranjang.classList.remove('hidden');
-                if (closeMobPanel) closeMobPanel.classList.remove('hidden');
-            } else {
+                if (panelKeranjang)
+                    panelKeranjang.classList.remove('pos-hidden');
+                if (closeMobPanel)
+                    closeMobPanel.classList.remove('pos-hidden');
+            }
+            else {
                 if (tabKeranjang) {
-                    tabKeranjang.classList.add('hidden');
+                    tabKeranjang.classList.add('pos-hidden');
                     tabKeranjang.classList.remove('fixed', 'inset-0', 'z-50', 'flex');
                 }
             }
         }
-
-        if (tabName === 'riwayat' && historyData.length === 0) loadHistory();
-        if (tabName === 'stok') renderStockTable();
-        if (tabName === 'admin') loadAdminData();
-        if (window.innerWidth >= 768 && tabName !== 'katalog') renderRightContextPanel(tabName);
+        if (tabName === 'riwayat' && historyData.length === 0)
+            loadHistory();
+        if (tabName === 'stok')
+            renderStockTable();
+        if (tabName === 'admin')
+            loadAdminData();
+        if (window.innerWidth >= 768 && tabName !== 'katalog')
+            renderRightContextPanel(tabName);
     }
-
     function updateRightContextIfVisible() {
         const rightContextPanel = document.getElementById('right-context-panel');
-        if (rightContextPanel && !rightContextPanel.classList.contains('hidden') && window.innerWidth >= 768) {
+        if (rightContextPanel && !rightContextPanel.classList.contains('pos-hidden') && window.innerWidth >= 768) {
             renderRightContextPanel(activeMainTab || 'katalog');
         }
     }
-
     function contextMetricCard(label, value, icon, tone = 'text-primary') {
         return `
             <div class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
@@ -1311,7 +1347,6 @@
                 </div>
             </div>`;
     }
-
     function contextMiniList(title, items, emptyText = 'Belum ada data.', limit = 5) {
         const visibleItems = (items || []).slice(0, limit);
         return `
@@ -1327,33 +1362,33 @@
                     </div>`}
             </div>`;
     }
-
     function renderRightContextPanel(tabName) {
         const title = document.getElementById('right-context-title');
         const subtitle = document.getElementById('right-context-subtitle');
         const body = document.getElementById('right-context-body');
-        if (!title || !subtitle || !body) return;
-
-        if (tabName === 'stok') return renderStockSummaryPanel(title, subtitle, body);
-        if (tabName === 'riwayat') return renderSalesSummaryPanel(title, subtitle, body);
-        if (tabName === 'setelan') return renderSettingsInfoPanel(title, subtitle, body);
-        if (tabName === 'admin') return renderAdminSummaryPanel(title, subtitle, body);
-
+        if (!title || !subtitle || !body)
+            return;
+        if (tabName === 'stok')
+            return renderStockSummaryPanel(title, subtitle, body);
+        if (tabName === 'riwayat')
+            return renderSalesSummaryPanel(title, subtitle, body);
+        if (tabName === 'setelan')
+            return renderSettingsInfoPanel(title, subtitle, body);
+        if (tabName === 'admin')
+            return renderAdminSummaryPanel(title, subtitle, body);
         title.innerHTML = '<i class="fas fa-layer-group text-primary"></i> Ringkasan';
         subtitle.innerText = 'Informasi cepat sesuai halaman aktif';
         body.innerHTML = `<div class="bg-white border border-dashed border-gray-200 rounded-2xl p-6 text-center text-sm font-bold text-gray-400">Tidak ada ringkasan untuk halaman ini.</div>`;
     }
-
     function renderStockSummaryPanel(title, subtitle, body) {
         const totalProduk = rawCatalog.length;
         const totalStok = rawCatalog.reduce((sum, p) => sum + (Number(p.stock) || 0), 0);
         const stokKosong = rawCatalog.filter(p => (Number(p.stock) || 0) <= 0);
-        const stokMenipis = rawCatalog.filter(p => (Number(p.stock) || 0) > 0 && (Number(p.stock) || 0) <= 5).sort((a,b) => (Number(a.stock)||0) - (Number(b.stock)||0));
+        const stokMenipis = rawCatalog.filter(p => (Number(p.stock) || 0) > 0 && (Number(p.stock) || 0) <= 5).sort((a, b) => (Number(a.stock) || 0) - (Number(b.stock) || 0));
         const produkTerlaris = [...rawCatalog]
             .sort((a, b) => (popularityMap[b.barcode] || 0) - (popularityMap[a.barcode] || 0))
             .filter(p => (popularityMap[p.barcode] || 0) > 0)
             .map(p => ({ label: p.name || p.barcode, value: `${popularityMap[p.barcode] || 0} terjual` }));
-
         title.innerHTML = '<i class="fas fa-warehouse text-primary"></i> Monitoring Stok';
         subtitle.innerText = 'Ringkasan cepat kondisi produk cabang';
         body.innerHTML = `
@@ -1367,27 +1402,25 @@
             ${contextMiniList('Produk terlaris', produkTerlaris, 'Belum ada data penjualan produk.')}
             <button onclick="showEditProductModal()" class="w-full bg-primary hover:opacity-90 text-white font-bold py-3 px-4 rounded-xl shadow-md transition"><i class="fas fa-plus mr-1"></i> Tambah Produk</button>`;
     }
-
     function localDateKey(dateValue) {
         const d = new Date(dateValue);
-        if (Number.isNaN(d.getTime())) return '';
-        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        if (Number.isNaN(d.getTime()))
+            return '';
+        return `${d.getFullYear()}-${leftPad(d.getMonth() + 1, 2, '0')}-${leftPad(d.getDate(), 2, '0')}`;
     }
-
     function renderSalesSummaryPanel(title, subtitle, body) {
         const now = new Date();
         const todayKey = localDateKey(now);
-        const selectedMonth = document.getElementById('history-month')?.value || `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+        const selectedMonth = (document.getElementById('history-month') ? document.getElementById('history-month').value : `${now.getFullYear()}-${leftPad(now.getMonth() + 1, 2, '0')}`);
         const trxHariIni = historyData.filter(trx => localDateKey(trx.date) === todayKey);
         const trxBulanIni = historyData.filter(trx => {
             const d = new Date(trx.date);
-            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` === selectedMonth;
+            return `${d.getFullYear()}-${leftPad(d.getMonth() + 1, 2, '0')}` === selectedMonth;
         });
         const totalHariIni = trxHariIni.reduce((sum, trx) => sum + (Number(trx.total) || 0), 0);
         const totalBulanIni = trxBulanIni.reduce((sum, trx) => sum + (Number(trx.total) || 0), 0);
         const rataHariIni = trxHariIni.length ? Math.round(totalHariIni / trxHariIni.length) : 0;
-        const latestTrx = [...historyData].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5).map(trx => ({ label: trx.id || '-', value: formatRupiah(Number(trx.total) || 0) }));
-
+        const latestTrx = [...historyData].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5).map(trx => ({ label: trx.id || '-', value: formatRupiah(Number(trx.total) || 0) }));
         title.innerHTML = '<i class="fas fa-chart-line text-primary"></i> Ringkasan Penjualan';
         subtitle.innerText = 'Pantauan cepat transaksi dan omzet';
         body.innerHTML = `
@@ -1403,10 +1436,9 @@
                 <button onclick="exportToCSV()" class="bg-green-600 text-white font-bold py-3 px-4 rounded-xl text-xs shadow-md"><i class="fas fa-file-excel mr-1"></i> Export</button>
             </div>`;
     }
-
     function renderSettingsInfoPanel(title, subtitle, body) {
         const produkCount = rawCatalog.length;
-        const isPremium = currentWarung?.status === 'Premium' || currentWarung?.is_premium === true;
+        const isPremium = (currentWarung ? currentWarung.status : undefined) === 'Premium' || (currentWarung ? currentWarung.is_premium : undefined) === true;
         const batasProduk = isPremium ? 'Unlimited' : '10';
         const sisaProduk = isPremium ? 'Unlimited' : Math.max(0, 10 - produkCount);
         title.innerHTML = '<i class="fas fa-sliders text-primary"></i> Status Aplikasi';
@@ -1419,13 +1451,12 @@
             </div>
             <div class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm space-y-3">
                 <p class="text-xs font-black text-gray-500 uppercase tracking-widest">Checklist Struk</p>
-                <div class="flex justify-between text-xs font-bold"><span>Nama Warung</span><span class="${currentWarung?.name ? 'text-green-600' : 'text-red-600'}">${currentWarung?.name ? 'Terisi' : 'Kosong'}</span></div>
-                <div class="flex justify-between text-xs font-bold"><span>Logo Struk</span><span class="${currentWarung?.logo ? 'text-green-600' : 'text-amber-600'}">${currentWarung?.logo ? 'Terisi' : 'Opsional'}</span></div>
-                <div class="flex justify-between text-xs font-bold"><span>Biodata/Alamat</span><span class="${currentWarung?.biodata ? 'text-green-600' : 'text-amber-600'}">${currentWarung?.biodata ? 'Terisi' : 'Opsional'}</span></div>
+                <div class="flex justify-between text-xs font-bold"><span>Nama Warung</span><span class="${(currentWarung ? currentWarung.name : undefined) ? 'text-green-600' : 'text-red-600'}">${(currentWarung ? currentWarung.name : undefined) ? 'Terisi' : 'Kosong'}</span></div>
+                <div class="flex justify-between text-xs font-bold"><span>Logo Struk</span><span class="${(currentWarung ? currentWarung.logo : undefined) ? 'text-green-600' : 'text-amber-600'}">${(currentWarung ? currentWarung.logo : undefined) ? 'Terisi' : 'Opsional'}</span></div>
+                <div class="flex justify-between text-xs font-bold"><span>Biodata/Alamat</span><span class="${(currentWarung ? currentWarung.biodata : undefined) ? 'text-green-600' : 'text-amber-600'}">${(currentWarung ? currentWarung.biodata : undefined) ? 'Terisi' : 'Opsional'}</span></div>
             </div>
             <button onclick="openWhatsAppUpgrade('settings')" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-xl shadow-md transition"><i class="fab fa-whatsapp mr-1"></i> Upgrade via WhatsApp</button>`;
     }
-
     function renderAdminSummaryPanel(title, subtitle, body) {
         if (!isSuperAdmin()) {
             title.innerHTML = '<i class="fas fa-lock text-red-600"></i> Admin Terkunci';
@@ -1440,7 +1471,6 @@
         const premiumCount = cabangRows.filter(row => row.innerText.toLowerCase().includes('premium')).length;
         const nonaktifCount = cabangRows.filter(row => row.innerText.toLowerCase().includes('nonaktif')).length;
         const recentProduk = [...adminProdukPusatCache].slice(0, 5).map(p => ({ label: p.nama_produk || p.barcode, value: p.kategori || 'Lainnya' }));
-
         title.innerHTML = '<i class="fas fa-user-shield text-red-600"></i> Kontrol Admin';
         subtitle.innerText = 'Ringkasan cepat lisensi dan produk pusat';
         body.innerHTML = `
@@ -1456,19 +1486,18 @@
                 <button onclick="triggerDatabaseBackup()" class="bg-green-600 text-white font-bold py-3 px-4 rounded-xl text-xs shadow-md"><i class="fas fa-database mr-1"></i> Backup</button>
             </div>`;
     }
-
     // Paket Langganan: upgrade diarahkan ke admin WhatsApp resmi.
     function openWhatsAppUpgrade(source = 'settings') {
-        const warungName = currentWarung?.name || '-';
-        const username = currentWarung?.user || '-';
+        const warungName = (currentWarung ? currentWarung.name : undefined) || '-';
+        const username = (currentWarung ? currentWarung.user : undefined) || '-';
         const pesan = source === 'limit'
             ? `Halo Admin YzPOS, saya ingin upgrade Premium Unlimited karena batas 10 produk sudah tercapai.%0A%0ANama Warung: ${encodeURIComponent(warungName)}%0AUsername: ${encodeURIComponent(username)}`
             : `Halo Admin YzPOS, saya ingin upgrade akun ke Premium Unlimited.%0A%0ANama Warung: ${encodeURIComponent(warungName)}%0AUsername: ${encodeURIComponent(username)}`;
         const waUrl = `https://wa.me/${PREMIUM_WA_NUMBER}?text=${pesan}`;
         const opened = window.open(waUrl, '_blank');
-        if (!opened) window.location.href = waUrl;
+        if (!opened)
+            window.location.href = waUrl;
     }
-
     function renderPlanStatus() {
         const status = document.getElementById('set-plan-status');
         const btn = document.getElementById('btn-toggle-plan');
@@ -1476,52 +1505,51 @@
             // Tampilan status paket yang dinamis mengevaluasi database Superadmin / Premium (Revisi Baru)
             if (currentWarung && currentWarung.role === 'superadmin') {
                 status.innerHTML = `<span class="text-red-600 font-bold"><i class="fas fa-user-shield text-red-500 mr-1"></i> Superadmin (Unlimited)</span>`;
-                btn.classList.add('hidden');
-            } else if (currentWarung && currentWarung.status === 'Premium') {
+                btn.classList.add('pos-hidden');
+            }
+            else if (currentWarung && currentWarung.status === 'Premium') {
                 status.innerHTML = `<span class="text-green-600 font-black flex items-center gap-1"><i class="fas fa-crown text-amber-500 mr-1"></i> Premium Unlimited</span>`;
-                btn.classList.add('hidden');
-            } else {
+                btn.classList.add('pos-hidden');
+            }
+            else {
                 status.innerText = "Free (Maks 10 Produk)";
                 btn.innerHTML = `<i class="fab fa-whatsapp mr-1"></i> Upgrade via WA`;
                 btn.className = "bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-5 rounded-xl text-xs transition shadow-md whitespace-nowrap";
                 btn.onclick = () => openWhatsAppUpgrade('settings');
-                btn.classList.remove('hidden');
+                btn.classList.remove('pos-hidden');
             }
         }
     }
-
     function closePremiumModal() {
-        document.getElementById('premium-upgrade-modal').classList.add('hidden');
+        document.getElementById('premium-upgrade-modal').classList.add('pos-hidden');
     }
-
     function prosesHubungiAdmin() {
         closePremiumModal();
         openWhatsAppUpgrade('limit');
     }
-
     // Penghitungan Peringkat Produk Terpopuler Kasir
-    async function loadPopularity() {
-        try {
-            const { data: trxList } = await supabaseClient
-                .from('transaksi')
-                .select('id_transaksi')
-                .eq('id_warung', currentWarung.id);
-            
-            const trxIds = (trxList || []).map(t => t.id_transaksi);
-            if (trxIds.length > 0) {
-                const { data: details } = await supabaseClient
-                    .from('detail_transaksi')
-                    .select('barcode, qty')
-                    .in('id_transaksi', trxIds);
-                
-                popularityMap = {};
-                (details || []).forEach(d => {
-                    popularityMap[d.barcode] = (popularityMap[d.barcode] || 0) + d.qty;
-                });
+    function loadPopularity() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { data: trxList } = yield supabaseClient
+                    .from('transaksi')
+                    .select('id_transaksi')
+                    .eq('id_warung', currentWarung.id);
+                const trxIds = (trxList || []).map(t => t.id_transaksi);
+                if (trxIds.length > 0) {
+                    const { data: details } = yield supabaseClient
+                        .from('detail_transaksi')
+                        .select('barcode, qty')
+                        .in('id_transaksi', trxIds);
+                    popularityMap = {};
+                    (details || []).forEach(d => {
+                        popularityMap[d.barcode] = (popularityMap[d.barcode] || 0) + d.qty;
+                    });
+                }
             }
-        } catch(e){}
+            catch (e) { }
+        });
     }
-
     // Kalkulasi Kategori Terlaris Berdasarkan Sering Dibeli (Revisi Ke-7)
     function calculateCategoryPopularity() {
         categoryPopularity = { 'Makanan': 0, 'Minuman': 0, 'Snack': 0 };
@@ -1531,35 +1559,31 @@
             categoryPopularity[cat] = (categoryPopularity[cat] || 0) + soldQty;
         });
     }
-
     // Render Ulang Bilah Kategori Kasir Berdasarkan Data Penjualan (Revisi Ke-7)
     function renderCategoryBar() {
         calculateCategoryPopularity();
         const defaultCats = ['Makanan', 'Minuman', 'Snack'];
         const uniqueCats = [...new Set(rawCatalog.map(p => p.category || 'Lainnya'))];
         uniqueCats.forEach(c => {
-            if (!defaultCats.includes(c)) defaultCats.push(c);
+            if (!defaultCats.includes(c))
+                defaultCats.push(c);
         });
-
         defaultCats.sort((a, b) => {
             const popA = categoryPopularity[a] || 0;
             const popB = categoryPopularity[b] || 0;
             return popB - popA;
         });
-
         const bar = document.getElementById('category-bar');
-        if (!bar) return;
+        if (!bar)
+            return;
         bar.innerHTML = '';
-
         const activeSemua = currentCategory === 'Semua' ? 'bg-gray-800 text-white shadow' : 'bg-white text-gray-600 border border-gray-200';
         bar.innerHTML += `<button onclick='filterCategory("Semua")' class="cat-btn px-4 py-1.5 ${activeSemua} text-xs rounded-full font-medium flex-shrink-0 whitespace-nowrap transition">Semua</button>`;
-
         defaultCats.forEach(cat => {
             const isActive = currentCategory === cat ? 'bg-gray-800 text-white shadow' : 'bg-white text-gray-600 border border-gray-200';
             bar.innerHTML += `<button onclick='filterCategory(${jsArg(cat)})' class="cat-btn px-4 py-1.5 ${isActive} text-xs rounded-full font-medium flex-shrink-0 whitespace-nowrap transition">${escapeHtml(cat)}</button>`;
         });
     }
-
     // Fungsi Peringatan Stok Menipis
     function checkLowStock() {
         const lowStockItems = rawCatalog.filter(p => p.stock >= 0 && p.stock <= 5);
@@ -1568,21 +1592,21 @@
             if (lowStockItems.length > 0) {
                 banner.innerHTML = `<span class="truncate"><i class="fas fa-exclamation-triangle text-amber-500 mr-1.5"></i> Peringatan: Terdapat <strong>${lowStockItems.length} produk</strong> dengan persediaan kritis (≤ 5 item).</span> 
                 <button onclick="switchTab('stok')" class="underline hover:text-amber-900 ml-2 shrink-0">Kelola Stok</button>`;
-                banner.classList.remove('hidden');
-            } else {
-                banner.classList.add('hidden');
+                banner.classList.remove('pos-hidden');
+            }
+            else {
+                banner.classList.add('pos-hidden');
             }
         }
     }
-
-    async function loadCatalog() {
-        showLoading("Sinkronisasi Katalog...");
-        try {
-            await loadPopularity();
-
-            const { data: catalogData, error: catErr } = await supabaseClient
-                .from('harga_warung')
-                .select(`
+    function loadCatalog() {
+        return __awaiter(this, void 0, void 0, function* () {
+            showLoading("Sinkronisasi Katalog...");
+            try {
+                yield loadPopularity();
+                const { data: catalogData, error: catErr } = yield supabaseClient
+                    .from('harga_warung')
+                    .select(`
                     barcode,
                     harga_jual,
                     stok,
@@ -1591,76 +1615,70 @@
                         kategori
                     )
                 `)
-                .eq('id_warung', currentWarung.id);
-
-            if (catErr) throw catErr;
-
-            const { data: masterData, error: masterErr } = await supabaseClient
-                .from('produk_induk')
-                .select('*');
-
-            if (masterErr) throw masterErr;
-
-            masterDB = {};
-            (masterData || []).forEach(p => {
-                masterDB[String(p.barcode)] = {
-                    barcode: String(p.barcode),
-                    name: p.nama_produk,
-                    category: p.kategori || 'Lainnya'
-                };
-            });
-
-            rawCatalog = (catalogData || []).map(row => ({
-                barcode: String(row.barcode),
-                name: row.produk_induk ? row.produk_induk.nama_produk : 'Produk Tidak Terdaftar',
-                category: row.produk_induk ? (row.produk_induk.kategori || 'Lainnya') : 'Lainnya',
-                price: Number(row.harga_jual) || 0,
-                stock: Number(row.stok) || 0
-            }));
-
-            localCatalog = [];
-            rawCatalog.forEach(p => {
-                let existing = localCatalog.find(g => g.name.toLowerCase() === p.name.toLowerCase());
-                if(existing) {
-                    existing.barcodes.push(p.barcode);
-                    existing.stock += parseInt(p.stock) || 0; 
-                } else {
-                    localCatalog.push({ ...p, barcodes: [p.barcode], stock: parseInt(p.stock)||0 });
-                }
-            });
-
-            checkLowStock(); 
-            renderCategoryBar(); 
-            renderProducts(); 
-            renderStockTable(); 
-        } catch (err) {
-            showMsg('Gagal Sinkronisasi', err.message || 'Koneksi database bermasalah.');
-        } finally {
-            hideLoading();
-        }
+                    .eq('id_warung', currentWarung.id);
+                if (catErr)
+                    throw catErr;
+                const { data: masterData, error: masterErr } = yield supabaseClient
+                    .from('produk_induk')
+                    .select('*');
+                if (masterErr)
+                    throw masterErr;
+                masterDB = {};
+                (masterData || []).forEach(p => {
+                    masterDB[String(p.barcode)] = {
+                        barcode: String(p.barcode),
+                        name: p.nama_produk,
+                        category: p.kategori || 'Lainnya'
+                    };
+                });
+                rawCatalog = (catalogData || []).map(row => ({
+                    barcode: String(row.barcode),
+                    name: row.produk_induk ? row.produk_induk.nama_produk : 'Produk Tidak Terdaftar',
+                    category: row.produk_induk ? (row.produk_induk.kategori || 'Lainnya') : 'Lainnya',
+                    price: Number(row.harga_jual) || 0,
+                    stock: Number(row.stok) || 0
+                }));
+                localCatalog = [];
+                rawCatalog.forEach(p => {
+                    let existing = localCatalog.find(g => g.name.toLowerCase() === p.name.toLowerCase());
+                    if (existing) {
+                        existing.barcodes.push(p.barcode);
+                        existing.stock += parseInt(p.stock) || 0;
+                    }
+                    else {
+                        localCatalog.push(Object.assign(Object.assign({}, p), { barcodes: [p.barcode], stock: parseInt(p.stock) || 0 }));
+                    }
+                });
+                checkLowStock();
+                renderCategoryBar();
+                renderProducts();
+                renderStockTable();
+            }
+            catch (err) {
+                showMsg('Gagal Sinkronisasi', err.message || 'Koneksi database bermasalah.');
+            }
+            finally {
+                hideLoading();
+            }
+        });
     }
-
     function renderProducts(searchQuery = '') {
         const grid = document.getElementById('product-grid');
-        if (!grid) return;
+        if (!grid)
+            return;
         grid.innerHTML = '';
         const q = String(searchQuery || '').toLowerCase();
-        let filtered = localCatalog.filter(p =>
-            (currentCategory === 'Semua' || p.category === currentCategory) &&
-            (String(p.name || '').toLowerCase().includes(q) || p.barcodes.join(' ').includes(searchQuery))
-        );
-
-        if(filtered.length === 0) {
+        let filtered = localCatalog.filter(p => (currentCategory === 'Semua' || p.category === currentCategory) &&
+            (String(p.name || '').toLowerCase().includes(q) || p.barcodes.join(' ').includes(searchQuery)));
+        if (filtered.length === 0) {
             grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-10 font-bold bg-white rounded-xl border-2 border-dashed border-gray-200">Produk masih kosong, tambahkan produkmu.</p>`;
             return;
         }
-
         filtered.sort((a, b) => {
             const popA = popularityMap[a.barcodes[0]] || 0;
             const popB = popularityMap[b.barcodes[0]] || 0;
             return popB - popA;
         });
-
         filtered.forEach(p => {
             const firstBarcode = String(p.barcodes[0] || '');
             const barcodeLabel = p.barcodes.length > 1 ? `${p.barcodes.length} Brc` : escapeHtml(firstBarcode);
@@ -1679,38 +1697,39 @@
             </div>`;
         });
     }
-
     // Fungsi Render Tabel Halaman Stok Baru
     function renderStockTable() {
         const searchEl = document.getElementById('stok-search');
         const query = String(searchEl ? searchEl.value : '').toLowerCase();
         const tbody = document.getElementById('stok-table-body');
-        if (!tbody) return;
+        if (!tbody)
+            return;
         tbody.innerHTML = '';
-        
         let filtered = rawCatalog.filter(p => String(p.name || '').toLowerCase().includes(query) || String(p.barcode || '').includes(query));
-        
         if (filtered.length === 0) {
             tbody.innerHTML = `<tr><td colspan="5" class="text-center py-10 text-gray-400 font-bold bg-white">Produk masih kosong, tambahkan produkmu.</td></tr>`;
             updateRightContextIfVisible();
             return;
         }
-
         const sortBy = document.getElementById('sort-select-stok').value;
         if (sortBy === 'laku') {
             filtered.sort((a, b) => (popularityMap[a.barcode] || 0) - (popularityMap[b.barcode] || 0)).reverse();
-        } else if (sortBy === 'az') {
+        }
+        else if (sortBy === 'az') {
             filtered.sort((a, b) => String(a.name || '').localeCompare(String(b.name || '')));
-        } else if (sortBy === 'za') {
+        }
+        else if (sortBy === 'za') {
             filtered.sort((a, b) => String(b.name || '').localeCompare(String(a.name || '')));
-        } else if (sortBy === 'low') {
+        }
+        else if (sortBy === 'low') {
             filtered.sort((a, b) => a.price - b.price);
-        } else if (sortBy === 'high') {
+        }
+        else if (sortBy === 'high') {
             filtered.sort((a, b) => b.price - a.price);
-        } else if (sortBy === 'stock') {
+        }
+        else if (sortBy === 'stock') {
             filtered.sort((a, b) => a.stock - b.stock);
         }
-        
         filtered.forEach(p => {
             const stockColor = p.stock === 0 ? 'text-red-600 bg-red-50 font-black animate-pulse' : (p.stock <= 5 ? 'text-amber-600 bg-amber-50 font-bold' : 'text-gray-600');
             tbody.innerHTML += `
@@ -1731,26 +1750,26 @@
         });
         updateRightContextIfVisible();
     }
-
-    function filterCategory(cat) { 
-        currentCategory = cat; 
+    function filterCategory(cat) {
+        currentCategory = cat;
         renderCategoryBar(); // Gambar ulang kategori
-        renderProducts(document.getElementById('search-input').value); 
+        renderProducts(document.getElementById('search-input').value);
     }
     function filterProducts() { renderProducts(document.getElementById('search-input').value); }
-
     function addToCart(barcode) {
         const source = rawCatalog.find(p => String(p.barcode) === String(barcode));
-        if (!source) return showMsg('Info', 'Produk tidak ditemukan.');
-
+        if (!source)
+            return showMsg('Info', 'Produk tidak ditemukan.');
         const stock = parseInt(source.stock) || 0;
         const existing = cart.find(item => String(item.barcode) === String(source.barcode));
-
         if (existing) {
-            if (existing.qty >= stock) return showMsg('Info', 'Stok tidak mencukupi.');
+            if (existing.qty >= stock)
+                return showMsg('Info', 'Stok tidak mencukupi.');
             existing.qty += 1;
-        } else {
-            if (stock <= 0) return showMsg('Info', 'Stok kosong!');
+        }
+        else {
+            if (stock <= 0)
+                return showMsg('Info', 'Stok kosong!');
             cart.push({
                 barcode: String(source.barcode),
                 name: source.name,
@@ -1760,39 +1779,34 @@
         }
         updateCartUI();
     }
-
     function changeQty(barcode, delta) {
         const item = cart.find(i => String(i.barcode) === String(barcode));
-        if (!item) return;
-
+        if (!item)
+            return;
         const source = rawCatalog.find(p => String(p.barcode) === String(barcode));
         const stock = source ? parseInt(source.stock) || 0 : 0;
-
         if (delta > 0 && item.qty >= stock) {
             return showMsg('Info', 'Maksimal stok tercapai.');
         }
-
         item.qty += delta;
-
         if (item.qty <= 0) {
             cart = cart.filter(i => String(i.barcode) !== String(barcode));
         }
         updateCartUI();
     }
-
-    function clearCart() { 
+    function clearCart() {
         showMsg('Konfirmasi', 'Kosongkan isi keranjang?', 'confirm', () => { cart = []; updateCartUI(); });
     }
-    
     function updateCartUI() {
         const container = document.getElementById('cart-items');
-        if (!container) return;
-        container.innerHTML = ''; 
+        if (!container)
+            return;
+        container.innerHTML = '';
         let totalQty = 0;
-
         if (cart.length === 0) {
             document.getElementById('empty-cart-msg').style.display = 'flex';
-        } else {
+        }
+        else {
             document.getElementById('empty-cart-msg').style.display = 'none';
             cart.forEach(item => {
                 totalQty += item.qty;
@@ -1812,104 +1826,107 @@
         }
         grandTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
         document.getElementById('total-display').innerText = formatRupiah(grandTotal);
-        
         const badge = document.getElementById('cart-badge');
-        if(badge) {
-            if(totalQty > 0) { badge.innerText = totalQty; badge.classList.remove('hidden'); badge.classList.add('flex'); } 
-            else { badge.classList.add('hidden'); badge.classList.remove('flex'); }
-        }
-    }
-
-    // Penanganan Terisolasi Scanner Desktop vs Scanner Floating Mobile
-    function toggleScanner(target = 'cart') {
-        scannerTarget = target;
-        
-        if (window.innerWidth < 768 || target === 'modal') {
-            document.getElementById('floating-scanner').classList.remove('hidden');
-            startFloatingScanner();
-        } else {
-            const c = document.getElementById('scanner-container');
-            if (c.classList.contains('hidden')) { 
-                c.classList.remove('hidden'); 
-                startInlineScanner(); 
-            } else { 
-                c.classList.add('hidden'); 
-                stopInlineScanner(); 
+        if (badge) {
+            if (totalQty > 0) {
+                badge.innerText = totalQty;
+                badge.classList.remove('pos-hidden');
+                badge.classList.add('flex');
+            }
+            else {
+                badge.classList.add('pos-hidden');
+                badge.classList.remove('flex');
             }
         }
     }
-    
+    // Penanganan Terisolasi Scanner Desktop vs Scanner Floating Mobile
+    function toggleScanner(target = 'cart') {
+        scannerTarget = target;
+        if (window.innerWidth < 768 || target === 'modal') {
+            document.getElementById('floating-scanner').classList.remove('pos-hidden');
+            startFloatingScanner();
+        }
+        else {
+            const c = document.getElementById('scanner-container');
+            if (c.classList.contains('pos-hidden')) {
+                c.classList.remove('pos-hidden');
+                startInlineScanner();
+            }
+            else {
+                c.classList.add('pos-hidden');
+                stopInlineScanner();
+            }
+        }
+    }
     function openScannerForModal() {
         closeAddProductModal();
-        toggleScanner('modal'); 
+        toggleScanner('modal');
     }
-
     // Fungsi Kamera Floating Mobile
     function startFloatingScanner() {
-        if (html5QrScanner) return;
+        if (html5QrScanner)
+            return;
         html5QrScanner = new Html5Qrcode("floating-reader");
-        html5QrScanner.start({ facingMode: "environment" }, { fps: 15, qrbox: { width: 220, height: 220 } }, 
-            (decodedText) => {
-                closeFloatingScanner();
-                playCoinSound(); 
-                if (scannerTarget === 'modal') {
-                    document.getElementById('new-barcode').value = decodedText;
-                    document.getElementById('add-product-modal').classList.remove('hidden');
-                } else {
-                    const localProduct = rawCatalog.find(p => String(p.barcode) === String(decodedText));
-                    if(localProduct) { 
-                        addToCart(decodedText); 
-                    } else { 
-                        processNewBarcode(decodedText); 
-                    }
+        html5QrScanner.start({ facingMode: "environment" }, { fps: 15, qrbox: { width: 220, height: 220 } }, (decodedText) => {
+            closeFloatingScanner();
+            playCoinSound();
+            if (scannerTarget === 'modal') {
+                document.getElementById('new-barcode').value = decodedText;
+                document.getElementById('add-product-modal').classList.remove('pos-hidden');
+            }
+            else {
+                const localProduct = rawCatalog.find(p => String(p.barcode) === String(decodedText));
+                if (localProduct) {
+                    addToCart(decodedText);
                 }
-            }, () => {}
-        ).catch(() => {
+                else {
+                    processNewBarcode(decodedText);
+                }
+            }
+        }, () => { }).catch(() => {
             showMsg('Info', "Kamera gagal diakses.");
             closeFloatingScanner();
         });
     }
-
     function stopFloatingScanner() {
         if (html5QrScanner) {
             html5QrScanner.stop().then(() => {
                 html5QrScanner.clear();
                 html5QrScanner = null;
-            }).catch(()=>{});
+            }).catch(() => { });
         }
     }
-
     function closeFloatingScanner() {
         const floating = document.getElementById('floating-scanner');
-        if (floating) floating.classList.add('hidden');
+        if (floating)
+            floating.classList.add('pos-hidden');
         stopFloatingScanner();
     }
-
     function startInlineScanner() {
-        if (html5InlineScanner) return;
+        if (html5InlineScanner)
+            return;
         html5InlineScanner = new Html5Qrcode("reader");
-        html5InlineScanner.start({ facingMode: "environment" }, { fps: 15, qrbox: { width: 220, height: 220 } },
-            (decodedText) => {
-                playCoinSound();
-                const c = document.getElementById('scanner-container');
-                if (c) c.classList.add('hidden');
-                stopInlineScanner();
-
-                const localProduct = rawCatalog.find(p => String(p.barcode) === String(decodedText));
-                if (localProduct) {
-                    addToCart(decodedText);
-                } else {
-                    processNewBarcode(decodedText);
-                }
-            }, () => {}
-        ).catch(() => {
+        html5InlineScanner.start({ facingMode: "environment" }, { fps: 15, qrbox: { width: 220, height: 220 } }, (decodedText) => {
+            playCoinSound();
+            const c = document.getElementById('scanner-container');
+            if (c)
+                c.classList.add('pos-hidden');
+            stopInlineScanner();
+            const localProduct = rawCatalog.find(p => String(p.barcode) === String(decodedText));
+            if (localProduct) {
+                addToCart(decodedText);
+            }
+            else {
+                processNewBarcode(decodedText);
+            }
+        }, () => { }).catch(() => {
             showMsg('Info', 'Kamera gagal diakses.');
             const c = document.getElementById('scanner-container');
-            if (c) c.classList.add('hidden');
+            if (c)
+                c.classList.add('pos-hidden');
             stopInlineScanner();
         });
     }
-
     function stopInlineScanner() {
         if (html5InlineScanner) {
             html5InlineScanner.stop().then(() => {
@@ -1920,104 +1937,99 @@
             });
         }
     }
-
-
     // Fungsi Kamera Khusus Memenuhi Tab Keranjang Belanja (Revisi Ke-2)
     function toggleCartScanner(show) {
         const container = document.getElementById('cart-scanner-container');
-        if (!container) return;
-
+        if (!container)
+            return;
         if (show) {
-            container.classList.remove('hidden');
+            container.classList.remove('pos-hidden');
             container.classList.add('flex');
             startCartScanner();
-        } else {
-            container.classList.add('hidden');
+        }
+        else {
+            container.classList.add('pos-hidden');
             container.classList.remove('flex');
             stopCartScanner();
         }
     }
-
     function startCartScanner() {
-        if (html5CartScanner) return;
+        if (html5CartScanner)
+            return;
         html5CartScanner = new Html5Qrcode("cart-reader");
-        html5CartScanner.start({ facingMode: "environment" }, { fps: 15, qrbox: { width: 220, height: 220 } }, 
-            (decodedText) => {
-                playCoinSound();
-                const localProduct = rawCatalog.find(p => String(p.barcode) === String(decodedText));
-                if (localProduct) {
-                    addToCart(decodedText);
-                    // Scanner tetap terbuka agar kasir bisa memindai item berikutnya
-                } else {
-                    toggleCartScanner(false);
-                    processNewBarcode(decodedText);
-                }
-            }, () => {}
-        ).catch((err) => {
+        html5CartScanner.start({ facingMode: "environment" }, { fps: 15, qrbox: { width: 220, height: 220 } }, (decodedText) => {
+            playCoinSound();
+            const localProduct = rawCatalog.find(p => String(p.barcode) === String(decodedText));
+            if (localProduct) {
+                addToCart(decodedText);
+                // Scanner tetap terbuka agar kasir bisa memindai item berikutnya
+            }
+            else {
+                toggleCartScanner(false);
+                processNewBarcode(decodedText);
+            }
+        }, () => { }).catch((err) => {
             showMsg('Info', "Kamera gagal diakses.");
             toggleCartScanner(false);
         });
     }
-
     function stopCartScanner() {
         if (html5CartScanner) {
             html5CartScanner.stop().then(() => {
                 html5CartScanner.clear();
                 html5CartScanner = null;
-            }).catch(()=>{});
+            }).catch(() => { });
         }
     }
-
     function processNewBarcode(barcode) {
         setupProductModal('add', barcode);
-        
         const masterData = masterDB[String(barcode)];
         const banner = document.getElementById('modal-status-banner');
-        if (banner) banner.classList.remove('hidden');
-        if(masterData) {
+        if (banner)
+            banner.classList.remove('pos-hidden');
+        if (masterData) {
             banner.className = "mb-4 p-3 text-xs font-bold border-l-4 rounded-r-lg bg-green-50 border-green-500 text-green-800";
             banner.innerHTML = "<i class='fas fa-check-circle mr-1'></i> Data Master Pusat Tersedia.";
-            document.getElementById('new-name').value = masterData.name; document.getElementById('new-name').readOnly = true; document.getElementById('new-name').classList.add('bg-gray-100');
+            document.getElementById('new-name').value = masterData.name;
+            document.getElementById('new-name').readOnly = true;
+            document.getElementById('new-name').classList.add('bg-gray-100');
             document.getElementById('new-category').value = masterData.category;
-        } else {
+        }
+        else {
             banner.className = "mb-4 p-3 text-xs font-bold border-l-4 rounded-r-lg bg-yellow-50 border-yellow-500 text-yellow-800";
             banner.innerHTML = "<i class='fas fa-star mr-1'></i> Barcode Baru.";
         }
     }
-
     function showEditProductModal(barcode = null) {
         setupProductModal(barcode ? 'edit' : 'add', barcode);
     }
-
     function setupProductModal(mode, barcode) {
         const isPremium = (currentWarung.status === 'Premium' || currentWarung.role === 'superadmin');
         if (mode === 'add' && rawCatalog.length >= 10 && !isPremium) {
-            document.getElementById('premium-upgrade-modal').classList.remove('hidden');
+            document.getElementById('premium-upgrade-modal').classList.remove('pos-hidden');
             return;
         }
-
         const banner = document.getElementById('modal-status-banner');
-        if (banner) banner.classList.add('hidden');
+        if (banner)
+            banner.classList.add('pos-hidden');
         document.getElementById('modal-mode').value = mode;
         document.getElementById('new-name').readOnly = false;
         document.getElementById('new-category').readOnly = false;
         document.getElementById('new-name').classList.remove('bg-gray-100');
         document.getElementById('new-category').classList.remove('bg-gray-100');
-        
         const barcodeInput = document.getElementById('new-barcode');
-        const oldBarcodeInput = document.getElementById('old-barcode'); 
-        
+        const oldBarcodeInput = document.getElementById('old-barcode');
         if (mode === 'edit') {
             document.getElementById('modal-product-title').innerText = "Edit Data Produk";
             const p = rawCatalog.find(r => r.barcode === String(barcode));
-            if (!p) return showMsg('Produk tidak ditemukan', 'Silakan refresh katalog, lalu coba edit kembali.');
+            if (!p)
+                return showMsg('Produk tidak ditemukan', 'Silakan refresh katalog, lalu coba edit kembali.');
             barcodeInput.value = barcode;
-            oldBarcodeInput.value = barcode; 
+            oldBarcodeInput.value = barcode;
             document.getElementById('new-name').value = p.name;
             document.getElementById('new-category').value = p.category;
             document.getElementById('new-price').value = p.price;
             document.getElementById('new-stock').value = p.stock;
-
             if (!isSuperAdmin() && masterDB[String(barcode)]) {
                 document.getElementById('new-name').readOnly = true;
                 document.getElementById('new-category').readOnly = true;
@@ -2026,10 +2038,11 @@
                 if (banner) {
                     banner.className = "p-3 text-xs font-semibold border-l-4 rounded-r-lg bg-blue-50 border-blue-500 text-blue-700";
                     banner.innerHTML = "Nama/kategori produk pusat hanya dapat diedit melalui Admin Panel. Cabang tetap dapat mengubah harga dan stok.";
-                    banner.classList.remove('hidden');
+                    banner.classList.remove('pos-hidden');
                 }
             }
-        } else {
+        }
+        else {
             document.getElementById('modal-product-title').innerText = "Tambah Manual / Scan";
             barcodeInput.value = barcode || '';
             oldBarcodeInput.value = '';
@@ -2038,284 +2051,270 @@
             document.getElementById('new-price').value = '';
             document.getElementById('new-stock').value = '';
         }
-        document.getElementById('add-product-modal').classList.remove('hidden');
+        document.getElementById('add-product-modal').classList.remove('pos-hidden');
     }
-
-    function closeAddProductModal() { document.getElementById('add-product-modal').classList.add('hidden'); }
-
-    async function saveNewProduct() {
-        let barcode = document.getElementById('new-barcode').value.trim();
-        const oldBarcode = document.getElementById('old-barcode').value.trim();
-        const name = document.getElementById('new-name').value.trim();
-        const category = document.getElementById('new-category').value.trim() || 'Lainnya';
-        const price = parseInt(document.getElementById('new-price').value);
-        const stock = parseInt(document.getElementById('new-stock').value) || 0;
-        const mode = document.getElementById('modal-mode').value;
-
-        if(!name || price <= 0 || isNaN(price)) return showMsg('Peringatan', 'Nama dan Harga valid wajib diisi!');
-        
-        if(!barcode) barcode = 'MAN-' + new Date().getTime();
-
-        if (mode === 'add') {
-            const existingGroup = localCatalog.find(p => p.name.toLowerCase() === name.toLowerCase());
-            if (existingGroup && !existingGroup.barcodes.includes(barcode)) {
-                showMsg('Gabung Produk', `Produk [${existingGroup.name}] sudah terdaftar.\n\nGabungkan barcode baru ini ke produk tersebut?`, 'confirm', () => {
-                    executeSaveProduct({ barcode: barcode, oldBarcode: oldBarcode, name: existingGroup.name, category: existingGroup.category, price: existingGroup.price, stock: stock });
-                });
-                return;
+    function closeAddProductModal() { document.getElementById('add-product-modal').classList.add('pos-hidden'); }
+    function saveNewProduct() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let barcode = document.getElementById('new-barcode').value.trim();
+            const oldBarcode = document.getElementById('old-barcode').value.trim();
+            const name = document.getElementById('new-name').value.trim();
+            const category = document.getElementById('new-category').value.trim() || 'Lainnya';
+            const price = parseInt(document.getElementById('new-price').value);
+            const stock = parseInt(document.getElementById('new-stock').value) || 0;
+            const mode = document.getElementById('modal-mode').value;
+            if (!name || price <= 0 || isNaN(price))
+                return showMsg('Peringatan', 'Nama dan Harga valid wajib diisi!');
+            if (!barcode)
+                barcode = 'MAN-' + new Date().getTime();
+            if (mode === 'add') {
+                const existingGroup = localCatalog.find(p => p.name.toLowerCase() === name.toLowerCase());
+                if (existingGroup && !existingGroup.barcodes.includes(barcode)) {
+                    showMsg('Gabung Produk', `Produk [${existingGroup.name}] sudah terdaftar.\n\nGabungkan barcode baru ini ke produk tersebut?`, 'confirm', () => {
+                        executeSaveProduct({ barcode: barcode, oldBarcode: oldBarcode, name: existingGroup.name, category: existingGroup.category, price: existingGroup.price, stock: stock });
+                    });
+                    return;
+                }
             }
-        }
-        executeSaveProduct({ barcode, oldBarcode, name, category, price, stock });
+            executeSaveProduct({ barcode, oldBarcode, name, category, price, stock });
+        });
     }
-
-    async function executeSaveProduct(data) {
-        closeAddProductModal();
-        showLoading("Menyimpan produk...");
-        try {
-            const incomingBarcode = String(data.barcode || '').trim();
-            const oldBarcode = String(data.oldBarcode || '').trim();
-            if (!incomingBarcode) throw new Error('Barcode produk tidak valid.');
-
-            if (oldBarcode && oldBarcode !== incomingBarcode) {
-                const { error: delErr } = await supabaseClient
-                    .from('harga_warung')
-                    .delete()
-                    .eq('id_warung', currentWarung.id)
-                    .eq('barcode', oldBarcode);
-                if (delErr) throw delErr;
-            }
-
-            const existingMaster = masterDB[incomingBarcode];
-            const mayWriteMaster = isSuperAdmin() || !existingMaster;
-            const productName = existingMaster && !isSuperAdmin() ? existingMaster.name : data.name;
-            const productCategory = existingMaster && !isSuperAdmin() ? existingMaster.category : data.category;
-
-            if (mayWriteMaster) {
-                const { error: prodErr } = await supabaseClient
-                    .from('produk_induk')
-                    .upsert({
+    function executeSaveProduct(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            closeAddProductModal();
+            showLoading("Menyimpan produk...");
+            try {
+                const incomingBarcode = String(data.barcode || '').trim();
+                const oldBarcode = String(data.oldBarcode || '').trim();
+                if (!incomingBarcode)
+                    throw new Error('Barcode produk tidak valid.');
+                if (oldBarcode && oldBarcode !== incomingBarcode) {
+                    const { error: delErr } = yield supabaseClient
+                        .from('harga_warung')
+                        .delete()
+                        .eq('id_warung', currentWarung.id)
+                        .eq('barcode', oldBarcode);
+                    if (delErr)
+                        throw delErr;
+                }
+                const existingMaster = masterDB[incomingBarcode];
+                const mayWriteMaster = isSuperAdmin() || !existingMaster;
+                const productName = existingMaster && !isSuperAdmin() ? existingMaster.name : data.name;
+                const productCategory = existingMaster && !isSuperAdmin() ? existingMaster.category : data.category;
+                if (mayWriteMaster) {
+                    const { error: prodErr } = yield supabaseClient
+                        .from('produk_induk')
+                        .upsert({
                         barcode: incomingBarcode,
                         nama_produk: productName,
                         kategori: productCategory,
                         updated_at: new Date()
                     }, { onConflict: 'barcode' });
-                if (prodErr) throw prodErr;
-            }
-
-            const { error: priceErr } = await supabaseClient
-                .from('harga_warung')
-                .upsert({
+                    if (prodErr)
+                        throw prodErr;
+                }
+                const { error: priceErr } = yield supabaseClient
+                    .from('harga_warung')
+                    .upsert({
                     id_warung: currentWarung.id,
                     barcode: incomingBarcode,
                     harga_jual: Number(data.price) || 0,
                     stok: Number(data.stock) || 0,
                     updated_at: new Date()
                 }, { onConflict: 'id_warung,barcode' });
-            if (priceErr) throw priceErr;
-
-            await loadCatalog(); 
-            if(document.getElementById('modal-mode').value === 'add') addToCart(incomingBarcode); 
-        } catch (err) {
-            showMsg("Gagal", err.message || "Gagal menyimpan produk.");
-        } finally {
-            hideLoading();
-        }
+                if (priceErr)
+                    throw priceErr;
+                yield loadCatalog();
+                if (document.getElementById('modal-mode').value === 'add')
+                    addToCart(incomingBarcode);
+            }
+            catch (err) {
+                showMsg("Gagal", err.message || "Gagal menyimpan produk.");
+            }
+            finally {
+                hideLoading();
+            }
+        });
     }
-
     function showPaymentModal() {
-        if (cart.length === 0) return showMsg('Info', "Keranjang kosong!");
+        if (cart.length === 0)
+            return showMsg('Info', "Keranjang kosong!");
         document.getElementById('modal-total-tagihan').innerText = formatRupiah(grandTotal);
-        document.getElementById('uang-diterima').value = ''; 
+        document.getElementById('uang-diterima').value = '';
         document.getElementById('kembalian-display').innerText = 'Rp 0';
         document.getElementById('kembalian-display').className = "font-black text-2xl text-gray-900";
-        document.getElementById('payment-modal').classList.remove('hidden');
+        document.getElementById('payment-modal').classList.remove('pos-hidden');
     }
-    function closePaymentModal() { document.getElementById('payment-modal').classList.add('hidden'); }
-    
-    function setUang(amount) { 
+    function closePaymentModal() { document.getElementById('payment-modal').classList.add('pos-hidden'); }
+    function setUang(amount) {
         const input = document.getElementById('uang-diterima');
-        if (amount === 'Clear') input.value = '';
-        else if (amount === 'Pas') input.value = grandTotal;
-        else input.value = amount;
-        calculateKembalian(); 
+        if (amount === 'Clear')
+            input.value = '';
+        else if (amount === 'Pas')
+            input.value = grandTotal;
+        else
+            input.value = amount;
+        calculateKembalian();
     }
-    
     function calculateKembalian() {
-        const uang = parseFloat(document.getElementById('uang-diterima').value) || 0; 
+        const uang = parseFloat(document.getElementById('uang-diterima').value) || 0;
         const kembalian = uang - grandTotal;
         const display = document.getElementById('kembalian-display');
         display.innerText = kembalian < 0 ? "Kurang!" : formatRupiah(kembalian);
         display.className = kembalian < 0 ? "font-black text-2xl text-red-600" : "font-black text-2xl text-green-600";
     }
-
-    async function prosesTransaksi(isCetak) {
-        if (isCheckoutRunning) return;
-
-        const uang = parseFloat(document.getElementById('uang-diterima').value) || 0;
-        if (uang < grandTotal) {
-            return showMsg('Info', 'Uang pembayaran tidak cukup!');
-        }
-
-        isCheckoutRunning = true;
-        closePaymentModal();
-        showLoading('Mencatat Transaksi...');
-
-        try {
-            const simplifiedCart = cart.map(item => ({
-                barcode: item.barcode,
-                name: item.name,
-                price: item.price,
-                qty: item.qty
-            }));
-
-            const { data: res, error: rpcErr } = await supabaseClient.rpc('handle_checkout', {
-                p_warung_id: currentWarung.id,
-                p_cart: simplifiedCart,
-                p_uang: uang,
-                p_total: grandTotal
-            });
-
-            if (rpcErr) throw rpcErr;
-            
-            if (res.status === 'error') {
-                showMsg('Error', res.message || 'Gagal menyimpan transaksi!');
-                hideLoading();
-                isCheckoutRunning = false;
+    function prosesTransaksi(isCetak) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (isCheckoutRunning)
                 return;
+            const uang = parseFloat(document.getElementById('uang-diterima').value) || 0;
+            if (uang < grandTotal) {
+                return showMsg('Info', 'Uang pembayaran tidak cukup!');
             }
-
-            hideLoading();
-            playCoinSound();
-
-            const finalTotal = Number(res.total) || grandTotal;
-            const finalKembalian = Number(res.kembalian) || (uang - finalTotal);
-
-            if (isCetak) {
-                const d = new Date();
-                document.getElementById('print-tanggal').innerText =
-                    `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-
-                const tbody = document.getElementById('print-items');
-                tbody.innerHTML = '';
-
-                cart.forEach(item => {
-                    tbody.innerHTML += `
+            isCheckoutRunning = true;
+            closePaymentModal();
+            showLoading('Mencatat Transaksi...');
+            try {
+                const simplifiedCart = cart.map(item => ({
+                    barcode: item.barcode,
+                    name: item.name,
+                    price: item.price,
+                    qty: item.qty
+                }));
+                const { data: res, error: rpcErr } = yield supabaseClient.rpc('handle_checkout', {
+                    p_warung_id: currentWarung.id,
+                    p_cart: simplifiedCart,
+                    p_uang: uang,
+                    p_total: grandTotal
+                });
+                if (rpcErr)
+                    throw rpcErr;
+                if (res.status === 'error') {
+                    showMsg('Error', res.message || 'Gagal menyimpan transaksi!');
+                    hideLoading();
+                    isCheckoutRunning = false;
+                    return;
+                }
+                hideLoading();
+                playCoinSound();
+                const finalTotal = Number(res.total) || grandTotal;
+                const finalKembalian = Number(res.kembalian) || (uang - finalTotal);
+                if (isCetak) {
+                    const d = new Date();
+                    document.getElementById('print-tanggal').innerText =
+                        `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()} ${leftPad(d.getHours(), 2, '0')}:${leftPad(d.getMinutes(), 2, '0')}`;
+                    const tbody = document.getElementById('print-items');
+                    tbody.innerHTML = '';
+                    cart.forEach(item => {
+                        tbody.innerHTML += `
                         <tr>
                             <td>${escapeHtml(item.name || '-')}</td>
                             <td class="pos-text-center">${item.qty}</td>
                             <td class="pos-text-right">${(item.price * item.qty).toLocaleString('id-ID')}</td>
                         </tr>
                     `;
-                });
-
-                // Menambahkan cetak logo & biodata jika tersetting
-                const printLogo = document.getElementById('print-logo');
-                if (currentWarung.logo) {
-                    printLogo.src = currentWarung.logo;
-                    printLogo.classList.remove('hidden');
-                } else {
-                    printLogo.classList.add('hidden');
+                    });
+                    // Menambahkan cetak logo & biodata jika tersetting
+                    const printLogo = document.getElementById('print-logo');
+                    if (currentWarung.logo) {
+                        printLogo.src = currentWarung.logo;
+                        printLogo.classList.remove('pos-hidden');
+                    }
+                    else {
+                        printLogo.classList.add('pos-hidden');
+                    }
+                    const printBiodata = document.getElementById('print-biodata');
+                    if (currentWarung.biodata) {
+                        printBiodata.innerText = currentWarung.biodata;
+                        printBiodata.classList.remove('pos-hidden');
+                    }
+                    else {
+                        printBiodata.classList.add('pos-hidden');
+                    }
+                    document.getElementById('print-total').innerText = finalTotal.toLocaleString('id-ID');
+                    document.getElementById('print-tunai').innerText = uang.toLocaleString('id-ID');
+                    document.getElementById('print-kembali').innerText = finalKembalian.toLocaleString('id-ID');
+                    window.print();
                 }
-
-                const printBiodata = document.getElementById('print-biodata');
-                if (currentWarung.biodata) {
-                    printBiodata.innerText = currentWarung.biodata;
-                    printBiodata.classList.remove('hidden');
-                } else {
-                    printBiodata.classList.add('hidden');
+                else {
+                    showMsg('Transaksi Berhasil', `Total: ${formatRupiah(finalTotal)}
+Kembalian: ${formatRupiah(finalKembalian)}`);
                 }
-
-                document.getElementById('print-total').innerText = finalTotal.toLocaleString('id-ID');
-                document.getElementById('print-tunai').innerText = uang.toLocaleString('id-ID');
-                document.getElementById('print-kembali').innerText = finalKembalian.toLocaleString('id-ID');
-
-                window.print();
-            } else {
-                showMsg(
-                    'Transaksi Berhasil',
-                    `Total: ${formatRupiah(finalTotal)}
-Kembalian: ${formatRupiah(finalKembalian)}`
-                );
+                cart = [];
+                updateCartUI();
+                yield loadCatalog();
+                if (historyData.length > 0) {
+                    yield loadHistory();
+                }
             }
-
-            cart = [];
-            updateCartUI();
-            await loadCatalog();
-
-            if (historyData.length > 0) {
-                await loadHistory();
+            catch (err) {
+                hideLoading();
+                showMsg('Error', err.message || 'Terjadi kesalahan saat transaksi.');
             }
-
-        } catch (err) {
-            hideLoading();
-            showMsg('Error', err.message || 'Terjadi kesalahan saat transaksi.');
-        } finally {
-            isCheckoutRunning = false;
-        }
+            finally {
+                isCheckoutRunning = false;
+            }
+        });
     }
-
-    async function loadHistory() {
-        showLoading("Memuat Riwayat...");
-        try {
-            const { data, error } = await supabaseClient
-                .from('transaksi')
-                .select('*')
-                .eq('id_warung', currentWarung.id)
-                .order('tanggal_waktu', { ascending: false })
-                .limit(500);
-
-            if (error) throw error;
-
-            historyData = (data || []).map(trx => ({
-                id: trx.id_transaksi,
-                date: trx.tanggal_waktu,
-                total: Number(trx.total_bayar) || 0,
-                uang: Number(trx.uang_diterima) || 0,
-                kembalian: Number(trx.kembalian) || 0
-            }));
-
-            renderHistory();
-        } catch (err) {
-            showMsg('Error', err.message || 'Gagal memuat riwayat.');
-        } finally {
-            hideLoading();
-        }
+    function loadHistory() {
+        return __awaiter(this, void 0, void 0, function* () {
+            showLoading("Memuat Riwayat...");
+            try {
+                const { data, error } = yield supabaseClient
+                    .from('transaksi')
+                    .select('*')
+                    .eq('id_warung', currentWarung.id)
+                    .order('tanggal_waktu', { ascending: false })
+                    .limit(500);
+                if (error)
+                    throw error;
+                historyData = (data || []).map(trx => ({
+                    id: trx.id_transaksi,
+                    date: trx.tanggal_waktu,
+                    total: Number(trx.total_bayar) || 0,
+                    uang: Number(trx.uang_diterima) || 0,
+                    kembalian: Number(trx.kembalian) || 0
+                }));
+                renderHistory();
+            }
+            catch (err) {
+                showMsg('Error', err.message || 'Gagal memuat riwayat.');
+            }
+            finally {
+                hideLoading();
+            }
+        });
     }
-
     // Fungsi Render Grafik Tren Penjualan Harian
     function renderSalesChart(filteredTrx) {
         const canvas = document.getElementById('sales-chart');
-        if (!canvas) return;
-
+        if (!canvas)
+            return;
         const ctx = canvas.getContext('2d');
         const salesByDate = {};
-        
         filteredTrx.forEach(trx => {
             const d = new Date(trx.date);
-            const dateStr = `${d.getDate()}/${d.getMonth()+1}`;
+            const dateStr = `${d.getDate()}/${d.getMonth() + 1}`;
             salesByDate[dateStr] = (salesByDate[dateStr] || 0) + trx.total;
         });
-        
         const labels = Object.keys(salesByDate);
-        const data = Object.values(salesByDate);
-        
+        const data = Object.keys(salesByDate).map(function (key) { return salesByDate[key]; });
         if (salesChart) {
             salesChart.destroy();
         }
-        
         salesChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Penjualan (Rp)',
-                    data: data,
-                    borderColor: themeColors[currentWarung?.theme || 'dark'] || '#1f2937',
-                    backgroundColor: 'rgba(31, 41, 55, 0.05)',
-                    borderWidth: 2.5,
-                    fill: true,
-                    tension: 0.3
-                }]
+                        label: 'Penjualan (Rp)',
+                        data: data,
+                        borderColor: themeColors[(currentWarung ? currentWarung.theme : undefined) || 'dark'] || '#1f2937',
+                        backgroundColor: 'rgba(31, 41, 55, 0.05)',
+                        borderWidth: 2.5,
+                        fill: true,
+                        tension: 0.3
+                    }]
             },
             options: {
                 responsive: true,
@@ -2330,46 +2329,42 @@ Kembalian: ${formatRupiah(finalKembalian)}`
             }
         });
     }
-
     // Fungsi Export CSV Laporan Penjualan
     function exportToCSV() {
-        if (historyData.length === 0) return showMsg('Info', 'Tidak ada data transaksi untuk diekspor.');
-        
+        if (historyData.length === 0)
+            return showMsg('Info', 'Tidak ada data transaksi untuk diekspor.');
         let csvContent = "\uFEFF"; // Enkoding BOM UTF-8 agar Excel langsung deteksi format desimal Indonesia
         csvContent += "ID Transaksi,Waktu Transaksi,Total Bayar,Uang Diterima,Kembalian\n";
-        
         historyData.forEach(trx => {
             const dateStr = new Date(trx.date).toLocaleString('id-ID');
             csvContent += `"${trx.id}","${dateStr}","${trx.total}","${trx.uang}","${trx.kembalian}"\n`;
         });
-        
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.setAttribute("href", url);
-        link.setAttribute("download", `laporan_penjualan_${currentWarung.name.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.csv`);
+        link.setAttribute("download", `laporan_penjualan_${currentWarung.name.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     }
-
     function renderHistory() {
         const list = document.getElementById('history-list');
-        if (!list) return;
-        const selectedMonth = document.getElementById('history-month').value; 
+        if (!list)
+            return;
+        const selectedMonth = document.getElementById('history-month').value;
         list.innerHTML = '';
         let sumTotal = 0;
         let sumCount = 0;
-
         const filtered = historyData.filter(trx => {
             const trxDate = new Date(trx.date);
-            const yyyyMm = `${trxDate.getFullYear()}-${String(trxDate.getMonth()+1).padStart(2,'0')}`;
+            const yyyyMm = `${trxDate.getFullYear()}-${leftPad(trxDate.getMonth() + 1, 2, '0')}`;
             return yyyyMm === selectedMonth;
         });
-
-        if(filtered.length === 0) {
+        if (filtered.length === 0) {
             list.innerHTML = `<div class="text-center text-gray-400 py-10 font-bold bg-white rounded-xl border border-dashed border-gray-200">Tidak ada transaksi di bulan ini.</div>`;
-        } else {
+        }
+        else {
             filtered.forEach(trx => {
                 const total = Number(trx.total) || 0;
                 const uang = Number(trx.uang) || 0;
@@ -2377,7 +2372,7 @@ Kembalian: ${formatRupiah(finalKembalian)}`
                 sumTotal += total;
                 sumCount++;
                 const d = new Date(trx.date);
-                const formattedDate = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+                const formattedDate = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()} ${leftPad(d.getHours(), 2, '0')}:${leftPad(d.getMinutes(), 2, '0')}`;
                 const id = String(trx.id || '');
                 list.innerHTML += `
                 <div onclick='showTransactionDetail(${jsArg(id)}, ${jsArg(formattedDate)}, ${total}, ${uang}, ${kembalian})' class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center mb-3 cursor-pointer hover:border-primary hover:shadow transition">
@@ -2389,33 +2384,36 @@ Kembalian: ${formatRupiah(finalKembalian)}`
                 </div>`;
             });
         }
-
         const deskSumTotal = document.getElementById('desk-sum-total');
         const deskSumCount = document.getElementById('desk-sum-count');
         const mobSumTotal = document.getElementById('mob-sum-total');
         const mobSumCount = document.getElementById('mob-sum-count');
-        if (deskSumTotal) deskSumTotal.innerText = formatRupiah(sumTotal);
-        if (deskSumCount) deskSumCount.innerText = sumCount;
-        if (mobSumTotal) mobSumTotal.innerText = formatRupiah(sumTotal);
-        if (mobSumCount) mobSumCount.innerText = sumCount;
+        if (deskSumTotal)
+            deskSumTotal.innerText = formatRupiah(sumTotal);
+        if (deskSumCount)
+            deskSumCount.innerText = sumCount;
+        if (mobSumTotal)
+            mobSumTotal.innerText = formatRupiah(sumTotal);
+        if (mobSumCount)
+            mobSumCount.innerText = sumCount;
         renderSalesChart(filtered);
         updateRightContextIfVisible();
     }
-
-    async function showTransactionDetail(idTransaksi, dateStr, total, uang, kembalian) {
-        showLoading("Memuat detail...");
-        try {
-            const { data, error } = await supabaseClient
-                .from('detail_transaksi')
-                .select('*')
-                .eq('id_transaksi', idTransaksi);
-            if (error) throw error;
-            const items = data || [];
-            activeDetailTrx = { id: idTransaksi, date: dateStr, total, uang, kembalian, items };
-
-            document.getElementById('detail-trx-title').innerText = `Rincian ${idTransaksi}`;
-            const body = document.getElementById('detail-trx-body');
-            body.innerHTML = `
+    function showTransactionDetail(idTransaksi, dateStr, total, uang, kembalian) {
+        return __awaiter(this, void 0, void 0, function* () {
+            showLoading("Memuat detail...");
+            try {
+                const { data, error } = yield supabaseClient
+                    .from('detail_transaksi')
+                    .select('*')
+                    .eq('id_transaksi', idTransaksi);
+                if (error)
+                    throw error;
+                const items = data || [];
+                activeDetailTrx = { id: idTransaksi, date: dateStr, total, uang, kembalian, items };
+                document.getElementById('detail-trx-title').innerText = `Rincian ${idTransaksi}`;
+                const body = document.getElementById('detail-trx-body');
+                body.innerHTML = `
                 <div class="bg-gray-50 p-4 rounded-xl border text-xs text-gray-600 space-y-1 font-mono">
                     <p><strong>Waktu TRX :</strong> ${escapeHtml(dateStr)}</p>
                     <p><strong>Total    :</strong> ${formatRupiah(total)}</p>
@@ -2434,17 +2432,20 @@ Kembalian: ${formatRupiah(finalKembalian)}`
                         </div>
                     `).join('')}
                 </div>`;
-            document.getElementById('transaction-detail-modal').classList.remove('hidden');
-        } catch (err) {
-            showMsg('Error', err.message || 'Gagal memuat rincian transaksi.');
-        } finally {
-            hideLoading();
-        }
+                document.getElementById('transaction-detail-modal').classList.remove('pos-hidden');
+            }
+            catch (err) {
+                showMsg('Error', err.message || 'Gagal memuat rincian transaksi.');
+            }
+            finally {
+                hideLoading();
+            }
+        });
     }
-
     // Fungsi Mencetak Struk dari Rincian Riwayat Transaksi (Revisi Ke-1)
     function printActiveDetail() {
-        if (!activeDetailTrx) return;
+        if (!activeDetailTrx)
+            return;
         document.getElementById('print-tanggal').innerText = activeDetailTrx.date;
         const tbody = document.getElementById('print-items');
         tbody.innerHTML = '';
@@ -2459,59 +2460,62 @@ Kembalian: ${formatRupiah(finalKembalian)}`
         document.getElementById('print-total').innerText = Number(activeDetailTrx.total || 0).toLocaleString('id-ID');
         document.getElementById('print-tunai').innerText = Number(activeDetailTrx.uang || 0).toLocaleString('id-ID');
         document.getElementById('print-kembali').innerText = Number(activeDetailTrx.kembalian || 0).toLocaleString('id-ID');
-
         const printLogo = document.getElementById('print-logo');
         if (currentWarung.logo) {
             printLogo.src = currentWarung.logo;
-            printLogo.classList.remove('hidden');
-        } else {
-            printLogo.classList.add('hidden');
+            printLogo.classList.remove('pos-hidden');
+        }
+        else {
+            printLogo.classList.add('pos-hidden');
         }
         const printBiodata = document.getElementById('print-biodata');
         if (currentWarung.biodata) {
             printBiodata.innerText = currentWarung.biodata;
-            printBiodata.classList.remove('hidden');
-        } else {
-            printBiodata.classList.add('hidden');
+            printBiodata.classList.remove('pos-hidden');
+        }
+        else {
+            printBiodata.classList.add('pos-hidden');
         }
         window.print();
     }
-
     function closeTransactionDetailModal() {
-        document.getElementById('transaction-detail-modal').classList.add('hidden');
+        document.getElementById('transaction-detail-modal').classList.add('pos-hidden');
         activeDetailTrx = null;
     }
-
     // ==========================================
     // SEKSI MODUL JAVASCRIPT PANEL ADMIN (REVISI BARU - UNTUK SUPERADMIN)
     // ==========================================
-    async function loadAdminWarungList() {
-        if (!assertSuperAdminAction()) return;
-        const tbody = document.getElementById('admin-warung-table-body');
-        if (!tbody) return;
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-gray-400 font-bold">Memuat data cabang...</td></tr>';
-        try {
-            const { data: warungs, error } = await supabaseClient
-                .from('warung')
-                .select('*')
-                .order('id_warung', { ascending: true });
-            if (error) throw error;
-            tbody.innerHTML = '';
-            if (!warungs || warungs.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-gray-400">Tidak ada cabang terdaftar.</td></tr>';
+    function loadAdminWarungList() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!assertSuperAdminAction())
                 return;
-            }
-            warungs.forEach(w => {
-                const isPremium = w.status === 'Premium';
-                const planBadge = isPremium 
-                    ? `<span class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-black text-xs inline-flex items-center gap-1"><i class="fas fa-crown text-amber-500 text-[10px]"></i> Premium</span>`
-                    : `<span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full font-bold text-xs inline-flex items-center">Free</span>`;
-                const statusBadge = w.status === 'Aktif' || w.status === 'Premium'
-                    ? `<span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full font-bold text-[11px]">Aktif</span>`
-                    : `<span class="bg-red-100 text-red-800 px-2.5 py-0.5 rounded-full font-bold text-[11px]">Suspend</span>`;
-                const planBtnText = isPremium ? 'Downgrade Free' : 'Upgrade Premium';
-                const planBtnColor = isPremium ? 'bg-amber-100 text-amber-700 hover:bg-amber-600 hover:text-white' : 'bg-green-100 text-green-700 hover:bg-green-600 hover:text-white';
-                tbody.innerHTML += `
+            const tbody = document.getElementById('admin-warung-table-body');
+            if (!tbody)
+                return;
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-gray-400 font-bold">Memuat data cabang...</td></tr>';
+            try {
+                const { data: warungs, error } = yield supabaseClient
+                    .from('warung')
+                    .select('*')
+                    .order('id_warung', { ascending: true });
+                if (error)
+                    throw error;
+                tbody.innerHTML = '';
+                if (!warungs || warungs.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-gray-400">Tidak ada cabang terdaftar.</td></tr>';
+                    return;
+                }
+                warungs.forEach(w => {
+                    const isPremium = w.status === 'Premium';
+                    const planBadge = isPremium
+                        ? `<span class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-black text-xs inline-flex items-center gap-1"><i class="fas fa-crown text-amber-500 text-[10px]"></i> Premium</span>`
+                        : `<span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full font-bold text-xs inline-flex items-center">Free</span>`;
+                    const statusBadge = w.status === 'Aktif' || w.status === 'Premium'
+                        ? `<span class="bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full font-bold text-[11px]">Aktif</span>`
+                        : `<span class="bg-red-100 text-red-800 px-2.5 py-0.5 rounded-full font-bold text-[11px]">Suspend</span>`;
+                    const planBtnText = isPremium ? 'Downgrade Free' : 'Upgrade Premium';
+                    const planBtnColor = isPremium ? 'bg-amber-100 text-amber-700 hover:bg-amber-600 hover:text-white' : 'bg-green-100 text-green-700 hover:bg-green-600 hover:text-white';
+                    tbody.innerHTML += `
                 <tr class="hover:bg-gray-50 transition bg-white text-xs sm:text-sm">
                     <td class="p-3 font-mono font-bold text-gray-700">${escapeHtml(w.id_warung || '')}</td>
                     <td class="p-3 font-bold text-gray-900">${escapeHtml(w.nama_warung || '-')}</td>
@@ -2525,106 +2529,119 @@ Kembalian: ${formatRupiah(finalKembalian)}`
                         </div>
                     </td>
                 </tr>`;
-            });
-        } catch(err) {
-            tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-red-500 font-bold">Gagal memuat data: ${escapeHtml(err.message || '')}</td></tr>`;
-        } finally {
-            updateRightContextIfVisible();
-        }
-    }
-
-    async function adminTogglePremium(idWarung, isPremium) {
-        if (!assertSuperAdminAction()) return;
-        showLoading("Memproses paket lisensi...");
-        try {
-            const nextStatus = isPremium ? 'Aktif' : 'Premium';
-            const { error } = await supabaseClient
-                .from('warung')
-                .update({ status: nextStatus, updated_at: new Date() })
-                .eq('id_warung', idWarung);
-            if (error) throw error;
-            showMsg('Sukses', `Berhasil mengubah lisensi warung [${idWarung}] ke paket ${nextStatus === 'Premium' ? 'Premium' : 'Free'}.`);
-            if (currentWarung && currentWarung.id === idWarung) {
-                currentWarung.status = nextStatus;
-                localStorage.setItem('pos_session', JSON.stringify(currentWarung));
-                renderPlanStatus();
+                });
             }
-            await loadAdminWarungList();
-        } catch(err) {
-            showMsg('Gagal', err.message || 'Gagal mengubah lisensi paket.');
-        } finally {
-            hideLoading();
-        }
+            catch (err) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-red-500 font-bold">Gagal memuat data: ${escapeHtml(err.message || '')}</td></tr>`;
+            }
+            finally {
+                updateRightContextIfVisible();
+            }
+        });
     }
-
-    async function adminToggleSuspend(idWarung, currentStatus) {
-        if (!assertSuperAdminAction()) return;
-        showLoading("Memproses status cabang...");
-        try {
-            const nextStatus = (currentStatus === 'Nonaktif') ? 'Aktif' : 'Nonaktif';
-            const { error } = await supabaseClient
-                .from('warung')
-                .update({ status: nextStatus, updated_at: new Date() })
-                .eq('id_warung', idWarung);
-            if (error) throw error;
-            showMsg('Sukses', `Status akun warung [${idWarung}] berhasil diubah menjadi ${nextStatus}.`);
-            await loadAdminWarungList();
-        } catch(err) {
-            showMsg('Gagal', err.message || 'Gagal mengubah status cabang.');
-        } finally {
-            hideLoading();
-        }
+    function adminTogglePremium(idWarung, isPremium) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!assertSuperAdminAction())
+                return;
+            showLoading("Memproses paket lisensi...");
+            try {
+                const nextStatus = isPremium ? 'Aktif' : 'Premium';
+                const { error } = yield supabaseClient
+                    .from('warung')
+                    .update({ status: nextStatus, updated_at: new Date() })
+                    .eq('id_warung', idWarung);
+                if (error)
+                    throw error;
+                showMsg('Sukses', `Berhasil mengubah lisensi warung [${idWarung}] ke paket ${nextStatus === 'Premium' ? 'Premium' : 'Free'}.`);
+                if (currentWarung && currentWarung.id === idWarung) {
+                    currentWarung.status = nextStatus;
+                    localStorage.setItem('pos_session', JSON.stringify(currentWarung));
+                    renderPlanStatus();
+                }
+                yield loadAdminWarungList();
+            }
+            catch (err) {
+                showMsg('Gagal', err.message || 'Gagal mengubah lisensi paket.');
+            }
+            finally {
+                hideLoading();
+            }
+        });
     }
-
+    function adminToggleSuspend(idWarung, currentStatus) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!assertSuperAdminAction())
+                return;
+            showLoading("Memproses status cabang...");
+            try {
+                const nextStatus = (currentStatus === 'Nonaktif') ? 'Aktif' : 'Nonaktif';
+                const { error } = yield supabaseClient
+                    .from('warung')
+                    .update({ status: nextStatus, updated_at: new Date() })
+                    .eq('id_warung', idWarung);
+                if (error)
+                    throw error;
+                showMsg('Sukses', `Status akun warung [${idWarung}] berhasil diubah menjadi ${nextStatus}.`);
+                yield loadAdminWarungList();
+            }
+            catch (err) {
+                showMsg('Gagal', err.message || 'Gagal mengubah status cabang.');
+            }
+            finally {
+                hideLoading();
+            }
+        });
+    }
     let adminProdukPusatCache = [];
-
-    async function loadAdminData() {
-        if (!assertSuperAdminAction()) return;
-        await Promise.allSettled([
-            loadAdminWarungList(),
-            loadAdminProdukPusatList()
-        ]);
+    function loadAdminData() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!assertSuperAdminAction())
+                return;
+            yield Promise.allSettled([
+                loadAdminWarungList(),
+                loadAdminProdukPusatList()
+            ]);
+        });
     }
-
-    async function loadAdminProdukPusatList() {
-        if (!assertSuperAdminAction()) return;
-        const tbody = document.getElementById('admin-product-table-body');
-        if (!tbody) return;
-        tbody.innerHTML = '<tr><td colspan="4" class="text-center py-6 text-gray-400 font-bold">Memuat produk pusat...</td></tr>';
-        try {
-            const { data, error } = await supabaseClient
-                .from('produk_induk')
-                .select('*')
-                .order('nama_produk', { ascending: true });
-            if (error) throw error;
-            adminProdukPusatCache = data || [];
-            renderAdminProdukPusatTable();
-        } catch (err) {
-            tbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 text-red-500 font-bold">Gagal memuat produk pusat: ${escapeHtml(err.message || '')}</td></tr>`;
-        }
+    function loadAdminProdukPusatList() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!assertSuperAdminAction())
+                return;
+            const tbody = document.getElementById('admin-product-table-body');
+            if (!tbody)
+                return;
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center py-6 text-gray-400 font-bold">Memuat produk pusat...</td></tr>';
+            try {
+                const { data, error } = yield supabaseClient
+                    .from('produk_induk')
+                    .select('*')
+                    .order('nama_produk', { ascending: true });
+                if (error)
+                    throw error;
+                adminProdukPusatCache = data || [];
+                renderAdminProdukPusatTable();
+            }
+            catch (err) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-6 text-red-500 font-bold">Gagal memuat produk pusat: ${escapeHtml(err.message || '')}</td></tr>`;
+            }
+        });
     }
-
     function renderAdminProdukPusatTable() {
         const tbody = document.getElementById('admin-product-table-body');
-        if (!tbody) return;
-
-        const query = (document.getElementById('admin-product-search')?.value || '').toLowerCase().trim();
+        if (!tbody)
+            return;
+        const query = ((document.getElementById('admin-product-search') ? document.getElementById('admin-product-search').value : '')).toLowerCase().trim();
         let filtered = [...adminProdukPusatCache];
-
         if (query) {
-            filtered = filtered.filter(p =>
-                String(p.barcode || '').toLowerCase().includes(query) ||
+            filtered = filtered.filter(p => String(p.barcode || '').toLowerCase().includes(query) ||
                 String(p.nama_produk || '').toLowerCase().includes(query) ||
-                String(p.kategori || '').toLowerCase().includes(query)
-            );
+                String(p.kategori || '').toLowerCase().includes(query));
         }
-
         if (filtered.length === 0) {
             tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-400 font-bold bg-white">Produk pusat tidak ditemukan.</td></tr>';
             updateRightContextIfVisible();
             return;
         }
-
         tbody.innerHTML = '';
         filtered.forEach(p => {
             const barcode = String(p.barcode || '');
@@ -2642,100 +2659,116 @@ Kembalian: ${formatRupiah(finalKembalian)}`
         });
         updateRightContextIfVisible();
     }
-
     function showAdminProductEditModal(barcode) {
-        if (!assertSuperAdminAction()) return;
+        if (!assertSuperAdminAction())
+            return;
         const produk = adminProdukPusatCache.find(p => String(p.barcode) === String(barcode));
-        if (!produk) return showMsg('Info', 'Data produk pusat tidak ditemukan. Silakan refresh produk terlebih dahulu.');
+        if (!produk)
+            return showMsg('Info', 'Data produk pusat tidak ditemukan. Silakan refresh produk terlebih dahulu.');
         document.getElementById('admin-product-barcode').value = produk.barcode || '';
         document.getElementById('admin-product-name').value = produk.nama_produk || '';
         document.getElementById('admin-product-category').value = produk.kategori || 'Lainnya';
-        document.getElementById('admin-product-modal').classList.remove('hidden');
+        document.getElementById('admin-product-modal').classList.remove('pos-hidden');
     }
-
     function closeAdminProductModal() {
         const modal = document.getElementById('admin-product-modal');
-        if (modal) modal.classList.add('hidden');
+        if (modal)
+            modal.classList.add('pos-hidden');
     }
-
-    async function saveAdminProdukPusat() {
-        if (!assertSuperAdminAction()) return;
-        const barcode = document.getElementById('admin-product-barcode').value.trim();
-        const namaProduk = document.getElementById('admin-product-name').value.trim();
-        const kategori = document.getElementById('admin-product-category').value.trim() || 'Lainnya';
-        if (!barcode) return showMsg('Peringatan', 'Barcode produk pusat tidak ditemukan.');
-        if (!namaProduk) return showMsg('Peringatan', 'Nama produk pusat wajib diisi.');
-        closeAdminProductModal();
-        showLoading('Menyimpan produk pusat...');
-        try {
-            const { error } = await supabaseClient
-                .from('produk_induk')
-                .update({ nama_produk: namaProduk, kategori: kategori, updated_at: new Date() })
-                .eq('barcode', barcode);
-            if (error) throw error;
-            showMsg('Sukses', `Produk pusat [${barcode}] berhasil diperbarui.`);
-            await loadAdminProdukPusatList();
-            if (rawCatalog.some(p => String(p.barcode) === String(barcode))) await loadCatalog();
-        } catch (err) {
-            showMsg('Gagal', err.message || 'Gagal memperbarui produk pusat.');
-        } finally {
-            hideLoading();
-        }
+    function saveAdminProdukPusat() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!assertSuperAdminAction())
+                return;
+            const barcode = document.getElementById('admin-product-barcode').value.trim();
+            const namaProduk = document.getElementById('admin-product-name').value.trim();
+            const kategori = document.getElementById('admin-product-category').value.trim() || 'Lainnya';
+            if (!barcode)
+                return showMsg('Peringatan', 'Barcode produk pusat tidak ditemukan.');
+            if (!namaProduk)
+                return showMsg('Peringatan', 'Nama produk pusat wajib diisi.');
+            closeAdminProductModal();
+            showLoading('Menyimpan produk pusat...');
+            try {
+                const { error } = yield supabaseClient
+                    .from('produk_induk')
+                    .update({ nama_produk: namaProduk, kategori: kategori, updated_at: new Date() })
+                    .eq('barcode', barcode);
+                if (error)
+                    throw error;
+                showMsg('Sukses', `Produk pusat [${barcode}] berhasil diperbarui.`);
+                yield loadAdminProdukPusatList();
+                if (rawCatalog.some(p => String(p.barcode) === String(barcode)))
+                    yield loadCatalog();
+            }
+            catch (err) {
+                showMsg('Gagal', err.message || 'Gagal memperbarui produk pusat.');
+            }
+            finally {
+                hideLoading();
+            }
+        });
     }
-
     // Fungsi Pencadangan (Backup) Database ke File JSON Terpadu (Revisi Baru)
-    async function triggerDatabaseBackup() {
-        if (!assertSuperAdminAction()) return;
-        showLoading("Mengekspor database...");
-        try {
-            const [warungRes, produkRes, hargaRes, transaksiRes, detailRes] = await Promise.all([
-                supabaseClient.from('warung').select('*'),
-                supabaseClient.from('produk_induk').select('*'),
-                supabaseClient.from('harga_warung').select('*'),
-                supabaseClient.from('transaksi').select('*'),
-                supabaseClient.from('detail_transaksi').select('*')
-            ]);
-            const errors = [warungRes, produkRes, hargaRes, transaksiRes, detailRes].filter(r => r.error).map(r => r.error.message).join('; ');
-            if (errors) throw new Error(errors);
-            const backupData = {
-                system: "YzPOS-Database-Backup",
-                backup_at: new Date().toISOString(),
-                exported_by: currentWarung ? currentWarung.user : 'superadmin',
-                tables: {
-                    warung: warungRes.data || [],
-                    produk_induk: produkRes.data || [],
-                    harga_warung: hargaRes.data || [],
-                    transaksi: transaksiRes.data || [],
-                    detail_transaksi: detailRes.data || []
-                }
-            };
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `yzpos_db_backup_${new Date().toISOString().slice(0, 10)}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-            showMsg('Ekspor Berhasil', 'Seluruh data 5 tabel utama berhasil diekspor ke file JSON cadangan.');
-        } catch (err) {
-            showMsg('Gagal', err.message || 'Terjadi gangguan saat mencadangkan database.');
-        } finally {
-            hideLoading();
-        }
+    function triggerDatabaseBackup() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!assertSuperAdminAction())
+                return;
+            showLoading("Mengekspor database...");
+            try {
+                const [warungRes, produkRes, hargaRes, transaksiRes, detailRes] = yield Promise.all([
+                    supabaseClient.from('warung').select('*'),
+                    supabaseClient.from('produk_induk').select('*'),
+                    supabaseClient.from('harga_warung').select('*'),
+                    supabaseClient.from('transaksi').select('*'),
+                    supabaseClient.from('detail_transaksi').select('*')
+                ]);
+                const errors = [warungRes, produkRes, hargaRes, transaksiRes, detailRes].filter(r => r.error).map(r => r.error.message).join('; ');
+                if (errors)
+                    throw new Error(errors);
+                const backupData = {
+                    system: "YzPOS-Database-Backup",
+                    backup_at: new Date().toISOString(),
+                    exported_by: currentWarung ? currentWarung.user : 'superadmin',
+                    tables: {
+                        warung: warungRes.data || [],
+                        produk_induk: produkRes.data || [],
+                        harga_warung: hargaRes.data || [],
+                        transaksi: transaksiRes.data || [],
+                        detail_transaksi: detailRes.data || []
+                    }
+                };
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", `yzpos_db_backup_${new Date().toISOString().slice(0, 10)}.json`);
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+                showMsg('Ekspor Berhasil', 'Seluruh data 5 tabel utama berhasil diekspor ke file JSON cadangan.');
+            }
+            catch (err) {
+                showMsg('Gagal', err.message || 'Terjadi gangguan saat mencadangkan database.');
+            }
+            finally {
+                hideLoading();
+            }
+        });
     }
-
     // --- INTEGRASI FITUR SHORTCUT KEYBOARD KASIR ---
     window.addEventListener('keydown', (e) => {
         if (['F1', 'F2', 'F3', 'F4', 'F8', 'F9'].includes(e.key)) {
             e.preventDefault();
         }
-
-        if (!currentWarung) return;
-
-        if (e.key === 'F1') switchTab('katalog');
-        if (e.key === 'F2') switchTab('stok');
-        if (e.key === 'F3') switchTab('riwayat');
-        if (e.key === 'F4') switchTab('setelan');
+        if (!currentWarung)
+            return;
+        if (e.key === 'F1')
+            switchTab('katalog');
+        if (e.key === 'F2')
+            switchTab('stok');
+        if (e.key === 'F3')
+            switchTab('riwayat');
+        if (e.key === 'F4')
+            switchTab('setelan');
         if (e.key === 'F9') {
             const searchInput = document.getElementById('search-input');
             if (searchInput) {
@@ -2745,9 +2778,10 @@ Kembalian: ${formatRupiah(finalKembalian)}`
         }
         if (e.key === 'F8') {
             const paymentModal = document.getElementById('payment-modal');
-            if (!paymentModal.classList.contains('hidden')) {
+            if (!paymentModal.classList.contains('pos-hidden')) {
                 setUang('Pas');
-            } else {
+            }
+            else {
                 showPaymentModal();
             }
         }
@@ -2760,15 +2794,108 @@ Kembalian: ${formatRupiah(finalKembalian)}`
             stopInlineScanner();
             toggleCartScanner(false); // FIXED: ESC menutup scanner keranjang (Revisi Ke-3)
         }
-
         const paymentModal = document.getElementById('payment-modal');
-        if (paymentModal && !paymentModal.classList.contains('hidden')) {
+        if (paymentModal && !paymentModal.classList.contains('pos-hidden')) {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                prosesTransaksi(false); 
+                prosesTransaksi(false);
             }
         }
     });
+    // Public API untuk handler inline HTML dan event dinamis.
+    // Fungsi tetap didefinisikan di dalam IIFE agar state aplikasi tidak bocor ke global.
+    Object.assign(window, {
+        showMsg: showMsg,
+        closeMsg: closeMsg,
+        execConfirm: execConfirm,
+        applyTheme: applyTheme,
+        playCoinSound: playCoinSound,
+        toggleFullScreen: toggleFullScreen,
+        hashPassword: hashPassword,
+        escapeHtml: escapeHtml,
+        jsArg: jsArg,
+        isSuperAdmin: isSuperAdmin,
+        assertSuperAdminAction: assertSuperAdminAction,
+        refreshSessionFromDB: refreshSessionFromDB,
+        showLoading: showLoading,
+        hideLoading: hideLoading,
+        showAppUI: showAppUI,
+        toggleLoginRegister: toggleLoginRegister,
+        convertLogoToBase64: convertLogoToBase64,
+        saveSettings: saveSettings,
+        prosesRegistrasi: prosesRegistrasi,
+        prosesLogin: prosesLogin,
+        logout: logout,
+        handleResize: handleResize,
+        closeMobPanel: closeMobPanel,
+        switchTab: switchTab,
+        updateRightContextIfVisible: updateRightContextIfVisible,
+        contextMetricCard: contextMetricCard,
+        contextMiniList: contextMiniList,
+        renderRightContextPanel: renderRightContextPanel,
+        renderStockSummaryPanel: renderStockSummaryPanel,
+        localDateKey: localDateKey,
+        renderSalesSummaryPanel: renderSalesSummaryPanel,
+        renderSettingsInfoPanel: renderSettingsInfoPanel,
+        renderAdminSummaryPanel: renderAdminSummaryPanel,
+        openWhatsAppUpgrade: openWhatsAppUpgrade,
+        renderPlanStatus: renderPlanStatus,
+        closePremiumModal: closePremiumModal,
+        prosesHubungiAdmin: prosesHubungiAdmin,
+        loadPopularity: loadPopularity,
+        calculateCategoryPopularity: calculateCategoryPopularity,
+        renderCategoryBar: renderCategoryBar,
+        checkLowStock: checkLowStock,
+        loadCatalog: loadCatalog,
+        renderProducts: renderProducts,
+        renderStockTable: renderStockTable,
+        filterCategory: filterCategory,
+        filterProducts: filterProducts,
+        addToCart: addToCart,
+        changeQty: changeQty,
+        clearCart: clearCart,
+        updateCartUI: updateCartUI,
+        toggleScanner: toggleScanner,
+        openScannerForModal: openScannerForModal,
+        startFloatingScanner: startFloatingScanner,
+        stopFloatingScanner: stopFloatingScanner,
+        closeFloatingScanner: closeFloatingScanner,
+        startInlineScanner: startInlineScanner,
+        stopInlineScanner: stopInlineScanner,
+        toggleCartScanner: toggleCartScanner,
+        startCartScanner: startCartScanner,
+        stopCartScanner: stopCartScanner,
+        processNewBarcode: processNewBarcode,
+        showEditProductModal: showEditProductModal,
+        setupProductModal: setupProductModal,
+        closeAddProductModal: closeAddProductModal,
+        saveNewProduct: saveNewProduct,
+        executeSaveProduct: executeSaveProduct,
+        showPaymentModal: showPaymentModal,
+        closePaymentModal: closePaymentModal,
+        setUang: setUang,
+        calculateKembalian: calculateKembalian,
+        prosesTransaksi: prosesTransaksi,
+        loadHistory: loadHistory,
+        renderSalesChart: renderSalesChart,
+        exportToCSV: exportToCSV,
+        renderHistory: renderHistory,
+        showTransactionDetail: showTransactionDetail,
+        printActiveDetail: printActiveDetail,
+        closeTransactionDetailModal: closeTransactionDetailModal,
+        loadAdminWarungList: loadAdminWarungList,
+        adminTogglePremium: adminTogglePremium,
+        adminToggleSuspend: adminToggleSuspend,
+        loadAdminData: loadAdminData,
+        loadAdminProdukPusatList: loadAdminProdukPusatList,
+        renderAdminProdukPusatTable: renderAdminProdukPusatTable,
+        showAdminProductEditModal: showAdminProductEditModal,
+        closeAdminProductModal: closeAdminProductModal,
+        saveAdminProdukPusat: saveAdminProdukPusat,
+        triggerDatabaseBackup: triggerDatabaseBackup
+    });
+}());
+}());
 </script>
 </body>
 </html>
