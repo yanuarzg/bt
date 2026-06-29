@@ -114,14 +114,14 @@
     </div>
 </div>
 
-<!-- MODAL UPGRADE PREMIUM -->
+<!-- MODAL UPGRADE PREMIUM (Revisi Ke-3) -->
 <div id="premium-upgrade-modal" class="fixed inset-0 bg-gray-900/70 hidden flex items-center justify-center z-[1600] p-4 backdrop-blur-sm">
     <div class="bg-white p-6 w-full max-w-sm rounded-2xl shadow-2xl flex flex-col text-center">
         <div class="w-16 h-16 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
             <i class="fas fa-crown text-3xl"></i>
         </div>
         <h3 class="text-xl font-black text-gray-900 mb-2">Batas Produk Tercapai!</h3>
-        <p class="text-sm text-gray-500 mb-6 leading-relaxed">Anda telah mencapai batas maksimal <strong>10 produk</strong> pada paket Free. Tingkatkan ke paket <strong>Premium Unlimited</strong> hanya dengan <strong>Rp 25.000 / bulan</strong> untuk mengelola produk tanpa batas!</p>
+        <p class="text-sm text-gray-500 mb-6 leading-relaxed">Anda telah mencapai batas maksimal <strong>10 produk</strong> pada paket Free. Hubungi admin via WhatsApp untuk upgrade ke paket <strong>Premium Unlimited</strong> dan mengelola produk tanpa batas!</p>
         
         <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 text-left mb-6 space-y-2 text-xs text-gray-600">
             <p class="font-bold text-gray-800"><i class="fas fa-star text-amber-500 mr-1.5"></i> Keuntungan Premium:</p>
@@ -194,171 +194,7 @@
     </div>
 </div>
 
-<!-- ========================================== -->
-<!-- CONTAINER SUPER ADMIN (BARU - AKSES KHUSUS) -->
-<!-- ========================================== -->
-<div id="admin-container" class="hidden pos-viewport-wrapper">
-    <!-- Header Admin -->
-    <header class="bg-slate-900 text-white p-4 flex justify-between items-center z-10 shadow shrink-0">
-        <h1 class="text-lg font-bold flex items-center gap-2">
-            <div class="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center shadow"><i class="fas fa-user-shield"></i></div>
-            <span>YzPOS Super Admin</span>
-        </h1>
-        <button onclick="logout()" class="text-sm bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-5 rounded-xl transition shadow"><i class="fas fa-sign-out-alt"></i> Keluar</button>
-    </header>
-    
-    <!-- Menu Tab Admin -->
-    <div class="bg-slate-800 text-gray-300 flex border-b border-slate-700 shrink-0 text-xs sm:text-sm">
-        <button onclick="switchAdminTab('users')" id="btn-admin-users" class="px-6 py-4 font-bold border-b-2 border-amber-500 text-amber-500">Manajemen User</button>
-        <button onclick="switchAdminTab('products')" id="btn-admin-products" class="px-6 py-4 font-bold border-b-2 border-transparent hover:text-white">Produk Pusat</button>
-        <button onclick="switchAdminTab('backup')" id="btn-admin-backup" class="px-6 py-4 font-bold border-b-2 border-transparent hover:text-white">Backup Database</button>
-    </div>
-
-    <!-- Konten Tab Admin -->
-    <div class="flex-1 overflow-hidden relative">
-        
-        <!-- Tab 1: Manajemen User (CRUD Warung & Freemium Toggle) -->
-        <div id="admin-tab-users" class="absolute inset-0 flex flex-col p-4 overflow-hidden">
-            <div class="flex justify-between items-center mb-4 shrink-0">
-                <h2 class="text-lg font-black text-gray-800">Daftar Warung / Cabang Klien</h2>
-                <button onclick="showAdminUserModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 px-5 rounded-xl text-xs sm:text-sm shadow-md"><i class="fas fa-plus"></i> Tambah Cabang</button>
-            </div>
-            <div class="flex-1 overflow-y-auto bg-white rounded-2xl border shadow-sm">
-                <div class="overflow-x-auto w-full no-scrollbar">
-                    <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[600px]">
-                        <thead class="bg-gray-50 border-b font-bold text-gray-500">
-                            <tr>
-                                <th class="p-4">ID Warung</th>
-                                <th class="p-4">Nama Warung</th>
-                                <th class="p-4">Username</th>
-                                <th class="p-4 text-center">Status Paket</th>
-                                <th class="p-4 text-center">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-users-table" class="divide-y divide-gray-50"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab 2: Produk Pusat (CRUD master produk_induk) -->
-        <div id="admin-tab-products" class="absolute inset-0 hidden flex-col p-4 overflow-hidden">
-            <div class="flex justify-between items-center mb-4 shrink-0 gap-4">
-                <input type="text" id="admin-product-search" onkeyup="loadAdminProducts()" placeholder="Cari master produk induk..." class="p-2.5 bg-white border border-gray-200 rounded-xl text-xs flex-1 max-w-xs outline-none">
-                <button onclick="showAdminProductModal()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 px-5 rounded-xl text-xs sm:text-sm whitespace-nowrap shadow-md"><i class="fas fa-plus"></i> Tambah Produk Induk</button>
-            </div>
-            <div class="flex-1 overflow-y-auto bg-white rounded-2xl border shadow-sm">
-                <div class="overflow-x-auto w-full no-scrollbar">
-                    <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[600px]">
-                        <thead class="bg-gray-50 border-b font-bold text-gray-500">
-                            <tr>
-                                <th class="p-4">Barcode</th>
-                                <th class="p-4">Nama Produk</th>
-                                <th class="p-4">Kategori</th>
-                                <th class="p-4 text-center">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-products-table" class="divide-y divide-gray-50"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab 3: Backup Database (Ekspor Supabase ke CSV / JSON) -->
-        <div id="admin-tab-backup" class="absolute inset-0 hidden flex-col p-6 overflow-y-auto">
-            <h2 class="text-xl font-black text-gray-800 mb-2">Supabase Cloud Backup Control</h2>
-            <p class="text-sm text-gray-500 mb-6">Cadangkan seluruh data transaksi dan inventori secara mandiri ke komputer Anda.</p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <div class="bg-white p-5 rounded-2xl border shadow-sm flex flex-col justify-between">
-                    <div>
-                        <h3 class="font-bold text-gray-900 text-sm mb-1">Tabel Warung</h3>
-                        <p class="text-xs text-gray-400">Data cabang, status berlangganan, & password hash.</p>
-                    </div>
-                    <button onclick="backupTable('warung')" class="mt-4 bg-primary text-white font-bold py-2 px-5 rounded-xl text-xs transition whitespace-nowrap">Backup CSV</button>
-                </div>
-                <div class="bg-white p-5 rounded-2xl border shadow-sm flex flex-col justify-between">
-                    <div>
-                        <h3 class="font-bold text-gray-900 text-sm mb-1">Tabel Produk Induk</h3>
-                        <p class="text-xs text-gray-400">Data master barcode global, nama produk, dan kategori.</p>
-                    </div>
-                    <button onclick="backupTable('produk_induk')" class="mt-4 bg-primary text-white font-bold py-2 px-5 rounded-xl text-xs transition whitespace-nowrap">Backup CSV</button>
-                </div>
-                <div class="bg-white p-5 rounded-2xl border shadow-sm flex flex-col justify-between">
-                    <div>
-                        <h3 class="font-bold text-gray-900 text-sm mb-1">Tabel Harga Warung</h3>
-                        <p class="text-xs text-gray-400">Peta relasi, stok, & harga spesifik masing-masing cabang.</p>
-                    </div>
-                    <button onclick="backupTable('harga_warung')" class="mt-4 bg-primary text-white font-bold py-2 px-5 rounded-xl text-xs transition whitespace-nowrap">Backup CSV</button>
-                </div>
-                <div class="bg-white p-5 rounded-2xl border shadow-sm flex flex-col justify-between col-span-full">
-                    <div>
-                        <h3 class="font-bold text-gray-900 text-sm mb-1">Backup Penuh Database (Full JSON Dump)</h3>
-                        <p class="text-xs text-gray-400">Mengunduh cadangan lengkap seluruh skema relasional tabel dalam satu berkas terpadu.</p>
-                    </div>
-                    <button onclick="backupFullDatabase()" class="mt-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3.5 px-6 rounded-xl text-xs transition shadow-md"><i class="fas fa-database mr-1"></i> Mulai Full Backup</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- MODAL CRUD WARUNG / USER (ADMIN) -->
-<div id="admin-user-modal" class="fixed inset-0 bg-gray-900/70 hidden flex items-center justify-center z-[1500] p-4 backdrop-blur-sm">
-    <div class="bg-white p-6 w-full max-w-sm rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
-        <h3 class="text-lg font-black text-gray-900 mb-4" id="admin-user-modal-title">Setup Cabang Warung</h3>
-        <div class="space-y-4 overflow-y-auto flex-1 pr-1">
-            <input type="hidden" id="admin-user-mode" value="add">
-            <input type="hidden" id="admin-user-id" value="">
-            <div>
-                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nama Warung</label>
-                <input type="text" id="admin-user-name" class="w-full p-3 bg-gray-50 border rounded-xl outline-none text-xs focus:border-amber-500">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Username Login</label>
-                <input type="text" id="admin-user-username" class="w-full p-3 bg-gray-50 border rounded-xl outline-none text-xs focus:border-amber-500">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Password</label>
-                <input type="password" id="admin-user-pass" class="w-full p-3 bg-gray-50 border rounded-xl outline-none text-xs focus:border-amber-500" placeholder="Kosongkan jika tidak diubah / isi baru">
-            </div>
-        </div>
-        <div class="flex gap-3 mt-5 shrink-0">
-            <button onclick="closeAdminUserModal()" class="w-1/3 bg-gray-100 text-gray-700 font-bold py-2.5 px-4 rounded-xl text-xs transition">Batal</button>
-            <button onclick="saveAdminUserDb()" class="w-2/3 bg-primary text-white font-bold py-2.5 px-6 rounded-xl text-xs transition">Simpan</button>
-        </div>
-    </div>
-</div>
-
-<!-- MODAL CRUD PRODUK INDUK (ADMIN) -->
-<div id="admin-product-modal" class="fixed inset-0 bg-gray-900/70 hidden flex items-center justify-center z-[1500] p-4 backdrop-blur-sm">
-    <div class="bg-white p-6 w-full max-w-sm rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
-        <h3 class="text-lg font-black text-gray-900 mb-4" id="admin-product-modal-title">Setup Produk Pusat</h3>
-        <div class="space-y-4 overflow-y-auto flex-1 pr-1">
-            <input type="hidden" id="admin-product-mode" value="add">
-            <input type="hidden" id="admin-product-old-barcode" value="">
-            <div>
-                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Barcode Global</label>
-                <input type="text" id="admin-product-barcode" class="w-full p-3 bg-gray-50 border rounded-xl outline-none text-xs focus:border-amber-500">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nama Produk Induk</label>
-                <input type="text" id="admin-product-name" class="w-full p-3 bg-gray-50 border rounded-xl outline-none text-xs focus:border-amber-500">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Kategori</label>
-                <input type="text" id="admin-product-category" class="w-full p-3 bg-gray-50 border rounded-xl outline-none text-xs focus:border-amber-500" placeholder="Makanan / Minuman / Snack">
-            </div>
-        </div>
-        <div class="flex gap-3 mt-5 shrink-0">
-            <button onclick="closeAdminProductModal()" class="w-1/3 bg-gray-100 text-gray-700 font-bold py-2.5 px-4 rounded-xl text-xs transition">Batal</button>
-            <button onclick="saveAdminProductDb()" class="w-2/3 bg-primary text-white font-bold py-2.5 px-6 rounded-xl text-xs transition">Simpan</button>
-        </div>
-    </div>
-</div>
-
-<!-- ========================================== -->
-<!-- CONTAINER APLIKASI UTAMA (KASIR CLIENT)    -->
-<!-- ========================================== -->
+<!-- App Container -->
 <div id="app-container" class="hidden pos-viewport-wrapper">
     <!-- HEADER -->
     <header class="bg-white border-b border-gray-200 p-3 md:p-4 flex justify-between items-center z-10 shadow-sm shrink-0">
@@ -368,11 +204,11 @@
                 <span id="header-warung-name">Warung</span>
             </h1>
             
-            <div id="desktop-nav" class="hidden md:flex gap-6 items-center font-bold"> 
+            <div id="desktop-nav" class="md:flex gap-6 items-center font-bold"> <!-- FIXED: Navigasi Desktop disembunyikan di mobile (Revisi Ke-4) -->
                 <button onclick="switchTab('katalog')" id="desk-katalog" class="pb-1 border-b-2 border-primary text-primary font-bold transition px-4 py-1">Katalog</button>
                 <button onclick="switchTab('stok')" id="desk-stok" class="pb-1 border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition px-2 py-1">Stok</button>
-                <button onclick="switchTab('riwayat')" id="desk-riwayat" class="pb-1 border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition px-2 py-1">Riwayat</button>
-                <button onclick="switchTab('setelan')" id="desk-setelan" class="pb-1 border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition px-2 py-1">Pengaturan</button>
+                <button onclick="switchTab('riwayat')" id="desk-riwayat" class="pb-1 border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition px-2">Riwayat</button>
+                <button onclick="switchTab('setelan')" id="desk-setelan" class="pb-1 border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition px-2">Pengaturan</button>
             </div>
         </div>
         
@@ -433,11 +269,11 @@
                         <option value="stock">Stok Terendah</option>
                     </select>
 
-                    <button onclick="showEditProductModal()" class="bg-primary text-white px-5 py-2.5 rounded-xl hover:opacity-90 shadow-md transition font-bold flex items-center gap-2 text-xs sm:text-sm shrink-0"><i class="fas fa-plus"></i> <span class="hidden sm:inline">Tambah Produk</span></button>
+                    <button onclick="showEditProductModal()" class="bg-primary text-white px-5 py-2.5 rounded-xl hover:opacity-90 transition font-bold flex items-center gap-2 text-xs sm:text-sm shrink-0"><i class="fas fa-plus"></i> <span class="hidden sm:inline">Tambah Produk</span></button>
                 </div>
                 
                 <div class="flex-1 overflow-y-auto p-4">
-                    <!-- Pembungkus tabel agar responsif geser horizontal -->
+                    <!-- FIXED: Pembungkus tabel agar responsif geser horizontal (Revisi Ke-6) -->
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="overflow-x-auto w-full no-scrollbar">
                             <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[600px] sm:min-w-full">
@@ -500,15 +336,16 @@
                     <h2 class="text-lg font-bold text-gray-800 flex items-center"><i class="fas fa-cogs text-primary mr-2"></i>Pengaturan Warung</h2>
                 </div>
                 <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
-                    <!-- Simulasi Paket Langganan Freemium -->
+                    <!-- Paket Langganan: Upgrade diarahkan ke WhatsApp admin -->
                     <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 class="text-sm font-bold text-gray-700 mb-4 flex items-center gap-2"><i class="fas fa-crown text-amber-500"></i> Paket Langganan</h3>
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-50 p-4 rounded-xl border border-gray-100 gap-3">
                             <div>
                                 <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Status Akun Aktif</p>
                                 <p class="font-black text-base sm:text-lg text-gray-800" id="set-plan-status">Free (Maks 10 Produk)</p>
+                                <p class="text-xs text-gray-500 mt-1">Upgrade premium diproses melalui admin WhatsApp.</p>
                             </div>
-                            <button id="btn-toggle-plan" onclick="togglePlanSimulation()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-5 rounded-xl text-xs transition shadow-md whitespace-nowrap">Upgrade Ke Premium</button>
+                            <button id="btn-toggle-plan" onclick="openWhatsAppUpgrade('settings')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-5 rounded-xl text-xs transition shadow-md whitespace-nowrap"><i class="fab fa-whatsapp mr-1"></i> Upgrade via WA</button>
                         </div>
                     </div>
 
@@ -536,7 +373,7 @@
                             <!-- Input Logo & Biodata Khusus Struk -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Logo Warung (Struk Print)</label>
+                                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Logo Warung (Kustom Struk)</label>
                                     <div class="flex gap-2">
                                         <input type="file" id="set-logo-file" accept="image/*" onchange="convertLogoToBase64()" class="hidden">
                                         <button type="button" onclick="document.getElementById('set-logo-file').click()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg text-xs font-bold border transition whitespace-nowrap"><i class="fas fa-upload"></i> Upload</button>
@@ -544,7 +381,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Alamat / Telepon / Biodata Struk</label>
+                                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Biodata / Alamat / Telepon Struk</label>
                                     <textarea id="set-biodata" rows="2" class="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:border-primary focus:bg-white text-xs outline-none" placeholder="Cth: Jl. Kebon Jeruk No. 12&#10;Telp: 0812-3456-7890"></textarea>
                                 </div>
                             </div>
@@ -636,7 +473,7 @@
     </div>
 </div>
 
-<!-- MODAL DETAIL TRANSAKSI -->
+<!-- MODAL DETAIL TRANSAKSI (Mendukung cetak struk dari riwayat) -->
 <div id="transaction-detail-modal" class="fixed inset-0 bg-gray-900/70 hidden flex items-center justify-center z-[1500] p-4 backdrop-blur-sm">
     <div class="bg-white p-5 w-full max-w-md rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
         <div class="flex justify-between items-center pb-3 border-b border-gray-100 shrink-0">
@@ -647,6 +484,96 @@
         <div class="pt-3 border-t border-gray-100 shrink-0 flex justify-end gap-2">
             <button onclick="closeTransactionDetailModal()" class="bg-gray-100 text-gray-700 font-bold py-2.5 px-5 rounded-xl hover:bg-gray-200 transition text-xs sm:text-sm">Tutup</button>
             <button onclick="printActiveDetail()" class="bg-primary text-white font-bold py-2.5 px-5 rounded-xl hover:opacity-90 transition text-xs sm:text-sm flex items-center gap-1.5"><i class="fas fa-print"></i> Cetak Struk</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL EDIT/TAMBAH PRODUK -->
+<div id="add-product-modal" class="fixed inset-0 bg-gray-900/70 hidden flex items-center justify-center z-[1500] p-4 backdrop-blur-sm">
+    <div class="bg-white p-6 w-full max-w-sm rounded-2xl shadow-2xl transform transition-all overflow-hidden flex flex-col max-h-[90vh]">
+        <h3 class="text-xl font-black text-gray-900 mb-2 shrink-0" id="modal-product-title">Setup Produk</h3>
+        
+        <div class="flex-1 overflow-y-auto space-y-4 pr-1">
+            <div id="modal-status-banner" class="p-3 text-sm font-semibold border-l-4 rounded-r-lg bg-gray-50 hidden"></div>
+            
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Barcode (Unik)</label>
+                <div class="flex gap-2">
+                    <input type="text" id="new-barcode" class="w-full p-2.5 bg-gray-50 border border-gray-200 text-gray-800 font-mono font-bold rounded-xl outline-none focus:border-primary focus:bg-white" placeholder="Otomatis Jika Kosong">
+                    <button type="button" onclick="openScannerForModal()" class="bg-gray-800 text-white px-4 rounded-xl hover:bg-gray-700 transition flex items-center justify-center shadow-md"><i class="fas fa-qrcode"></i></button>
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nama Produk Asli</label>
+                <input type="text" id="new-name" class="w-full p-3 border border-gray-300 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none font-bold text-gray-800 transition" placeholder="Cth: Kopi Hitam">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Kategori (Pilih/Ketik Baru)</label>
+                <input type="text" id="new-category" list="category-options" class="w-full p-3 border border-gray-300 rounded-xl focus:border-primary outline-none bg-white font-medium" placeholder="Cth: Makanan">
+                <datalist id="category-options">
+                    <option value="Makanan"><option value="Minuman"><option value="Snack">
+                </datalist>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-gray-800 uppercase mb-1"><i class="fas fa-tag text-primary"></i> Harga Jual</label>
+                    <input type="number" id="new-price" class="w-full p-2.5 border-2 border-gray-300 rounded-xl text-lg font-black focus:outline-none focus:border-primary text-gray-900" placeholder="0">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-800 uppercase mb-1"><i class="fas fa-box text-primary"></i> Stok Gudang</label>
+                    <input type="number" id="new-stock" class="w-full p-2.5 border-2 border-gray-300 rounded-xl text-lg font-black focus:outline-none focus:border-primary text-gray-900" placeholder="0">
+                </div>
+            </div>
+            
+            <input type="hidden" id="modal-mode" value="add"> 
+            <input type="hidden" id="old-barcode" value=""> 
+        </div>
+        
+        <div class="flex gap-3 mt-5 shrink-0">
+            <button onclick="closeAddProductModal()" class="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl transition">Batal</button>
+            <button onclick="saveNewProduct()" class="w-2/3 bg-primary hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition"><i class="fas fa-save mr-1"></i> Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PEMBAYARAN -->
+<div id="payment-modal" class="fixed inset-0 bg-gray-900/70 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+    <div class="bg-white p-5 w-full max-w-md rounded-2xl shadow-2xl flex flex-col max-h-[95vh] overflow-y-auto font-sans">
+        <h2 class="text-xl font-black mb-4 text-center text-gray-900 uppercase tracking-widest shrink-0">Pembayaran Kasir</h2>
+        
+        <div class="bg-gray-50 border border-gray-100 p-4 text-center rounded-xl mb-4 shrink-0">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Total Tagihan</p>
+            <p class="text-4xl font-black text-primary" id="modal-total-tagihan">Rp 0</p>
+        </div>
+        
+        <div class="mb-4 shrink-0">
+            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Input Uang Diterima (Rp)</label>
+            <input type="number" id="uang-diterima" class="w-full p-3 border-2 border-gray-300 rounded-xl text-3xl font-black focus:border-primary focus:outline-none text-center transition" onkeyup="calculateKembalian()" placeholder="0">
+        </div>
+        
+        <!-- TOMBOL UANG CEPAT -->
+        <div class="grid grid-cols-4 gap-2 mb-6 shrink-0">
+            <button onclick="setUang('Pas')" class="bg-gray-100 text-gray-800 font-bold py-2 px-2 rounded-lg border text-sm hover:bg-gray-200">Pas</button>
+            <button onclick="setUang(2000)" class="bg-white text-primary font-bold py-2 px-2 rounded-lg border text-sm hover:bg-gray-50">2k</button>
+            <button onclick="setUang(5000)" class="bg-white text-primary font-bold py-2 px-2 rounded-lg border text-sm hover:bg-gray-50">5k</button>
+            <button onclick="setUang(10000)" class="bg-white text-primary font-bold py-2 px-2 rounded-lg border text-sm hover:bg-gray-50">10k</button>
+            
+            <button onclick="setUang(20000)" class="bg-white text-primary font-bold py-2 px-2 rounded-lg border text-sm hover:bg-gray-50">20k</button>
+            <button onclick="setUang(50000)" class="bg-white text-primary font-bold py-2 px-2 rounded-lg border text-sm hover:bg-gray-50">50k</button>
+            <button onclick="setUang(100000)" class="bg-white text-primary font-bold py-2 px-2 rounded-lg border text-sm hover:bg-gray-50">100k</button>
+            <button onclick="setUang('Clear')" class="bg-red-50 text-red-600 font-bold py-2 px-2 rounded-lg border border-red-200 text-sm hover:bg-red-100"><i class="fas fa-backspace"></i> (C)</button>
+        </div>
+        
+        <div class="flex justify-between items-center mb-6 p-4 bg-gray-100 rounded-xl border border-gray-200 shrink-0">
+            <span class="font-bold text-gray-500 uppercase text-xs">Kembalian</span>
+            <span id="kembalian-display" class="font-black text-2xl text-gray-900">Rp 0</span>
+        </div>
+        
+        <div class="flex gap-2 shrink-0">
+            <button onclick="closePaymentModal()" class="w-[25%] bg-white border border-gray-300 text-gray-600 font-bold py-3.5 px-4 rounded-xl hover:bg-gray-50 transition">Batal</button>
+            <button onclick="prosesTransaksi(false)" class="w-[37.5%] bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-lg flex justify-center items-center gap-1.5"><i class="fas fa-check-circle"></i> Selesai</button>
+            <button onclick="prosesTransaksi(true)" class="w-[37.5%] bg-primary hover:opacity-90 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-lg flex justify-center items-center gap-1.5"><i class="fas fa-print"></i> Cetak</button>
         </div>
     </div>
 </div>
@@ -684,6 +611,7 @@
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let isCheckoutRunning = false;
+    const PREMIUM_WA_NUMBER = '6289507785333';
 
     // --- CUSTOM MSGBOX ---
     function showMsg(title, msg, type = 'info', onConfirm = null) {
@@ -728,15 +656,6 @@
         }
     }
 
-    // Fungsi otomatis fullscreen untuk mode kasir
-    function ensureFullScreen() {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(() => {
-                // Diabaikan karena pembatasan sistem browser
-            });
-        }
-    }
-
     // --- HASH PASSWORD HELPER (SHA-256) ---
     async function hashPassword(password) {
         const msgBuffer = new TextEncoder().encode(password);
@@ -760,7 +679,7 @@
     let html5InlineScanner = null; // Scanner Desktop/Inline
     let scannerTarget = 'cart'; 
     let salesChart = null; 
-    let activeDetailTrx = null; // Untuk rekam detail transaksi aktif yang sedang dibuka
+    let activeDetailTrx = null; // Untuk rekam detail transaksi aktif yang sedang dibuka (Revisi Ke-1)
 
     const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
 
@@ -787,30 +706,23 @@
         const savedSession = localStorage.getItem('pos_session');
         if (savedSession) {
             currentWarung = JSON.parse(savedSession);
+            // Hapus status premium lama dari simulasi lokal agar upgrade tidak bisa dimanipulasi dari Settings.
+            delete currentWarung.is_premium;
+            localStorage.setItem('pos_session', JSON.stringify(currentWarung));
             await applyTheme(currentWarung.theme || 'dark');
-            
-            // Pengalihan otomatis ke Dashboard Admin jika rolenya super admin
-            if (currentWarung.is_admin) {
-                showAdminUI();
-            } else {
-                showAppUI();
-                await loadCatalog();
-            }
+            showAppUI();
+            await loadCatalog();
         }
         const d = new Date();
         const yyyyMm = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
         document.getElementById('history-month').value = yyyyMm;
         window.addEventListener('resize', handleResize);
-        
-        ensureFullScreen();
     };
 
     function showAppUI() {
         const loginScreen = document.getElementById('login-screen');
         const appContainer = document.getElementById('app-container');
-        const adminContainer = document.getElementById('admin-container');
         if (loginScreen) loginScreen.classList.add('hidden');
-        if (adminContainer) adminContainer.classList.add('hidden');
         if (appContainer) {
             appContainer.classList.remove('hidden');
             appContainer.classList.add('flex');
@@ -827,7 +739,7 @@
         document.getElementById('set-logo').value = currentWarung.logo || '';
         document.getElementById('set-biodata').value = currentWarung.biodata || '';
 
-        renderPlanStatus(); // Menampilkan status paket berlangganan free / premium
+        renderPlanStatus(); // Menampilkan satus paket berlangganan free / premium
         handleResize();
     }
 
@@ -914,70 +826,56 @@
         }
     }
 
-async function prosesLogin() {
-    const user = document.getElementById('login-user').value.trim();
-    const pass = document.getElementById('login-pass').value;
-    if(!user || !pass) return showMsg('Perhatian', 'Isi username & password!');
+    async function prosesLogin() {
+        const user = document.getElementById('login-user').value.trim();
+        const pass = document.getElementById('login-pass').value;
+        if(!user || !pass) return showMsg('Perhatian', 'Isi username & password!');
 
-    showLoading("Memverifikasi...");
-    try {
-        // Cari user secara dinamis di database Supabase (mendukung warung biasa maupun superadmin)
-        const { data: warung, error } = await supabaseClient
-            .from('warung')
-            .select('*')
-            .eq('username', user)
-            .eq('status', 'Aktif')
-            .maybeSingle();
+        showLoading("Memverifikasi...");
+        try {
+            const { data: warung, error } = await supabaseClient
+                .from('warung')
+                .select('*')
+                .eq('username', user)
+                .eq('status', 'Aktif')
+                .maybeSingle();
 
-        if (error) throw error;
-        if (!warung) {
-            hideLoading();
-            return showMsg('Gagal Login', 'Username atau password salah.');
-        }
-
-        const hashedInput = await hashPassword(pass);
-        const isMatch = (warung.password_hash === pass || warung.password_hash === hashedInput);
-
-        if (isMatch) {
-            // Auto-upgrade password hash jika sebelumnya terdeteksi plaintext
-            if (warung.password_hash === pass) {
-                await supabaseClient
-                    .from('warung')
-                    .update({ password_hash: hashedInput, updated_at: new Date() })
-                    .eq('id_warung', warung.id_warung);
+            if (error) throw error;
+            if (!warung) {
+                hideLoading();
+                return showMsg('Gagal Login', 'Username atau password salah.');
             }
 
-            // Tentukan status admin secara dinamis berdasarkan kolom 'role' dari database (BUKAN HARDCODE)
-            const isAdminRole = (warung.role === 'superadmin');
+            const hashedInput = await hashPassword(pass);
+            const isMatch = (warung.password_hash === pass || warung.password_hash === hashedInput);
 
-            currentWarung = {
-                id: warung.id_warung,
-                user: warung.username,
-                name: warung.nama_warung,
-                theme: warung.tema || 'dark',
-                is_admin: isAdminRole,
-                is_premium: warung.is_premium || false
-            };
-            
-            localStorage.setItem('pos_session', JSON.stringify(currentWarung));
-            await applyTheme(currentWarung.theme);
-            
-            if (currentWarung.is_admin) {
-                showAdminUI();
-            } else {
+            if (isMatch) {
+                if (warung.password_hash === pass) {
+                    await supabaseClient
+                        .from('warung')
+                        .update({ password_hash: hashedInput, updated_at: new Date() })
+                        .eq('id_warung', warung.id_warung);
+                }
+
+                currentWarung = {
+                    id: warung.id_warung,
+                    user: warung.username,
+                    name: warung.nama_warung,
+                    theme: warung.tema || 'dark'
+                };
+                localStorage.setItem('pos_session', JSON.stringify(currentWarung));
+                await applyTheme(currentWarung.theme);
                 showAppUI();
                 await loadCatalog();
+            } else {
+                hideLoading();
+                showMsg('Gagal Login', 'Username atau password salah.');
             }
-            ensureFullScreen();
-        } else {
+        } catch (err) {
             hideLoading();
-            showMsg('Gagal Login', 'Username atau password salah.');
+            showMsg('Error', err.message || 'Gagal menghubungi server.');
         }
-    } catch (err) {
-        hideLoading();
-        showMsg('Error', err.message || 'Gagal menghubungi server.');
     }
-}
 
     // Fungsi perbaikan signout handal dengan hapus total local storage (Revisi Ke-5)
     function logout() { 
@@ -998,10 +896,8 @@ async function prosesLogin() {
             if (closeMobPanel) {
                 closeMobPanel.classList.add('hidden');
             }
-            if (currentWarung && !currentWarung.is_admin) {
-                const activeDeskTab = document.querySelector('.border-primary[id^="desk-"]')?.id.replace('desk-','') || 'katalog';
-                switchTab(activeDeskTab);
-            }
+            const activeDeskTab = document.querySelector('.border-primary[id^="desk-"]')?.id.replace('desk-','') || 'katalog';
+            switchTab(activeDeskTab);
         }
     }
 
@@ -1073,35 +969,29 @@ async function prosesLogin() {
 
         if (tabName === 'riwayat' && historyData.length === 0) loadHistory();
         if (tabName === 'stok') renderStockTable();
-        ensureFullScreen();
     }
 
-    // Simulasi Paket Langganan Free/Premium
-    function togglePlanSimulation() {
-        if (currentWarung.is_premium) {
-            currentWarung.is_premium = false;
-            showMsg('Simulasi Paket', 'Status akun berhasil diubah ke paket Free (Maksimal 10 Produk).');
-        } else {
-            currentWarung.is_premium = true;
-            showMsg('Simulasi Paket', 'Status akun berhasil ditingkatkan ke paket Premium Unlimited (Tanpa Batas).');
-        }
-        localStorage.setItem('pos_session', JSON.stringify(currentWarung));
-        renderPlanStatus();
+    // Paket Langganan: tidak ada simulasi premium di sisi client.
+    // Upgrade diarahkan ke WhatsApp admin resmi.
+    function openWhatsAppUpgrade(source = 'settings') {
+        const warungName = currentWarung?.name || '-';
+        const username = currentWarung?.user || '-';
+        const pesan = source === 'limit'
+            ? `Halo Admin YzPOS, saya ingin upgrade Premium Unlimited karena batas 10 produk sudah tercapai.%0A%0ANama Warung: ${encodeURIComponent(warungName)}%0AUsername: ${encodeURIComponent(username)}`
+            : `Halo Admin YzPOS, saya ingin upgrade akun ke Premium Unlimited.%0A%0ANama Warung: ${encodeURIComponent(warungName)}%0AUsername: ${encodeURIComponent(username)}`;
+        const waUrl = `https://wa.me/${PREMIUM_WA_NUMBER}?text=${pesan}`;
+        const opened = window.open(waUrl, '_blank');
+        if (!opened) window.location.href = waUrl;
     }
 
     function renderPlanStatus() {
         const status = document.getElementById('set-plan-status');
         const btn = document.getElementById('btn-toggle-plan');
         if (status && btn) {
-            if (currentWarung.is_premium) {
-                status.innerHTML = `<span class="text-green-600 font-black flex items-center gap-1"><i class="fas fa-crown text-amber-500"></i> Premium Unlimited</span>`;
-                btn.innerText = "Turunkan ke Free";
-                btn.className = "bg-red-50 text-red-600 border border-red-200 font-bold py-2.5 px-5 rounded-xl text-xs transition";
-            } else {
-                status.innerText = "Free (Maks 10 Produk)";
-                btn.innerText = "Upgrade Ke Premium";
-                btn.className = "bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-5 rounded-xl text-xs transition shadow-md";
-            }
+            status.innerText = "Free (Maks 10 Produk)";
+            btn.innerHTML = `<i class="fab fa-whatsapp mr-1"></i> Upgrade via WA`;
+            btn.className = "bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-5 rounded-xl text-xs transition shadow-md whitespace-nowrap";
+            btn.onclick = () => openWhatsAppUpgrade('settings');
         }
     }
 
@@ -1111,7 +1001,7 @@ async function prosesLogin() {
 
     function prosesHubungiAdmin() {
         closePremiumModal();
-        showMsg('Hubungi Admin', 'Silakan kirimkan WhatsApp/Email ke tim pengelola YzPOS untuk mengaktifkan paket Premium Anda.<br><br>Biaya langganan Rp 25.000 / bulan.');
+        openWhatsAppUpgrade('limit');
     }
 
     // Penghitungan Peringkat Produk Terpopuler Kasir
@@ -1418,7 +1308,7 @@ async function prosesLogin() {
                         <h4 class="font-bold text-xs sm:text-sm leading-tight mb-1 text-gray-900">${item.name}</h4>
                         <p class="text-xs text-primary font-bold">${formatRupiah(item.price)}</p>
                     </div>
-                    <div class="flex items-center bg-gray-50 rounded-lg border border-gray-200 shrink-0 font-bold">
+                    <div class="flex items-center bg-gray-50 rounded-lg border border-gray-200 shrink-0">
                         <button onclick="changeQty('${String(item.barcode).replace(/'/g, "\\'")}', -1)" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-red-500 font-bold transition px-2">-</button>
                         <span class="w-6 text-center text-sm font-black text-gray-900">${item.qty}</span>
                         <button onclick="changeQty('${String(item.barcode).replace(/'/g, "\\'")}', 1)" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-primary font-bold transition px-2">+</button>
@@ -1551,8 +1441,8 @@ async function prosesLogin() {
     }
 
     function setupProductModal(mode, barcode) {
-        // Aturan Proteksi Paket Berlangganan Freemium
-        if (mode === 'add' && rawCatalog.length >= 10 && !currentWarung.is_premium) {
+        // Aturan Proteksi Paket Free: upgrade diarahkan ke admin WhatsApp.
+        if (mode === 'add' && rawCatalog.length >= 10) {
             document.getElementById('premium-upgrade-modal').classList.remove('hidden');
             return;
         }
@@ -2040,326 +1930,6 @@ async function prosesLogin() {
         activeDetailTrx = null;
     }
 
-    // =========================================================================
-    // MODUL OPERASIONAL SUPER ADMIN (BARU)
-    // =========================================================================
-    function showAdminUI() {
-        const loginScreen = document.getElementById('login-screen');
-        const appContainer = document.getElementById('app-container');
-        const adminContainer = document.getElementById('admin-container');
-        if (loginScreen) loginScreen.classList.add('hidden');
-        if (appContainer) appContainer.classList.add('hidden');
-        if (adminContainer) {
-            adminContainer.classList.remove('hidden');
-            adminContainer.classList.add('flex');
-        }
-        switchAdminTab('users');
-    }
-
-    function switchAdminTab(tabName) {
-        document.querySelectorAll('#admin-container button[id^="btn-admin-"]').forEach(b => {
-            b.classList.remove('border-amber-500', 'text-amber-500');
-            b.classList.add('border-transparent');
-        });
-        const activeBtn = document.getElementById('btn-admin-' + tabName);
-        if (activeBtn) {
-            activeBtn.classList.add('border-amber-500', 'text-amber-500');
-            activeBtn.classList.remove('border-transparent');
-        }
-        ['users', 'products', 'backup'].forEach(t => {
-            const el = document.getElementById('admin-tab-' + t);
-            if (el) {
-                if (t === tabName) el.classList.remove('hidden');
-                else el.classList.add('hidden');
-            }
-        });
-        if (tabName === 'users') loadAdminUsers();
-        if (tabName === 'products') loadAdminProducts();
-    }
-
-    // --- CRUD USER / WARUNG (ADMIN) ---
-    async function loadAdminUsers() {
-        showLoading("Memuat data cabang...");
-        try {
-            const { data, error } = await supabaseClient
-                .from('warung')
-                .select('*')
-                .order('id_warung');
-            if (error) throw error;
-            
-            const tbody = document.getElementById('admin-users-table');
-            tbody.innerHTML = '';
-            data.forEach(w => {
-                const premiumColor = w.is_premium ? 'text-green-600 bg-green-50 font-black' : 'text-gray-500 bg-gray-100';
-                tbody.innerHTML += `
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="p-3 sm:p-4 font-mono font-bold text-gray-600">${w.id_warung}</td>
-                    <td class="p-3 sm:p-4 font-black text-gray-900">${w.nama_warung}</td>
-                    <td class="p-3 sm:p-4 text-gray-600 font-medium">${w.username}</td>
-                    <td class="p-3 sm:p-4 text-center">
-                        <button onclick="toggleUserPremiumDb('${w.id_warung}', ${w.is_premium})" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition ${premiumColor}">
-                            ${w.is_premium ? 'Premium' : 'Free'}
-                        </button>
-                    </td>
-                    <td class="p-3 sm:p-4 text-center flex gap-2 justify-center">
-                        <button onclick="editUserModalDb('${w.id_warung}', '${w.username}', '${w.nama_warung}')" class="bg-blue-50 text-blue-600 px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-100 transition">Edit</button>
-                        <button onclick="deleteUserDb('${w.id_warung}')" class="bg-red-50 text-red-600 px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-red-100 transition">Hapus</button>
-                    </td>
-                </tr>`;
-            });
-        } catch(e) {
-            showMsg('Error', e.message);
-        } finally {
-            hideLoading();
-        }
-    }
-
-    async function toggleUserPremiumDb(idWarung, currentStatus) {
-        showLoading("Memproses Status...");
-        try {
-            const { error } = await supabaseClient
-                .from('warung')
-                .update({ is_premium: !currentStatus })
-                .eq('id_warung', idWarung);
-            if (error) throw error;
-            await loadAdminUsers();
-        } catch(e) {
-            showMsg('Error', e.message);
-        } finally {
-            hideLoading();
-        }
-    }
-
-    function showAdminUserModal() {
-        document.getElementById('admin-user-mode').value = 'add';
-        document.getElementById('admin-user-id').value = '';
-        document.getElementById('admin-user-name').value = '';
-        document.getElementById('admin-user-username').value = '';
-        document.getElementById('admin-user-pass').value = '';
-        document.getElementById('admin-user-modal-title').innerText = "Tambah Cabang Warung Baru";
-        document.getElementById('admin-user-modal').classList.remove('hidden');
-    }
-
-    function editUserModalDb(id, username, name) {
-        document.getElementById('admin-user-mode').value = 'edit';
-        document.getElementById('admin-user-id').value = id;
-        document.getElementById('admin-user-name').value = name;
-        document.getElementById('admin-user-username').value = username;
-        document.getElementById('admin-user-pass').value = '';
-        document.getElementById('admin-user-modal-title').innerText = `Edit Cabang [${id}]`;
-        document.getElementById('admin-user-modal').classList.remove('hidden');
-    }
-
-    function closeAdminUserModal() {
-        document.getElementById('admin-user-modal').classList.add('hidden');
-    }
-
-    async function saveAdminUserDb() {
-        const mode = document.getElementById('admin-user-mode').value;
-        const id = document.getElementById('admin-user-id').value;
-        const name = document.getElementById('admin-user-name').value.trim();
-        const username = document.getElementById('admin-user-username').value.trim();
-        const pass = document.getElementById('admin-user-pass').value;
-
-        if (!name || !username) return showMsg('Info', 'Nama dan Username wajib diisi!');
-
-        showLoading("Menyimpan...");
-        try {
-            if (mode === 'add') {
-                if (!pass) { hideLoading(); return showMsg('Info', 'Password wajib diisi untuk cabang baru!'); }
-                const hashedPassword = await hashPassword(pass);
-                const newId = 'W' + String(new Date().getTime()).slice(-4);
-                
-                const { error } = await supabaseClient.from('warung').insert({
-                    id_warung: newId, nama_warung: name, username, password_hash: hashedPassword, status: 'Aktif'
-                });
-                if (error) throw error;
-            } else {
-                const updates = { nama_warung: name, username, updated_at: new Date() };
-                if (pass) {
-                    updates.password_hash = await hashPassword(pass);
-                }
-                const { error } = await supabaseClient.from('warung').update(updates).eq('id_warung', id);
-                if (error) throw error;
-            }
-            closeAdminUserModal();
-            await loadAdminUsers();
-        } catch(e) {
-            showMsg('Error', e.message);
-        } finally {
-            hideLoading();
-        }
-    }
-
-    async function deleteUserDb(id) {
-        showMsg('Konfirmasi Hapus', `Apakah Anda yakin ingin menghapus cabang warung [${id}]? Seluruh data penjualan cabang akan terhapus.`, 'confirm', async () => {
-            showLoading("Menghapus...");
-            try {
-                const { error } = await supabaseClient.from('warung').delete().eq('id_warung', id);
-                if (error) throw error;
-                await loadAdminUsers();
-            } catch(e) {
-                showMsg('Error', e.message);
-            } finally {
-                hideLoading();
-            }
-        });
-    }
-
-    // --- CRUD MASTER PRODUK INDUK (ADMIN) ---
-    async function loadAdminProducts() {
-        const query = document.getElementById('admin-product-search').value.toLowerCase();
-        try {
-            const { data, error } = await supabaseClient
-                .from('produk_induk')
-                .select('*')
-                .ilike('nama_produk', `%${query}%`)
-                .order('barcode');
-            if (error) throw error;
-            
-            const tbody = document.getElementById('admin-products-table');
-            tbody.innerHTML = '';
-            data.forEach(p => {
-                tbody.innerHTML += `
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="p-3 sm:p-4 font-mono font-bold text-gray-600">${p.barcode}</td>
-                    <td class="p-3 sm:p-4 text-gray-900 font-semibold">${p.nama_produk}</td>
-                    <td class="p-3 sm:p-4 text-gray-500 font-medium">${p.kategori}</td>
-                    <td class="p-3 sm:p-4 text-center flex gap-2 justify-center">
-                        <button onclick="editAdminProductModalDb('${p.barcode}', '${p.nama_produk}', '${p.kategori}')" class="bg-blue-50 text-blue-600 px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-100 transition">Edit</button>
-                        <button onclick="deleteAdminProductDb('${p.barcode}')" class="bg-red-50 text-red-600 px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-red-100 transition">Hapus</button>
-                    </td>
-                </tr>`;
-            });
-        } catch(e) {
-            showMsg('Error', e.message);
-        }
-    }
-
-    function showAdminProductModal() {
-        document.getElementById('admin-product-mode').value = 'add';
-        document.getElementById('admin-product-old-barcode').value = '';
-        document.getElementById('admin-product-barcode').value = '';
-        document.getElementById('admin-product-name').value = '';
-        document.getElementById('admin-product-category').value = '';
-        document.getElementById('admin-product-modal-title').innerText = "Tambah Produk Pusat Baru";
-        document.getElementById('admin-product-modal').classList.remove('hidden');
-    }
-
-    function editAdminProductModalDb(barcode, name, category) {
-        document.getElementById('admin-product-mode').value = 'edit';
-        document.getElementById('admin-product-old-barcode').value = barcode;
-        document.getElementById('admin-product-barcode').value = barcode;
-        document.getElementById('admin-product-name').value = name;
-        document.getElementById('admin-product-category').value = category;
-        document.getElementById('admin-product-modal-title').innerText = `Edit Produk Pusat [${barcode}]`;
-        document.getElementById('admin-product-modal').classList.remove('hidden');
-    }
-
-    function closeAdminProductModal() {
-        document.getElementById('admin-product-modal').classList.add('hidden');
-    }
-
-    async function saveAdminProductDb() {
-        const mode = document.getElementById('admin-product-mode').value;
-        const oldBarcode = document.getElementById('admin-product-old-barcode').value;
-        const barcode = document.getElementById('admin-product-barcode').value.trim();
-        const name = document.getElementById('admin-product-name').value.trim();
-        const category = document.getElementById('admin-product-category').value.trim() || 'Lainnya';
-
-        if (!barcode || !name) return showMsg('Info', 'Barcode dan Nama wajib diisi!');
-
-        showLoading("Menyimpan...");
-        try {
-            if (mode === 'edit' && oldBarcode !== barcode) {
-                // Hapus entitas barcode lama di produk_induk
-                await supabaseClient.from('produk_induk').delete().eq('barcode', oldBarcode);
-            }
-            const { error } = await supabaseClient.from('produk_induk').upsert({
-                barcode, nama_produk: name, kategori: category, updated_at: new Date()
-            });
-            if (error) throw error;
-            closeAdminProductModal();
-            await loadAdminProducts();
-        } catch(e) {
-            showMsg('Error', e.message);
-        } finally {
-            hideLoading();
-        }
-    }
-
-    async function deleteAdminProductDb(barcode) {
-        showMsg('Konfirmasi Hapus', 'Hapus produk pusat ini dari catalog global?', 'confirm', async () => {
-            showLoading("Menghapus...");
-            try {
-                const { error } = await supabaseClient.from('produk_induk').delete().eq('barcode', barcode);
-                if (error) throw error;
-                await loadAdminProducts();
-            } catch(e) {
-                showMsg('Error', e.message);
-            } finally {
-                hideLoading();
-            }
-        });
-    }
-
-    // --- BACKUP DATABASE SYSTEM ---
-    async function backupTable(tableName) {
-        showLoading(`Mengekspor tabel ${tableName}...`);
-        try {
-            const { data, error } = await supabaseClient.from(tableName).select('*');
-            if (error) throw error;
-            if (!data || data.length === 0) { hideLoading(); return showMsg('Info', `Tabel ${tableName} kosong.`); }
-
-            const headers = Object.keys(data[0]);
-            let csvContent = "\uFEFF";
-            csvContent += headers.join(",") + "\n";
-            
-            data.forEach(row => {
-                csvContent += headers.map(h => `"${String(row[h] || '').replace(/"/g, '""')}"`).join(",") + "\n";
-            });
-
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.setAttribute("href", url);
-            link.setAttribute("download", `backup_${tableName}_${new Date().toISOString().slice(0,10)}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } catch(e) {
-            showMsg('Error', e.message);
-        } finally {
-            hideLoading();
-        }
-    }
-
-    async function backupFullDatabase() {
-        showLoading("Mengekspor Full Database...");
-        try {
-            const tables = ['warung', 'produk_induk', 'harga_warung', 'transaksi', 'detail_transaksi'];
-            const dump = {};
-
-            for (const table of tables) {
-                const { data } = await supabaseClient.from(table).select('*');
-                dump[table] = data || [];
-            }
-
-            const blob = new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.setAttribute("href", url);
-            link.setAttribute("download", `full_database_backup_${new Date().toISOString().slice(0,10)}.json`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } catch(e) {
-            showMsg('Error', e.message);
-        } finally {
-            hideLoading();
-        }
-    }
-
     // --- INTEGRASI FITUR SHORTCUT KEYBOARD KASIR ---
     window.addEventListener('keydown', (e) => {
         if (['F1', 'F2', 'F3', 'F4', 'F8', 'F9'].includes(e.key)) {
@@ -2367,7 +1937,6 @@ async function prosesLogin() {
         }
 
         if (!currentWarung) return;
-        if (currentWarung.is_admin) return; // Matikan shortcut jika dalam dashboard super admin
 
         if (e.key === 'F1') switchTab('katalog');
         if (e.key === 'F2') switchTab('stok');
