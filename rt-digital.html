@@ -1,988 +1,1326 @@
-<div style="display:none;">
-  <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Thumbnail Database RT">
-</div>
-
-<div id="rt-app-container">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RT Digital - WebApps Administrasi RT Modern</title>
+  <meta name="description" content="RT Digital adalah webapps administrasi RT untuk data warga, keluarga, inventaris, keuangan, pengumuman, galeri, jasa warga, dan laporan warga." />
+  <meta name="theme-color" content="#0f766e" />
   <style>
-    html, body { margin: 0; padding: 0; width: 100%; height: 100%; }
-    #rt-app-container {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background-color: #f8fafc; z-index: 9999999; overflow-y: auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-2: #f1f5f9;
+      --surface-3: #e6f4f1;
+      --text: #10211d;
+      --muted: #64748b;
+      --line: #dbe3e8;
+      --primary: #0f766e;
+      --primary-dark: #0b5f59;
+      --accent: #b7791f;
+      --danger: #dc2626;
+      --shadow: 0 10px 24px rgba(15, 23, 42, .08);
+      --shadow-soft: 0 6px 16px rgba(15, 23, 42, .06);
+      --radius: 24px;
+      --radius-sm: 16px;
+      --max: 1180px;
+      --header: 78px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-    .glass-nav { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); }
-    .fade-in { animation: fadeIn 0.25s ease-out forwards; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    .hidden-section { display: none; }
-    .img-preview-card { transition: transform 0.2s; }
-    .img-preview-card:hover { transform: scale(1.03); }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button, input, textarea { font: inherit; }
+    .container { width: min(100% - 32px, var(--max)); margin: 0 auto; }
+    .section { padding: 92px 0; }
+    .section-tight { padding: 64px 0; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 999px;
+      padding: 8px 13px;
+      color: var(--primary-dark);
+      font-weight: 750;
+      font-size: 13px;
+      box-shadow: var(--shadow-soft);
+    }
+    .badge svg { width: 16px; height: 16px; }
+
+    .site-header {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: var(--header);
+      z-index: 50;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      transition: box-shadow .2s ease;
+    }
+    .site-header.scrolled { box-shadow: var(--shadow); }
+
+    .nav {
+      height: var(--header);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: max-content;
+    }
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: var(--primary);
+      color: #fff;
+      box-shadow: none;
+    }
+    .brand-mark svg { width: 23px; height: 23px; }
+    .brand-title { font-weight: 900; letter-spacing: -.03em; line-height: 1; }
+    .brand-sub { display: block; font-size: 12px; color: var(--muted); font-weight: 700; margin-top: 3px; letter-spacing: 0; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface-2);
+    }
+    .nav-links a {
+      padding: 10px 13px;
+      border-radius: 999px;
+      color: #31423e;
+      font-size: 14px;
+      font-weight: 750;
+      transition: background .2s ease, color .2s ease;
+    }
+    .nav-links a:hover, .nav-links a.active { background: var(--surface); color: var(--primary-dark); }
+
+    .nav-actions { display: flex; gap: 10px; align-items: center; }
+    .btn {
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 44px;
+      padding: 12px 17px;
+      border-radius: 999px;
+      font-weight: 850;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+      white-space: nowrap;
+    }
+    .btn svg { width: 18px; height: 18px; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: none;
+    }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid transparent;
+    }
+    .menu-btn { display: none; width: 46px; padding: 0; border-radius: 16px; }
+
+    .mobile-panel {
+      display: none;
+      position: fixed;
+      z-index: 49;
+      inset: var(--header) 16px auto 16px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+    }
+    .mobile-panel.open { display: block; }
+    .mobile-panel a {
+      display: flex;
+      padding: 14px;
+      border-radius: 16px;
+      font-weight: 800;
+      color: #31423e;
+    }
+    .mobile-panel a:hover { background: var(--surface-2); }
+
+    .hero {
+      min-height: 100vh;
+      padding: calc(var(--header) + 70px) 0 84px;
+      display: flex;
+      align-items: center;
+      background: var(--bg);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.02fr .98fr;
+      gap: 46px;
+      align-items: center;
+    }
+    .eyebrow-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(42px, 6.5vw, 76px);
+      letter-spacing: -.07em;
+      line-height: .94;
+    }
+    .gradient-text { color: var(--primary); background: none; }
+    .lead {
+      margin: 22px 0 0;
+      max-width: 650px;
+      color: var(--muted);
+      font-size: clamp(17px, 2.2vw, 21px);
+      line-height: 1.65;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+    .hero-trust {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      margin-top: 28px;
+      color: var(--muted);
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .check-list { display: flex; flex-wrap: wrap; gap: 9px; }
+    .check-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 11px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+    }
+    .check-item svg { color: var(--primary); width: 16px; height: 16px; }
+
+    .phone-stage {
+      position: relative;
+      min-height: 640px;
+      display: grid;
+      place-items: center;
+    }
+    .glow { display: none; }
+
+    .phone {
+      width: min(100%, 360px);
+      position: relative;
+      z-index: 2;
+      border: 11px solid #12231f;
+      background: var(--surface);
+      border-radius: 44px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .phone::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 98px;
+      height: 24px;
+      border-radius: 999px;
+      background: #12231f;
+      z-index: 5;
+    }
+    .phone-screen {
+      min-height: 640px;
+      padding: 42px 16px 18px;
+      background: var(--surface-2);
+    }
+    .app-card {
+      border-radius: 26px;
+      background: var(--primary);
+      color: #fff;
+      padding: 20px;
+      box-shadow: none;
+    }
+    .app-card small { color: #d8fffa; font-weight: 800; }
+    .app-card h3 { font-size: 27px; letter-spacing: -.04em; margin: 8px 0 10px; }
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-top: 13px;
+    }
+    .mini-stat {
+      border-radius: 18px;
+      padding: 12px 9px;
+      background: #0b5f59;
+      border: 1px solid #0a5651;
+    }
+    .mini-stat strong { display: block; font-size: 19px; }
+    .mini-stat span { display: block; font-size: 10px; color: #c8fffa; margin-top: 2px; }
+
+    .phone-search {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin: 14px 0;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 12px 14px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .phone-search svg { width: 17px; height: 17px; }
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .app-icon {
+      display: grid;
+      place-items: center;
+      gap: 7px;
+      min-height: 74px;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: #31423e;
+      font-size: 10px;
+      text-align: center;
+      font-weight: 850;
+      padding: 9px 5px;
+    }
+    .app-icon span:first-child {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--surface-3);
+      color: var(--primary);
+    }
+    .app-icon svg { width: 17px; height: 17px; }
+    .post-preview {
+      margin-top: 14px;
+      display: grid;
+      gap: 10px;
+    }
+    .post-mini {
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      padding: 13px;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+    .post-thumb {
+      width: 42px;
+      height: 42px;
+      border-radius: 16px;
+      background: var(--surface-3);
+      border: 1px solid var(--line);
+    }
+    .post-mini strong { font-size: 12px; display: block; }
+    .post-mini span { font-size: 10px; color: var(--muted); display: block; margin-top: 3px; }
+
+    .floating-chip {
+      position: absolute;
+      z-index: 3;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+      border-radius: 20px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 850;
+      color: #31423e;
+    }
+    .floating-chip svg { width: 22px; height: 22px; color: var(--primary); }
+    .chip-1 { top: 84px; left: -4px; }
+    .chip-2 { right: 0; bottom: 92px; }
+    .chip-3 { left: 24px; bottom: 24px; }
+
+    .logos-strip {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+      padding: 18px 0;
+    }
+    .strip-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+    .strip-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      font-weight: 800;
+      color: #3d4c49;
+      font-size: 14px;
+    }
+    .strip-pill svg { width: 17px; height: 17px; color: var(--primary); }
+
+    .section-head {
+      display: grid;
+      gap: 14px;
+      justify-items: center;
+      text-align: center;
+      margin-bottom: 44px;
+    }
+    .section-head h2 {
+      margin: 0;
+      max-width: 780px;
+      font-size: clamp(32px, 4.8vw, 54px);
+      line-height: 1.02;
+      letter-spacing: -.055em;
+    }
+    .section-head p {
+      margin: 0;
+      max-width: 720px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 17px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: #b7d6d0; }
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: var(--surface-3);
+      color: var(--primary);
+      margin-bottom: 18px;
+    }
+    .feature-icon svg { width: 25px; height: 25px; }
+    .feature-card h3 { margin: 0 0 9px; font-size: 20px; letter-spacing: -.025em; }
+    .feature-card p { margin: 0; color: var(--muted); line-height: 1.65; }
+    .feature-card ul { padding: 0; margin: 18px 0 0; list-style: none; display: grid; gap: 8px; }
+    .feature-card li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      color: #43514e;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .feature-card li svg { width: 16px; height: 16px; color: var(--primary); margin-top: 2px; flex: 0 0 auto; }
+
+    .showcase {
+      display: grid;
+      grid-template-columns: .92fr 1.08fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      padding: 24px;
+    }
+    .panel h3 {
+      margin: 0 0 12px;
+      font-size: 26px;
+      letter-spacing: -.035em;
+    }
+    .panel p { margin: 0; color: var(--muted); line-height: 1.75; }
+    .workflow {
+      display: grid;
+      gap: 12px;
+      margin-top: 22px;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .step-num {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      color: #fff;
+      background: var(--primary);
+      font-weight: 950;
+    }
+    .step strong { display: block; margin: 2px 0 5px; }
+    .step span { color: var(--muted); line-height: 1.5; font-size: 14px; }
+
+    .admin-preview {
+      background: #10211d;
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 18px;
+      overflow: hidden;
+      min-height: 100%;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+    .admin-preview::after { display: none; }
+    .preview-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .dots { display: flex; gap: 7px; }
+    .dots span { width: 10px; height: 10px; border-radius: 999px; background: #64748b; }
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .admin-stat {
+      border-radius: 20px;
+      padding: 16px;
+      background: #18332e;
+      border: 1px solid #254740;
+      position: relative;
+      z-index: 2;
+    }
+    .admin-stat span { color: #cbd5e1; font-weight: 800; font-size: 12px; }
+    .admin-stat strong { display: block; margin-top: 8px; font-size: 25px; letter-spacing: -.03em; }
+    .table-mock {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 9px;
+      margin-top: 14px;
+    }
+    .table-row {
+      display: grid;
+      grid-template-columns: 44px 1fr 90px;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border-radius: 18px;
+      background: #18332e;
+      border: 1px solid #254740;
+    }
+    .avatar {
+      width: 44px; height: 44px; border-radius: 16px;
+      background: #0f766e;
+    }
+    .skeleton strong { display: block; height: 10px; width: 70%; border-radius: 99px; background: #e2e8f0; }
+    .skeleton span { display: block; height: 8px; width: 54%; border-radius: 99px; background: #64748b; margin-top: 8px; }
+    .status {
+      justify-self: end;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #0b5f59;
+      color: #ccfbf1;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .metric {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: var(--shadow-soft);
+      text-align: center;
+    }
+    .metric strong {
+      display: block;
+      font-size: clamp(30px, 4.5vw, 46px);
+      letter-spacing: -.05em;
+      color: var(--primary);
+    }
+    .metric span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .pricing-card {
+      position: relative;
+      overflow: hidden;
+      padding: 34px;
+      border-radius: 36px;
+      background: var(--primary);
+      color: #fff;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 26px;
+      align-items: center;
+    }
+    .pricing-card h2 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 4.5vw, 50px);
+      line-height: 1.04;
+      letter-spacing: -.055em;
+    }
+    .pricing-card p { margin: 0; color: #d8fffa; line-height: 1.75; max-width: 700px; }
+    .pricing-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end; }
+    .pricing-actions .btn-secondary { color: #10211d; border: 0; }
+    .pricing-actions .btn-primary { background: #fff; color: var(--primary); box-shadow: none; }
+    .pricing-actions .btn-primary:hover { background: var(--surface-2); }
+
+    .contact-box {
+      display: grid;
+      gap: 10px;
+      min-width: 290px;
+      padding: 14px;
+      border-radius: 24px;
+      background: #0b5f59;
+      border: 1px solid #0a5651;
+    }
+    .contact-box label { color: #d8fffa; font-weight: 800; font-size: 13px; }
+    .contact-line {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px;
+      background: #fff;
+      border-radius: 16px;
+    }
+    .contact-line input {
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      outline: 0;
+      min-width: 0;
+      width: 100%;
+      font-weight: 800;
+    }
+    .contact-line button {
+      border: 0;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 12px;
+      height: 34px;
+      padding: 0 12px;
+      cursor: pointer;
+      font-weight: 950;
+    }
+
+    .faq {
+      display: grid;
+      gap: 12px;
+      max-width: 880px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+    .faq-q {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 20px;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      font-weight: 900;
+    }
+    .faq-q svg { width: 19px; height: 19px; transition: transform .2s ease; flex: 0 0 auto; }
+    .faq-item.open .faq-q svg { transform: rotate(45deg); }
+    .faq-a {
+      display: none;
+      padding: 0 20px 20px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .faq-item.open .faq-a { display: block; }
+
+    .footer {
+      padding: 32px 0 38px;
+      border-top: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: center;
+    }
+    .footer p { margin: 8px 0 0; color: var(--muted); line-height: 1.6; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
+    .footer-links a { color: #41514d; font-weight: 800; padding: 8px 10px; border-radius: 999px; }
+    .footer-links a:hover { background: var(--surface-2); color: var(--primary); }
+
+    .scroll-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 40;
+      width: 48px;
+      height: 48px;
+      border: 0;
+      border-radius: 17px;
+      background: var(--primary);
+      color: #fff;
+      box-shadow: var(--shadow);
+      display: none;
+      place-items: center;
+      cursor: pointer;
+    }
+    .scroll-top.show { display: grid; }
+    .scroll-top svg { width: 21px; height: 21px; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 980px) {
+      .nav-links, .nav-actions .btn-secondary, .nav-actions .btn-primary { display: none; }
+      .menu-btn { display: inline-flex; }
+      .hero { padding-top: calc(var(--header) + 34px); min-height: auto; }
+      .hero-grid, .showcase, .pricing-card { grid-template-columns: 1fr; }
+      .phone-stage { min-height: auto; margin-top: 20px; }
+      .floating-chip { display: none; }
+      .feature-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .pricing-actions { justify-content: flex-start; }
+      .contact-box { min-width: 0; }
+      .footer-grid { grid-template-columns: 1fr; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+
+    @media (max-width: 640px) {
+      :root { --header: 70px; }
+      .container { width: min(100% - 24px, var(--max)); }
+      .section { padding: 70px 0; }
+      .hero { padding-bottom: 54px; }
+      .brand-mark { width: 38px; height: 38px; border-radius: 13px; }
+      .brand-title { font-size: 15px; }
+      .brand-sub { font-size: 11px; }
+      .btn { width: 100%; }
+      .hero-actions .btn { justify-content: center; }
+      .lead { font-size: 16px; }
+      .hero-trust { align-items: flex-start; }
+      .phone { width: min(100%, 330px); border-width: 9px; border-radius: 38px; }
+      .phone-screen { min-height: 600px; padding-inline: 12px; }
+      .app-grid { gap: 8px; }
+      .app-icon { min-height: 70px; font-size: 9px; border-radius: 17px; }
+      .feature-grid, .metrics { grid-template-columns: 1fr; }
+      .feature-card, .panel, .metric { border-radius: 22px; padding: 20px; }
+      .admin-grid { grid-template-columns: 1fr; }
+      .table-row { grid-template-columns: 38px 1fr; }
+      .status { grid-column: 2; justify-self: start; }
+      .pricing-card { padding: 24px; border-radius: 28px; }
+      .strip-row { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+      .strip-pill { flex: 0 0 auto; }
+    }
   </style>
+</head>
+<body>
+  <header class="site-header" id="siteHeader">
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="RT Digital">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3.75 10.35 12 3.75l8.25 6.6v8.4a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.4Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M9 20.25v-6h6v6" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+        </span>
+        <span>
+          <span class="brand-title">RT Digital</span>
+          <span class="brand-sub">WebApps administrasi RT</span>
+        </span>
+      </a>
 
-  <!-- Navigation Bar -->
-  <nav class="glass-nav sticky top-0 z-40 text-white shadow-md border-b border-slate-700">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <div class="flex items-center space-x-3">
-          <div class="p-2 bg-indigo-600 rounded-lg shadow-inner">
-            <i class="fa-solid fa-users-rectangle text-xl text-white"></i>
-          </div>
-          <div>
-            <h1 class="font-bold text-base md:text-lg leading-tight tracking-wide">SI-RT 012/009</h1>
-            <p class="text-[10px] text-slate-300">Grogol Selatan, Kebayoran Lama, Jaksel</p>
-          </div>
-        </div>
-        <div class="flex items-center space-x-1 md:space-x-4">
-          <button onclick="navTo('dashboard')" class="px-3 py-2 text-sm rounded-md hover:bg-slate-800 hover:text-indigo-400 transition flex items-center space-x-1">
-            <i class="fa-solid fa-chart-pie text-xs"></i> <span class="hidden md:inline">Dashboard</span>
-          </button>
-          <button onclick="navTo('warga')" class="px-3 py-2 text-sm rounded-md hover:bg-slate-800 hover:text-indigo-400 transition flex items-center space-x-1">
-            <i class="fa-solid fa-users text-xs"></i> <span class="hidden md:inline">Data Warga</span>
-          </button>
-          <button onclick="navTo('inventaris')" class="px-3 py-2 text-sm rounded-md hover:bg-slate-800 hover:text-indigo-400 transition flex items-center space-x-1">
-            <i class="fa-solid fa-box text-xs"></i> <span class="hidden md:inline">Inventaris</span>
-          </button>
-          <button id="btnLoginLogout" onclick="toggleLogin()" class="ml-2 bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 rounded-md text-xs font-semibold transition shadow-md flex items-center space-x-1">
-            <i class="fa-solid fa-lock text-[10px]"></i> <span>Login Admin</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </nav>
+      <nav class="nav-links" aria-label="Navigasi utama">
+        <a href="#fitur">Fitur</a>
+        <a href="#alur">Alur</a>
+        <a href="#modul">Modul</a>
+        <a href="#faq">FAQ</a>
+      </nav>
 
-  <!-- Main Container -->
-  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 fade-in">
-    
-    <!-- SECTION 1: DASHBOARD -->
-    <div id="sec-dashboard" class="space-y-6">
-      <div class="bg-gradient-to-r from-slate-900 to-indigo-950 p-6 md:p-8 rounded-2xl shadow-lg text-white">
-        <h2 class="text-2xl md:text-3xl font-bold">Portal Informasi RT 012/009</h2>
-        <p class="text-slate-300 mt-2 text-sm md:text-base max-w-2xl">Transparansi tata kelola data warga, kepengurusan donasi, serta pengawasan inventaris rukun tetangga secara digital.</p>
-      </div>
-
-      <!-- Stats Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center space-x-4">
-          <div class="p-3 bg-blue-50 text-blue-600 rounded-lg"><i class="fa-solid fa-users text-2xl"></i></div>
-          <div>
-            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Total Jiwa Terdata</p>
-            <h3 class="text-2xl font-bold text-slate-800" id="stat-warga">0</h3>
-          </div>
-        </div>
-        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center space-x-4">
-          <div class="p-3 bg-emerald-50 text-emerald-600 rounded-lg"><i class="fa-solid fa-box-open text-2xl"></i></div>
-          <div>
-            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Total Barang Inventaris</p>
-            <h3 class="text-2xl font-bold text-slate-800" id="stat-inventaris">0</h3>
-          </div>
-        </div>
-        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center space-x-4">
-          <div class="p-3 bg-amber-50 text-amber-600 rounded-lg"><i class="fa-solid fa-hand-holding-heart text-2xl"></i></div>
-          <div>
-            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Donatur Aktif</p>
-            <h3 class="text-2xl font-bold text-slate-800" id="stat-donatur">0</h3>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SECTION 2: DATA WARGA -->
-    <div id="sec-warga" class="hidden-section space-y-4">
-      <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
-        <div>
-          <h2 class="text-lg font-bold text-slate-800">Database Data Warga</h2>
-          <p class="text-xs text-slate-400">Kelola informasi kepatuhan data penduduk dan klasifikasi donatur.</p>
-        </div>
-        <button id="btn-add-warga" onclick="openModalWarga()" class="hidden bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition flex items-center space-x-1.5 self-start sm:self-auto">
-          <i class="fa-solid fa-plus text-xs"></i> <span>Tambah Warga</span>
+      <div class="nav-actions">
+        <a class="btn btn-secondary" href="#demo">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 5.75v12.5L18 12 8 5.75Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+          Lihat Preview
+        </a>
+        <a class="btn btn-primary" href="#kontak">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4.75 19.25 19.25 4.75M19.25 4.75H8.75M19.25 4.75v10.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Konsultasi
+        </a>
+        <button class="btn btn-secondary menu-btn" id="menuBtn" aria-label="Buka menu">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
       </div>
+    </div>
+  </header>
 
-      <!-- Search & Filters -->
-      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-3">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div class="relative">
-            <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400 text-sm"></i>
-            <input type="text" id="search-warga" onkeyup="renderWarga()" placeholder="Cari nama, NIK..." class="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+  <div class="mobile-panel" id="mobilePanel">
+    <a href="#fitur">Fitur Utama</a>
+    <a href="#alur">Alur Penggunaan</a>
+    <a href="#modul">Modul Aplikasi</a>
+    <a href="#demo">Preview Tampilan</a>
+    <a href="#faq">Pertanyaan Umum</a>
+    <a href="#kontak">Konsultasi</a>
+  </div>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow-row">
+            <span class="badge">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 3.75 19.25 7v5.35c0 4.5-3.05 7.13-7.25 8.4-4.2-1.27-7.25-3.9-7.25-8.4V7L12 3.75Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+              Public-first, private tetap aman
+            </span>
+            <span class="badge">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M5 5h14v14H5V5Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 9h6M9 12h6M9 15h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              HTML, CSS, JS + Google Apps Script
+            </span>
           </div>
-          <div>
-            <select id="filter-label" onchange="renderWarga()" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-              <option value="">Semua Label</option>
-              <option value="Warga">Warga Biasa</option>
-              <option value="Donatur (Warga)">Donatur (Warga RT)</option>
-              <option value="Donatur (Luar)">Donatur (Luar RT)</option>
-            </select>
+
+          <h1>Digitalisasi RT dalam <span class="gradient-text">satu webapps</span> yang ringan.</h1>
+          <p class="lead">
+            RT Digital membantu pengurus RT mengelola data warga, keluarga, inventaris, iuran, pengumuman, galeri kegiatan, jasa warga, dan laporan warga dalam satu sistem sederhana yang siap dikembangkan.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#kontak">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4.75 19.25 19.25 4.75M19.25 4.75H8.75M19.25 4.75v10.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Mulai Konsultasi
+            </a>
+            <a class="btn btn-secondary" href="#fitur">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+              Lihat Fitur
+            </a>
           </div>
-          <div>
-            <select id="filter-kk" onchange="renderWarga()" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-              <option value="">Semua Status Keluarga</option>
-              <option value="Kepala Keluarga">Kepala Keluarga</option>
-              <option value="Istri">Istri</option>
-              <option value="Anak">Anak</option>
-              <option value="Lainnya">Lainnya</option>
-            </select>
+
+          <div class="hero-trust">
+            <span>Cocok untuk:</span>
+            <span class="check-list">
+              <span class="check-item"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>RT/RW</span>
+              <span class="check-item"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Komplek</span>
+              <span class="check-item"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Paguyuban</span>
+            </span>
           </div>
         </div>
 
-        <!-- Desktop View (Table) -->
-        <div class="overflow-x-auto hidden md:block">
-          <table class="w-full text-left border-collapse text-sm">
-            <thead>
-              <tr class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
-                <th class="p-3">Nama Lengkap</th>
-                <th class="p-3">NIK</th>
-                <th class="p-3">Hubungan Keluarga</th>
-                <th class="p-3">Klasifikasi</th>
-                <th class="p-3 text-center">Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="table-warga"></tbody>
-          </table>
+        <div class="phone-stage" id="demo" aria-label="Preview aplikasi">
+          <div class="glow"></div>
+          <div class="floating-chip chip-1">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 19V5h14v14H5Z" stroke="currentColor" stroke-width="1.8"/><path d="M8 9h8M8 13h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Data rapi
+          </div>
+          <div class="floating-chip chip-2">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4.75 6.75h14.5v10.5H4.75V6.75Z" stroke="currentColor" stroke-width="1.8"/><path d="M8 10h2.5M8 14h5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Iuran terpantau
+          </div>
+          <div class="floating-chip chip-3">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M9 18.25h6M12 15.75V20M5.75 4.75h12.5v8a2 2 0 0 1-2 2H7.75a2 2 0 0 1-2-2v-8Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Siap mobile
+          </div>
+
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="app-card">
+                <small>RT 012 RW 009 Digital</small>
+                <h3>Selamat datang, warga</h3>
+                <div class="stat-row">
+                  <div class="mini-stat"><strong>428</strong><span>Warga</span></div>
+                  <div class="mini-stat"><strong>126</strong><span>Keluarga</span></div>
+                  <div class="mini-stat"><strong>36</strong><span>Inventaris</span></div>
+                </div>
+              </div>
+
+              <div class="phone-search">
+                <svg viewBox="0 0 24 24" fill="none"><path d="m20 20-4.2-4.2M18 11a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                Cari pengumuman, jasa, laporan
+              </div>
+
+              <div class="app-grid">
+                <div class="app-icon"><span><svg viewBox="0 0 24 24" fill="none"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM16.5 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM3.75 19c.35-3.2 2.2-5 4.25-5s3.9 1.8 4.25 5M13.8 18.5c.3-2.3 1.55-3.7 2.9-3.7s2.6 1.4 2.9 3.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Warga</div>
+                <div class="app-icon"><span><svg viewBox="0 0 24 24" fill="none"><path d="M4.75 10.5 12 4.75l7.25 5.75v8.75H4.75V10.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>Keluarga</div>
+                <div class="app-icon"><span><svg viewBox="0 0 24 24" fill="none"><path d="M5 8h14v11H5V8ZM8 8V6h8v2" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>Inventaris</div>
+                <div class="app-icon"><span><svg viewBox="0 0 24 24" fill="none"><path d="M4.75 7.75h14.5v8.5H4.75v-8.5Z" stroke="currentColor" stroke-width="1.6"/><path d="M8 12h8M8 15h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Iuran</div>
+                <div class="app-icon"><span><svg viewBox="0 0 24 24" fill="none"><path d="M6 8.5h12M6 12h12M6 15.5h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>Info</div>
+                <div class="app-icon"><span><svg viewBox="0 0 24 24" fill="none"><path d="M5 5h14v14H5V5Z" stroke="currentColor" stroke-width="1.6"/><path d="m8 15 2.5-3 2 2.2 1.4-1.7L17 16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Galeri</div>
+                <div class="app-icon"><span><svg viewBox="0 0 24 24" fill="none"><path d="M5 8h14v10H5V8ZM8 8V6h8v2" stroke="currentColor" stroke-width="1.6"/></svg></span>Jasa</div>
+                <div class="app-icon"><span><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v8M12 17.5v.1M4.75 19.25h14.5L12 4.75 4.75 19.25Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Lapor</div>
+              </div>
+
+              <div class="post-preview">
+                <div class="post-mini">
+                  <div class="post-thumb"></div>
+                  <div><strong>Kerja bakti Minggu pagi</strong><span>Pengumuman RT</span></div>
+                </div>
+                <div class="post-mini">
+                  <div class="post-thumb"></div>
+                  <div><strong>Jasa servis AC warga</strong><span>Produk dan jasa warga</span></div>
+                </div>
+                <div class="post-mini">
+                  <div class="post-thumb"></div>
+                  <div><strong>Kas keamanan bulan ini</strong><span>Keuangan warga</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Mobile View Grid -->
-        <div id="mobile-warga-list" class="grid grid-cols-1 gap-3 md:hidden"></div>
+      </div>
+    </section>
+
+    <div class="logos-strip">
+      <div class="container strip-row">
+        <span class="strip-pill"><svg viewBox="0 0 24 24" fill="none"><path d="M4.75 12h14.5M12 4.75v14.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Tanpa server VPS</span>
+        <span class="strip-pill"><svg viewBox="0 0 24 24" fill="none"><path d="M5 5h14v14H5V5Z" stroke="currentColor" stroke-width="1.8"/><path d="M8 9h8M8 12h8M8 15h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Google Sheets database</span>
+        <span class="strip-pill"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5.75h8A2.25 2.25 0 0 1 18.25 8v8A2.25 2.25 0 0 1 16 18.25H8A2.25 2.25 0 0 1 5.75 16V8A2.25 2.25 0 0 1 8 5.75Z" stroke="currentColor" stroke-width="1.8"/></svg>Single-file frontend</span>
+        <span class="strip-pill"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3.75 19.25 7v5.35c0 4.5-3.05 7.13-7.25 8.4-4.2-1.27-7.25-3.9-7.25-8.4V7L12 3.75Z" stroke="currentColor" stroke-width="1.8"/></svg>Akses publik dan privat</span>
       </div>
     </div>
 
-    <!-- SECTION 3: INVENTARIS -->
-    <div id="sec-inventaris" class="hidden-section space-y-4">
-      <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
-        <div>
-          <h2 class="text-lg font-bold text-slate-800">Daftar Inventaris Lingkungan</h2>
-          <p class="text-xs text-slate-400 font-medium">Penggunaan prasarana publik RT demi kepentingan warga bersama.</p>
+    <section class="section" id="fitur">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="badge">
+            <svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Fitur inti
+          </span>
+          <h2>Satu aplikasi untuk administrasi, layanan warga, dan transparansi lingkungan.</h2>
+          <p>RT Digital dirancang agar pengurus RT bisa bekerja lebih cepat, sementara warga tetap mudah mengakses informasi umum tanpa login.</p>
         </div>
-        <button id="btn-add-inventaris" onclick="openModalInventaris()" class="hidden bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-emerald-700 transition flex items-center space-x-1.5 self-start sm:self-auto">
-          <i class="fa-solid fa-plus text-xs"></i> <span>Tambah Barang</span>
-        </button>
-      </div>
 
-      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
-        <div class="relative mb-4">
-          <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400 text-sm"></i>
-          <input type="text" id="search-inventaris" onkeyup="renderInventaris()" placeholder="Cari tenda, kursi, speaker..." class="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+        <div class="feature-grid">
+          <article class="feature-card reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM16.5 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM3.75 19c.35-3.2 2.2-5 4.25-5s3.9 1.8 4.25 5M13.8 18.5c.3-2.3 1.55-3.7 2.9-3.7s2.6 1.4 2.9 3.7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+            <h3>Data warga dan keluarga</h3>
+            <p>Data warga berbasis KTP, NIK, nomor KK, dan pengelompokan keluarga otomatis.</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>NIK unik dan data sensitif privat</li>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Merge keluarga berdasarkan nomor KK</li>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Approval perubahan oleh admin</li>
+            </ul>
+          </article>
+
+          <article class="feature-card reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M5 8h14v11H5V8ZM8 8V6h8v2" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+            <h3>Inventaris RT</h3>
+            <p>Catat jumlah, kondisi terakhir, lokasi penyimpanan, foto kondisi, dan riwayat pinjam.</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Stok tersedia dan dipinjam</li>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Riwayat kondisi dan lokasi</li>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Foto bisa diperbesar</li>
+            </ul>
+          </article>
+
+          <article class="feature-card reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4.75 7.75h14.5v8.5H4.75v-8.5Z" stroke="currentColor" stroke-width="1.7"/><path d="M8 12h8M8 15h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+            <h3>Keuangan warga</h3>
+            <p>Iuran sampah, keamanan, donasi, dan setoran mandiri dengan bukti pembayaran.</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Rekening pembayaran dengan tombol copy</li>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Upload bukti pembayaran</li>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Approve atau reject admin</li>
+            </ul>
+          </article>
+
+          <article class="feature-card reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M6 8.5h12M6 12h12M6 15.5h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+            <h3>Pengumuman RT</h3>
+            <p>Pengumuman publik tampil di halaman utama dan bisa dibagikan dengan URL langsung.</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Multiple image</li>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Tombol download media</li>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Deep link postingan</li>
+            </ul>
+          </article>
+
+          <article class="feature-card reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M5 5h14v14H5V5Z" stroke="currentColor" stroke-width="1.7"/><path d="m8 15 2.5-3 2 2.2 1.4-1.7L17 16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Galeri kegiatan</h3>
+            <p>Dokumentasi kegiatan warga tersimpan rapi dan dapat diakses publik.</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Album kegiatan warga</li>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Download foto</li>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Kontrol penuh admin</li>
+            </ul>
+          </article>
+
+          <article class="feature-card reveal">
+            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M5 8h14v10H5V8ZM8 8V6h8v2" stroke="currentColor" stroke-width="1.7"/></svg></div>
+            <h3>Jasa dan produk warga</h3>
+            <p>Warga terverifikasi dapat mempromosikan jasa atau produk lokal dengan tombol WhatsApp.</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Login warga untuk posting</li>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Kontak langsung WhatsApp</li>
+              <li><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.25 4.25L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Moderasi admin RT</li>
+            </ul>
+          </article>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="grid-inventaris"></div>
       </div>
-    </div>
+    </section>
 
+    <section class="section" id="alur">
+      <div class="container showcase">
+        <div class="panel reveal">
+          <span class="badge">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12M14 8l4 4-4 4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Alur kerja
+          </span>
+          <h3>Alur dibuat sederhana agar bisa dipakai pengurus dan warga.</h3>
+          <p>RT Digital memisahkan informasi publik dan data privat. Pengunjung bisa membaca informasi umum, sedangkan warga dan admin memiliki akses sesuai perannya.</p>
+
+          <div class="workflow">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div><strong>Pengunjung melihat informasi umum</strong><span>Pengumuman, galeri, jasa warga, dan kontak cepat dapat dilihat tanpa login.</span></div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div><strong>Warga login untuk layanan mandiri</strong><span>Warga dapat mengajukan data keluarga, posting jasa, membuat laporan, dan setoran iuran.</span></div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div><strong>Admin memverifikasi pengajuan</strong><span>Admin RT menerima, menolak, mengedit, dan mengontrol seluruh konten serta data sensitif.</span></div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div><strong>Semua aktivitas tercatat</strong><span>Data, pembayaran, inventaris, dan konten memiliki status serta riwayat agar lebih transparan.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-preview reveal">
+          <div class="preview-top">
+            <strong>Admin Panel</strong>
+            <div class="dots"><span></span><span></span><span></span></div>
+          </div>
+          <div class="admin-grid">
+            <div class="admin-stat"><span>Setoran masuk</span><strong>24</strong></div>
+            <div class="admin-stat"><span>Menunggu approval</span><strong>8</strong></div>
+            <div class="admin-stat"><span>Inventaris</span><strong>36</strong></div>
+          </div>
+          <div class="table-mock">
+            <div class="table-row"><div class="avatar"></div><div class="skeleton"><strong></strong><span></span></div><div class="status">Approve</div></div>
+            <div class="table-row"><div class="avatar"></div><div class="skeleton"><strong></strong><span></span></div><div class="status">Review</div></div>
+            <div class="table-row"><div class="avatar"></div><div class="skeleton"><strong></strong><span></span></div><div class="status">Aktif</div></div>
+            <div class="table-row"><div class="avatar"></div><div class="skeleton"><strong></strong><span></span></div><div class="status">Publik</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight" id="modul">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="badge">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 5h6v6H5V5ZM13 5h6v6h-6V5ZM5 13h6v6H5v-6ZM13 13h6v6h-6v-6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            Modul lengkap
+          </span>
+          <h2>Dirancang sebagai fondasi layanan RT yang bisa terus dikembangkan.</h2>
+          <p>Mulai dari data dasar sampai layanan warga, sistem ini dapat bertahap dikembangkan sesuai kebutuhan lingkungan.</p>
+        </div>
+
+        <div class="metrics reveal">
+          <div class="metric"><strong data-count="8">0</strong><span>Modul utama</span></div>
+          <div class="metric"><strong data-count="20">0</strong><span>KB media maksimal</span></div>
+          <div class="metric"><strong data-count="720">0</strong><span>px lebar gambar</span></div>
+          <div class="metric"><strong data-count="100">0</strong><span>persen mobile responsive</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="kontak">
+      <div class="container">
+        <div class="pricing-card reveal">
+          <div>
+            <h2>Siap punya webapps RT Digital untuk lingkungan Anda?</h2>
+            <p>
+              Landing page ini dapat digunakan untuk promosi layanan RT Digital, demo ke pengurus RT/RW, atau halaman penawaran implementasi sistem administrasi warga berbasis Google Apps Script.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" id="waCta" href="#" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M7.5 19.25 4.75 20l.75-2.75A8 8 0 1 1 7.5 19.25Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 9.5c.8 2 2.5 3.7 5.5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                Hubungi via WhatsApp
+              </a>
+              <a class="btn btn-secondary" href="#home">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 19.25V4.75M5 12l7-7.25L19 12" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Kembali ke Atas
+              </a>
+            </div>
+          </div>
+
+          <div class="contact-box">
+            <label for="waNumber">Nomor WhatsApp promosi</label>
+            <div class="contact-line">
+              <input id="waNumber" value="6281234567890" inputmode="numeric" aria-label="Nomor WhatsApp" />
+              <button id="copyWa" type="button">Copy</button>
+            </div>
+            <label for="waMessage">Pesan cepat</label>
+            <div class="contact-line">
+              <input id="waMessage" value="Halo, saya tertarik dengan webapps RT Digital." aria-label="Pesan WhatsApp" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight" id="faq">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="badge">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 18h.01M9.75 9.25A2.35 2.35 0 0 1 12.1 7c1.32 0 2.4.86 2.4 2.1 0 2.33-3.1 2.06-3.1 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            FAQ
+          </span>
+          <h2>Pertanyaan yang sering muncul.</h2>
+        </div>
+
+        <div class="faq">
+          <div class="faq-item open">
+            <button class="faq-q" type="button">Apakah RT Digital harus punya server sendiri? <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+            <div class="faq-a">Tidak wajib. Versi yang dirancang menggunakan frontend single-file dan backend Google Apps Script dengan Google Sheets sebagai database ringan.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" type="button">Apakah data warga bisa dilihat semua orang? <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+            <div class="faq-a">Tidak. Data sensitif seperti NIK, nomor KK, nomor HP, detail alamat, dan foto pribadi dibuat privat. Halaman publik hanya menampilkan informasi umum.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" type="button">Apakah warga bisa mengirim data sendiri? <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+            <div class="faq-a">Bisa. Warga dapat melakukan pendaftaran, mengajukan perubahan data, mengirim laporan, posting jasa, atau setoran iuran. Admin tetap memegang keputusan approve atau reject.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" type="button">Apakah media gambar bisa dikontrol ukurannya? <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+            <div class="faq-a">Bisa. Sistem dirancang agar media dikompres menjadi WebP, dengan batas ukuran maksimal 20 KB dan lebar maksimal 720 px sebelum masuk database.</div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <!-- MODAL: DETAIL WARGA -->
-  <div id="modal-detail-warga" class="hidden fixed inset-0 bg-slate-900 bg-opacity-60 flex items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto fade-in">
-      <div class="flex justify-between items-center p-4 border-b border-slate-100 sticky top-0 bg-white z-10">
-        <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-id-card text-indigo-600 mr-1"></i> Detail Data Warga</h3>
-        <button onclick="closeModal('modal-detail-warga')" class="text-slate-400 hover:text-rose-500 transition"><i class="fa-solid fa-times text-lg"></i></button>
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand" href="#home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3.75 10.35 12 3.75l8.25 6.6v8.4a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.4Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M9 20.25v-6h6v6" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+          </span>
+          <span>
+            <span class="brand-title">RT Digital</span>
+            <span class="brand-sub">Administrasi RT modern</span>
+          </span>
+        </a>
+        <p>Solusi webapps ringan untuk pengurus RT/RW yang ingin membuat layanan warga lebih rapi, transparan, dan mudah diakses.</p>
       </div>
-      <div class="p-6 space-y-5 text-sm" id="detail-warga-content"></div>
-    </div>
-  </div>
-
-  <!-- MODAL: FORM ADD/EDIT WARGA -->
-  <div id="modal-form-warga" class="hidden fixed inset-0 bg-slate-900 bg-opacity-60 flex items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto fade-in">
-      <div class="flex justify-between items-center p-4 border-b border-slate-100 sticky top-0 bg-white z-20">
-        <h3 class="text-lg font-bold text-slate-800" id="form-warga-title">Form Data Warga</h3>
-        <button onclick="closeModal('modal-form-warga')" class="text-slate-400 hover:text-rose-500 transition"><i class="fa-solid fa-times text-lg"></i></button>
+      <div class="footer-links">
+        <a href="#fitur">Fitur</a>
+        <a href="#alur">Alur</a>
+        <a href="#kontak">Kontak</a>
+        <a href="https://yztheme.my.id" target="_blank" rel="noopener">YzTheme</a>
       </div>
-      <div class="p-6">
-        <!-- OCR Engine Header -->
-        <div class="mb-5 p-4 bg-indigo-50 border border-indigo-100 rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-3">
-          <div class="flex-1">
-            <label class="block text-sm font-semibold text-indigo-900 mb-1"><i class="fa-solid fa-expand text-indigo-600 mr-1"></i> Scan & Kompres KTP (OCR Otomatis)</label>
-            <p class="text-[11px] text-indigo-600 leading-relaxed">Ekstraksi nomor NIK menggunakan AI Tesseract OCR sebelum foto dikompresi &lt;30KB secara otomatis.</p>
-          </div>
-          <div class="relative">
-            <input type="file" id="scan-ktp-file" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer">
-          </div>
-          <input type="hidden" id="w_ktp_base64">
-        </div>
-        
-        <form id="form-warga" class="grid grid-cols-1 md:grid-cols-2 gap-4" onsubmit="saveWarga(event)">
-          <input type="hidden" id="w_id">
-          
-          <div>
-            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Nomor Induk Kependudukan (NIK)</label>
-            <input type="text" id="w_nik" required pattern="\d{16}" title="NIK harus terdiri dari 16 digit angka" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Nama Lengkap</label>
-            <input type="text" id="w_nama" required class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div class="md:col-span-2">
-            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Alamat Lengkap</label>
-            <textarea id="w_alamat" required rows="2" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Status Keluarga</label>
-            <select id="w_status_kk" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-              <option value="Kepala Keluarga">Kepala Keluarga</option>
-              <option value="Istri">Istri</option>
-              <option value="Anak">Anak</option>
-              <option value="Lainnya">Lainnya</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Nomor Handphone</label>
-            <input type="text" id="w_hp" placeholder="Contoh: 0812xxxxxxxx" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div class="md:col-span-2">
-            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Label Khusus (Klasifikasi)</label>
-            <select id="w_label" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-              <option value="Warga">Warga Biasa</option>
-              <option value="Donatur (Warga)">Donatur (Warga RT)</option>
-              <option value="Donatur (Luar)">Donatur (Luar RT)</option>
-            </select>
-          </div>
-
-          <!-- Upload Inputs with Live Preview -->
-          <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Foto Kartu Keluarga (&lt;30KB)</label>
-            <input type="file" id="w_file_kk" accept="image/*" class="w-full border p-1 rounded-md text-xs bg-white mb-2">
-            <div id="preview-form-kk" class="hidden border rounded p-1 bg-white inline-block"></div>
-            <input type="hidden" id="w_kk_base64">
-          </div>
-          
-          <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Foto Depan Rumah (&lt;30KB)</label>
-            <input type="file" id="w_file_rumah" accept="image/*" class="w-full border p-1 rounded-md text-xs bg-white mb-2">
-            <div id="preview-form-rumah" class="hidden border rounded p-1 bg-white inline-block"></div>
-            <input type="hidden" id="w_rumah_base64">
-          </div>
-
-          <div class="md:col-span-2 mt-4 text-right">
-            <button type="submit" id="btn-submit-warga" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition shadow-md">Simpan Data</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: FORM INVENTARIS -->
-  <div id="modal-form-inventaris" class="hidden fixed inset-0 bg-slate-900 bg-opacity-60 flex items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto fade-in">
-      <div class="flex justify-between items-center p-4 border-b border-slate-100 sticky top-0 bg-white z-10">
-        <h3 class="text-lg font-bold text-slate-800">Form Inventaris Barang</h3>
-        <button onclick="closeModal('modal-form-inventaris')" class="text-slate-400 hover:text-rose-500 transition"><i class="fa-solid fa-times text-lg"></i></button>
-      </div>
-      <div class="p-6">
-        <form id="form-inventaris" class="space-y-4" onsubmit="saveInventaris(event)">
-          <input type="hidden" id="i_id">
-          <div>
-            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Nama Barang</label>
-            <input type="text" id="i_nama" required class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-          </div>
-          <div class="flex space-x-4">
-            <div class="w-1/2">
-              <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Jumlah Unit (Qty)</label>
-              <input type="number" id="i_jumlah" required min="1" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-            </div>
-            <div class="w-1/2">
-              <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Kondisi Fisik</label>
-              <select id="i_kondisi" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-                <option>Baik</option>
-                <option>Rusak Ringan</option>
-                <option>Rusak Berat</option>
-              </select>
-            </div>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Lokasi Penyimpanan</label>
-            <input type="text" id="i_lokasi" required class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Keterangan Tambahan</label>
-            <textarea id="i_ket" rows="2" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
-          </div>
-          <div class="mt-4 text-right">
-            <button type="submit" class="bg-emerald-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-emerald-700 transition shadow-md">Simpan Barang</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 text-center text-xs mt-12">
-    <div class="max-w-7xl mx-auto px-4">
-      <p>&copy; 2026 Pengurus RT 012/009 Grogol Selatan. Semua hak dilindungi.</p>
     </div>
   </footer>
 
+  <button class="scroll-top" id="scrollTop" aria-label="Kembali ke atas">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 19.25V4.75M5 12l7-7.25L19 12" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
   <script>
-    // ==========================================
-    // CONFIGURATION & GLOBAL STATE
-    // ==========================================
-    const IS_PREVIEW = true; // Set FALSE jika parameter URL dan Key Supabase di bawah telah diisi
-    const SUPABASE_URL = "https://dzzujgfjnfeuyrrhxdph.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6enVqZ2ZqbmZldXlycmh4ZHBoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1ODMzMDcsImV4cCI6MjA5MDE1OTMwN30.66AGjSrddnyuNiUjJTMsn4Zrrp4LenpkTOlaOc90DZI";
-    
-    // Inisialisasi Supabase Client Secara Aman (Mencegah peramban crash jika URL belum diisi)
-    if (window.supabase && SUPABASE_URL && SUPABASE_URL.startsWith("http")) {
-      try {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      } catch (err) {
-        console.warn("Klien Supabase gagal diinisialisasi secara otomatis:", err);
-      }
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+    const siteHeader = $("#siteHeader");
+    const mobilePanel = $("#mobilePanel");
+    const menuBtn = $("#menuBtn");
+    const scrollTop = $("#scrollTop");
+    const waNumber = $("#waNumber");
+    const waMessage = $("#waMessage");
+    const waCta = $("#waCta");
+    const copyWa = $("#copyWa");
+
+    function updateHeader() {
+      const scrolled = window.scrollY > 20;
+      siteHeader.classList.toggle("scrolled", scrolled);
+      scrollTop.classList.toggle("show", window.scrollY > 500);
     }
 
-    let currentUser = null; 
-    let dataWarga = [];
-    let dataInventaris = [];
-
-    // DUMMY DATA FOR PREVIEW MODE
-    const dummyWarga = [
-      { id: 'd-1', nik: '3174012345678901', nama: 'Budi Santoso', alamat: 'Jl. Pahlawan No.10 RT 012/009', statusKk: 'Kepala Keluarga', status_kk: 'Kepala Keluarga', hp: '08123456789', label: 'Donatur (Warga)', foto_ktp: '', foto_kk: '', foto_rumah: '' },
-      { id: 'd-2', nik: '3174012345678902', nama: 'Siti Aminah', alamat: 'Jl. Pahlawan No.10 RT 012/009', statusKk: 'Istri', status_kk: 'Istri', hp: '08129876543', label: 'Warga', foto_ktp: '', foto_kk: '', foto_rumah: '' }
-    ];
-    const dummyInventaris = [
-      { id: 'i-1', nama: 'Tenda Hajatan 4x6', jumlah: 2, kondisi: 'Baik', lokasi: 'Gudang RT', ket: 'Besi galvanis lengkap' },
-      { id: 'i-2', nama: 'Speaker Portable', jumlah: 1, kondisi: 'Baik', lokasi: 'Rumah Pak RT', ket: 'Merk Baretone' }
-    ];
-
-    window.onload = () => {
-      if(IS_PREVIEW || !supabase) {
-        dataWarga = [...dummyWarga];
-        dataInventaris = [...dummyInventaris];
-        updateDashboard(); renderWarga(); renderInventaris();
-      } else {
-        fetchDataFromSupabase();
-      }
-    };
-
-    // ==========================================
-    // IMAGE HANDLING & CANVAS COMPRESSION
-    // ==========================================
-    async function compressImage(file, maxSizeKB = 30) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (event) => {
-          const img = new Image();
-          img.src = event.target.result;
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            
-            let width = img.width;
-            let height = img.height;
-            const maxDim = 800; // Resolusi optimal agar dokumen tetap dapat terbaca
-            
-            if (width > maxDim || height > maxDim) {
-              if (width > height) { height = Math.round((height * maxDim) / width); width = maxDim; } 
-              else { width = Math.round((width * maxDim) / height); height = maxDim; }
-            }
-            canvas.width = width; canvas.height = height;
-            ctx.drawImage(img, 0, 0, width, height);
-            
-            let quality = 0.85;
-            let dataUrl = canvas.toDataURL('image/jpeg', quality);
-            
-            // Loop interaktif menurunkan tingkat kualitas kompresi secara bertahap
-            let iterations = 0;
-            while (Math.round((dataUrl.length * 3) / 4) / 1024 > maxSizeKB && quality > 0.15 && iterations < 8) {
-              quality -= 0.1;
-              dataUrl = canvas.toDataURL('image/jpeg', quality);
-              iterations++;
-            }
-            resolve(dataUrl);
-          };
-        };
-        reader.onerror = error => reject(error);
-      });
+    function closeMobileMenu() {
+      mobilePanel.classList.remove("open");
     }
 
-    // LISTENER AUTOMATED COMPRESSION
-    document.getElementById('w_file_kk').addEventListener('change', async (e) => {
-      if(e.target.files[0]) {
-        showLoadingState('Sedang memproses dan mengompresi Foto KK...');
-        try {
-          const base64 = await compressImage(e.target.files[0]);
-          document.getElementById('w_kk_base64').value = base64;
-          showPreviewInForm('preview-form-kk', base64);
-          Swal.close();
-        } catch (err) {
-          Swal.fire('Gagal', 'Gagal memproses file foto KK.', 'error');
-        }
-      }
+    function updateWhatsAppLink() {
+      const number = (waNumber.value || "").replace(/\D/g, "");
+      const text = encodeURIComponent(waMessage.value || "Halo, saya tertarik dengan webapps RT Digital.");
+      waCta.href = number ? `https://wa.me/${number}?text=${text}` : "#kontak";
+    }
+
+    menuBtn.addEventListener("click", () => {
+      mobilePanel.classList.toggle("open");
     });
 
-    document.getElementById('w_file_rumah').addEventListener('change', async (e) => {
-      if(e.target.files[0]) {
-        showLoadingState('Sedang memproses dan mengompresi Foto Rumah...');
-        try {
-          const base64 = await compressImage(e.target.files[0]);
-          document.getElementById('w_rumah_base64').value = base64;
-          showPreviewInForm('preview-form-rumah', base64);
-          Swal.close();
-        } catch (err) {
-          Swal.fire('Gagal', 'Gagal memproses file foto rumah.', 'error');
-        }
-      }
+    $$("#mobilePanel a").forEach((link) => {
+      link.addEventListener("click", closeMobileMenu);
     });
 
-    function showPreviewInForm(divId, base64) {
-      const container = document.getElementById(divId);
-      if (base64) {
-        container.innerHTML = `<img src="${base64}" class="h-14 w-auto rounded object-cover">`;
-        container.classList.remove('hidden');
-      } else {
-        container.innerHTML = '';
-        container.classList.add('hidden');
-      }
-    }
+    window.addEventListener("scroll", updateHeader);
+    updateHeader();
 
-    // LOADING ALERT WRAPPER
-    function showLoadingState(message) {
-      Swal.fire({
-        title: 'Harap Tunggu',
-        html: `<div class="flex flex-col items-center space-y-3 p-2">
-                 <i class="fa-solid fa-circle-notch fa-spin text-indigo-600 text-3xl"></i>
-                 <span class="text-sm font-medium text-slate-600">${message}</span>
-               </div>`,
-        showConfirmButton: false,
-        allowOutsideClick: false
+    scrollTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+    $$(".faq-q").forEach((button) => {
+      button.addEventListener("click", () => {
+        const item = button.closest(".faq-item");
+        item.classList.toggle("open");
       });
-    }
+    });
 
-    // ==========================================
-    // DATABASE HANDLER (SUPABASE)
-    // ==========================================
-    async function fetchDataFromSupabase() {
-      if (!supabase) return;
-      showLoadingState('Sinkronisasi data dari cloud database...');
-      try {
-        const { data: wData, error: wErr } = await supabase.from('data_warga').select('*').order('created_at', { ascending: false });
-        const { data: iData, error: iErr } = await supabase.from('data_inventaris').select('*').order('created_at', { ascending: false });
-        
-        if (wData) dataWarga = wData;
-        if (iData) dataInventaris = iData;
-        
-        updateDashboard(); renderWarga(); renderInventaris();
-        Swal.close();
-      } catch (err) {
-        Swal.fire('Gagal Sinkronisasi', 'Tidak dapat mengambil data dari database Supabase.', 'error');
-      }
-    }
-
-    // NAVIGATION SWITCH
-    function navTo(section) {
-      document.getElementById('sec-dashboard').classList.add('hidden-section');
-      document.getElementById('sec-warga').classList.add('hidden-section');
-      document.getElementById('sec-inventaris').classList.add('hidden-section');
-      document.getElementById('sec-' + section).classList.remove('hidden-section');
-    }
-
-    function updateDashboard() {
-      document.getElementById('stat-warga').innerText = dataWarga.length;
-      document.getElementById('stat-inventaris').innerText = dataInventaris.reduce((acc, curr) => acc + parseInt(curr.jumlah || 0), 0);
-      document.getElementById('stat-donatur').innerText = dataWarga.filter(w => w.label && w.label.includes('Donatur')).length;
-    }
-
-    function copyText(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Data tersalin', showConfirmButton: false, timer: 1200 });
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
+        }
       });
-    }
+    }, { threshold: 0.12 });
 
-    // ==========================================
-    // RENDER UI: WARGA & DONATUR
-    // ==========================================
-    function renderWarga() {
-      const query = document.getElementById('search-warga').value.toLowerCase();
-      const filterLabel = document.getElementById('filter-label').value;
-      const filterKk = document.getElementById('filter-kk').value;
-      
-      const tbody = document.getElementById('table-warga');
-      const mobileGrid = document.getElementById('mobile-warga-list');
-      
-      tbody.innerHTML = '';
-      mobileGrid.innerHTML = '';
-      
-      // Filter Logic
-      const filtered = dataWarga.filter(w => {
-        const matchesQuery = w.nama.toLowerCase().includes(query) || w.nik.includes(query);
-        const matchesLabel = filterLabel === "" || w.label === filterLabel;
-        const statusKkValue = w.statusKk || w.status_kk || '';
-        const matchesKk = filterKk === "" || statusKkValue === filterKk;
-        return matchesQuery && matchesLabel && matchesKk;
-      });
+    $$(".reveal").forEach((el) => revealObserver.observe(el));
 
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 text-xs">Tidak ada data warga ditemukan.</td></tr>`;
-        mobileGrid.innerHTML = `<p class="text-center text-slate-400 text-xs py-4">Tidak ada data warga ditemukan.</p>`;
-        return;
-      }
+    const metricObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = Number(el.dataset.count || 0);
+        const duration = 900;
+        const start = performance.now();
 
-      filtered.forEach(w => {
-        const badgeLabel = w.label === 'Warga' ? 
-          `<span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full text-[11px] font-medium border border-slate-200">Warga</span>` : 
-          `<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-[11px] font-semibold border border-amber-200"><i class="fa-solid fa-star text-[9px] mr-0.5"></i> ${w.label}</span>`;
-        
-        const statusKkVal = w.statusKk || w.status_kk || 'Lainnya';
-
-        // Action buttons
-        let actionBtnHtml = `<button onclick="viewWarga('${w.id}')" class="text-indigo-600 hover:text-indigo-800 text-xs font-semibold mr-2 transition"><i class="fa-solid fa-eye mr-0.5"></i> Detail</button>`;
-        if(currentUser?.role === 'admin') {
-          actionBtnHtml += `<button onclick="editWarga('${w.id}')" class="text-amber-500 hover:text-amber-700 text-xs font-semibold mr-2 transition"><i class="fa-solid fa-pen"></i></button>`;
-          actionBtnHtml += `<button onclick="deleteWarga('${w.id}')" class="text-rose-500 hover:text-rose-700 text-xs font-semibold transition"><i class="fa-solid fa-trash"></i></button>`;
+        function tick(now) {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.round(target * eased).toLocaleString("id-ID");
+          if (progress < 1) requestAnimationFrame(tick);
         }
 
-        // 1. Desktop Table Row
-        tbody.innerHTML += `
-          <tr class="border-b border-slate-100 hover:bg-slate-50 transition">
-            <td class="p-3 font-semibold text-slate-700">${w.nama}</td>
-            <td class="p-3 text-slate-500 font-mono text-xs">${w.nik}</td>
-            <td class="p-3 text-slate-600 text-xs">${statusKkVal}</td>
-            <td class="p-3">${badgeLabel}</td>
-            <td class="p-3 text-center whitespace-nowrap">${actionBtnHtml}</td>
-          </tr>
-        `;
-
-        // 2. Mobile Card layout
-        mobileGrid.innerHTML += `
-          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
-            <div class="flex justify-between items-start">
-              <div>
-                <h4 class="font-bold text-slate-800 text-sm">${w.nama}</h4>
-                <p class="text-slate-400 font-mono text-[11px] mt-0.5">${w.nik}</p>
-              </div>
-              ${badgeLabel}
-            </div>
-            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-200/60 pt-2">
-              <span>Status: <strong class="text-slate-600">${statusKkVal}</strong></span>
-              <div class="flex space-x-1">${actionBtnHtml}</div>
-            </div>
-          </div>
-        `;
+        requestAnimationFrame(tick);
+        metricObserver.unobserve(el);
       });
-    }
+    }, { threshold: 0.6 });
 
-    // MODAL VIEW DETAIL WARGA
-    function viewWarga(id) {
-      const w = dataWarga.find(x => x.id == id);
-      if(!w) return;
-      
-      let imagesHtml = '';
-      if(w.foto_ktp) imagesHtml += `<div class="img-preview-card border p-2 bg-slate-50 rounded-xl"><p class="font-semibold text-slate-500 text-[10px] uppercase mb-1">Foto KTP</p><img src="${w.foto_ktp}" class="w-full h-28 object-cover rounded shadow-sm"></div>`;
-      if(w.foto_kk) imagesHtml += `<div class="img-preview-card border p-2 bg-slate-50 rounded-xl"><p class="font-semibold text-slate-500 text-[10px] uppercase mb-1">Foto KK</p><img src="${w.foto_kk}" class="w-full h-28 object-cover rounded shadow-sm"></div>`;
-      if(w.foto_rumah) imagesHtml += `<div class="img-preview-card border p-2 bg-slate-50 rounded-xl"><p class="font-semibold text-slate-500 text-[10px] uppercase mb-1">Foto Rumah</p><img src="${w.foto_rumah}" class="w-full h-28 object-cover rounded shadow-sm"></div>`;
+    $$("[data-count]").forEach((el) => metricObserver.observe(el));
 
-      if(!imagesHtml) imagesHtml = `<p class="col-span-3 text-center text-slate-400 text-xs italic bg-slate-50 py-3 rounded border border-dashed">Dokumen berkas gambar belum dilampirkan.</p>`;
+    const navLinks = $$(".nav-links a");
+    const sections = navLinks
+      .map((a) => document.querySelector(a.getAttribute("href")))
+      .filter(Boolean);
 
-      const content = `
-        <table class="w-full text-left text-xs border-collapse">
-          <tr class="border-b border-slate-100"><th class="py-2.5 w-1/3 text-slate-400 uppercase font-medium">Nomor NIK</th><td class="font-mono text-slate-700">${w.nik} <i class="fa-solid fa-copy text-indigo-500 cursor-pointer ml-1 hover:text-indigo-700" onclick="copyText('${w.nik}')"></i></td></tr>
-          <tr class="border-b border-slate-100"><th class="py-2.5 text-slate-400 uppercase font-medium">Nama Lengkap</th><td class="font-semibold text-slate-700">${w.nama} <i class="fa-solid fa-copy text-indigo-500 cursor-pointer ml-1 hover:text-indigo-700" onclick="copyText('${w.nama}')"></i></td></tr>
-          <tr class="border-b border-slate-100"><th class="py-2.5 text-slate-400 uppercase font-medium">Hubungan Keluarga</th><td class="text-slate-700">${w.statusKk || w.status_kk}</td></tr>
-          <tr class="border-b border-slate-100"><th class="py-2.5 text-slate-400 uppercase font-medium">Klasifikasi Label</th><td class="text-slate-700 font-semibold">${w.label}</td></tr>
-          <tr class="border-b border-slate-100"><th class="py-2.5 text-slate-400 uppercase font-medium">Nomor Handphone</th><td class="text-slate-700">${w.hp || '-'} <i class="fa-solid fa-copy text-indigo-500 cursor-pointer ml-1 hover:text-indigo-700" onclick="copyText('${w.hp}')"></i></td></tr>
-          <tr class="border-b border-slate-100"><th class="py-2.5 text-slate-400 uppercase font-medium align-top">Alamat Domisili</th><td class="text-slate-600 leading-relaxed">${w.alamat} <i class="fa-solid fa-copy text-indigo-500 cursor-pointer ml-1 hover:text-indigo-700" onclick="copyText('${w.alamat}')"></i></td></tr>
-        </table>
-        <div class="mt-4 pt-2 border-t border-slate-100">
-          <h4 class="font-semibold text-slate-700 text-xs mb-3">Arsip Berkas Digital</h4>
-          <div class="grid grid-cols-3 gap-3">${imagesHtml}</div>
-        </div>
-      `;
-      document.getElementById('detail-warga-content').innerHTML = content;
-      document.getElementById('modal-detail-warga').classList.remove('hidden');
-    }
-
-    // ==========================================
-    // RENDER UI: INVENTARIS
-    // ==========================================
-    function renderInventaris() {
-      const query = document.getElementById('search-inventaris').value.toLowerCase();
-      const grid = document.getElementById('grid-inventaris');
-      grid.innerHTML = '';
-      
-      const filtered = dataInventaris.filter(i => i.nama.toLowerCase().includes(query) || i.ket.toLowerCase().includes(query));
-
-      if (filtered.length === 0) {
-        grid.innerHTML = `<p class="col-span-3 text-center text-slate-400 text-xs py-8">Tidak ada barang inventaris ditemukan.</p>`;
-        return;
-      }
-
-      filtered.forEach(i => {
-        let badgeKondisi = '';
-        if (i.kondisi === 'Baik') {
-          badgeKondisi = `<span class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-semibold border border-emerald-200">Kondisi Baik</span>`;
-        } else if (i.kondisi.includes('Rusak Ringan')) {
-          badgeKondisi = `<span class="bg-amber-100 text-amber-800 text-[10px] px-2 py-0.5 rounded-full font-semibold border border-amber-200">Rusak Ringan</span>`;
-        } else {
-          badgeKondisi = `<span class="bg-rose-100 text-rose-800 text-[10px] px-2 py-0.5 rounded-full font-semibold border border-rose-200">Rusak Berat</span>`;
-        }
-
-        let adminActions = currentUser?.role === 'admin' ? `
-          <div class="mt-3 pt-3 border-t border-slate-100 flex justify-end space-x-2">
-            <button onclick="editInventaris('${i.id}')" class="text-[11px] bg-slate-100 hover:bg-amber-100 hover:text-amber-700 text-slate-600 px-2.5 py-1 rounded transition"><i class="fa-solid fa-pen"></i> Edit</button>
-            <button onclick="deleteInventaris('${i.id}')" class="text-[11px] bg-slate-100 hover:bg-rose-100 hover:text-rose-700 text-slate-600 px-2.5 py-1 rounded transition"><i class="fa-solid fa-trash"></i> Hapus</button>
-          </div>` : '';
-
-        grid.innerHTML += `
-          <div class="border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-md transition bg-white flex flex-col justify-between">
-            <div>
-              <div class="flex justify-between items-start mb-1">
-                <h4 class="font-bold text-slate-800 text-base leading-tight">${i.nama}</h4>
-                ${badgeKondisi}
-              </div>
-              <p class="text-xs text-slate-400 line-clamp-2 min-h-[2rem]">${i.ket || 'Tidak ada catatan tambahan.'}</p>
-            </div>
-            <div class="mt-4 pt-3 border-t border-slate-50 flex justify-between items-center text-xs">
-              <span class="bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md font-bold">Qty: ${i.jumlah} unit</span>
-              <span class="text-slate-500 font-medium"><i class="fa-solid fa-location-dot text-indigo-500 mr-1"></i> ${i.lokasi}</span>
-            </div>
-            ${adminActions}
-          </div>
-        `;
-      });
-    }
-
-    // ==========================================
-    // AUTHENTICATION SYSTEM
-    // ==========================================
-    function toggleLogin() {
-      if(currentUser) {
-        currentUser = null;
-        document.getElementById('btnLoginLogout').innerHTML = '<i class="fa-solid fa-lock text-[10px]"></i> <span>Login Admin</span>';
-        document.getElementById('btnLoginLogout').className = 'ml-2 bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 rounded-md text-xs font-semibold transition shadow-md flex items-center space-x-1';
-        
-        document.getElementById('btn-add-warga').classList.add('hidden');
-        document.getElementById('btn-add-inventaris').classList.add('hidden');
-        
-        Swal.fire({ icon: 'info', title: 'Logout Berhasil', text: 'Sistem kembali ke mode akses publik.', confirmButtonColor: '#4f46e5' });
-        renderWarga(); renderInventaris();
-      } else {
-        Swal.fire({
-          title: 'Login Admin RT',
-          html: `
-            <div class="flex flex-col text-left space-y-3 mt-4">
-              <div>
-                <label class="text-xs font-semibold text-slate-500 uppercase">Username</label>
-                <input type="text" id="swal-user" class="w-full mt-1 border p-2.5 rounded-lg text-sm outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Ketik username admin">
-              </div>
-              <div>
-                <label class="text-xs font-semibold text-slate-500 uppercase">Password</label>
-                <input type="password" id="swal-pass" class="w-full mt-1 border p-2.5 rounded-lg text-sm outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Ketik kata sandi">
-              </div>
-              <p class="text-[10px] text-slate-400 mt-2 italic text-center">*Demo: admin / admin2026</p>
-            </div>
-          `,
-          confirmButtonText: 'Masuk Sistem',
-          confirmButtonColor: '#4f46e5',
-          showCancelButton: true,
-          cancelButtonText: 'Batal',
-          showLoaderOnConfirm: true,
-          preConfirm: async () => {
-            const u = document.getElementById('swal-user').value;
-            const p = document.getElementById('swal-pass').value;
-            
-            if(IS_PREVIEW || !supabase) {
-              if(u === 'admin' && p === 'admin2026') return {role: 'admin'};
-              Swal.showValidationMessage('Kombinasi autentikasi admin tidak tepat.');
-            } else {
-              const { data, error } = await supabase.from('users').select('*').eq('username', u).eq('password', p).maybeSingle();
-              if (error || !data) { 
-                Swal.showValidationMessage('Autentikasi gagal! Cek data kredensial Anda.'); 
-              }
-              return data;
-            }
-          }
-        }).then((result) => {
-          if (result.isConfirmed && result.value) {
-            currentUser = result.value;
-            document.getElementById('btnLoginLogout').innerHTML = '<i class="fa-solid fa-sign-out-alt text-[10px]"></i> <span>Logout</span>';
-            document.getElementById('btnLoginLogout').className = 'ml-2 bg-rose-600 hover:bg-rose-700 px-3 py-1.5 rounded-md text-xs font-semibold transition shadow-md flex items-center space-x-1';
-            
-            document.getElementById('btn-add-warga').classList.remove('hidden');
-            document.getElementById('btn-add-inventaris').classList.remove('hidden');
-            
-            Swal.fire({ icon: 'success', title: 'Berhasil Masuk', text: 'Akses pengelolaan admin telah dibuka.', confirmButtonColor: '#4f46e5', timer: 1500 });
-            renderWarga(); renderInventaris();
-          }
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach((a) => {
+          a.classList.toggle("active", a.getAttribute("href") === `#${entry.target.id}`);
         });
-      }
-    }
+      });
+    }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
 
-    // MODAL CONTROL UTILITIES
-    function closeModal(id) { 
-      document.getElementById(id).classList.add('hidden'); 
-    }
-    
-    function openModalWarga() { 
-      document.getElementById('form-warga').reset(); 
-      document.getElementById('w_id').value = ''; 
-      
-      // Clear base64 values
-      document.getElementById('w_ktp_base64').value = '';
-      document.getElementById('w_kk_base64').value = '';
-      document.getElementById('w_rumah_base64').value = '';
-      
-      // Clear forms input value
-      document.getElementById('scan-ktp-file').value = '';
-      document.getElementById('w_file_kk').value = '';
-      document.getElementById('w_file_rumah').value = '';
+    sections.forEach((section) => navObserver.observe(section));
 
-      // Reset live previews
-      showPreviewInForm('preview-form-kk', '');
-      showPreviewInForm('preview-form-rumah', '');
-      
-      document.getElementById('form-warga-title').innerText = "Tambah Warga Baru";
-      document.getElementById('modal-form-warga').classList.remove('hidden'); 
-    }
-    
-    function openModalInventaris() { 
-      document.getElementById('form-inventaris').reset(); 
-      document.getElementById('i_id').value = ''; 
-      document.getElementById('modal-form-inventaris').classList.remove('hidden'); 
-    }
+    [waNumber, waMessage].forEach((input) => input.addEventListener("input", updateWhatsAppLink));
+    updateWhatsAppLink();
 
-    // ==========================================
-    // AI OCR INTEGRATION (TESSERACT)
-    // ==========================================
-    document.getElementById('scan-ktp-file').addEventListener('change', async function(e) {
-      if(!e.target.files.length) return;
-      const file = e.target.files[0];
-      
-      showLoadingState('Mesin AI sedang memindai berkas KTP...');
-      
+    copyWa.addEventListener("click", async () => {
+      const text = (waNumber.value || "").trim();
       try {
-        const worker = await Tesseract.createWorker('ind');
-        const ret = await worker.recognize(file);
-        const text = ret.data.text;
-        await worker.terminate();
-
-        const nikMatch = text.match(/\b\d{16}\b/);
-        if(nikMatch) {
-          document.getElementById('w_nik').value = nikMatch[0];
-        }
-        
-        // Kompresi setelah ekstraksi teks agar kualitas piksel tinggi saat dianalisis OCR
-        const compressedKTP = await compressImage(file, 30);
-        document.getElementById('w_ktp_base64').value = compressedKTP;
-
-        Swal.close();
-        
-        if (nikMatch) {
-          Swal.fire({ icon: 'success', title: 'Ekstraksi Berhasil', text: `NIK ditemukan: ${nikMatch[0]}. Foto KTP berhasil dikompresi <30KB.`, confirmButtonColor: '#4f46e5' });
-        } else {
-          Swal.fire({ icon: 'warning', title: 'Pemindaian Terbatas', text: 'Gagal mengekstrak NIK dari gambar secara otomatis. Mohon ketik manual. Foto KTP tetap disimpan & dikompresi.', confirmButtonColor: '#eab308' });
-        }
-      } catch (err) {
-        Swal.fire('Eror OCR', 'Mesin pemindai Tesseract gagal memproses gambar ini.', 'error');
+        await navigator.clipboard.writeText(text);
+        copyWa.textContent = "Copied";
+        setTimeout(() => copyWa.textContent = "Copy", 1200);
+      } catch (error) {
+        waNumber.select();
+        document.execCommand("copy");
       }
     });
 
-    // ==========================================
-    // SAVE DATA ACTION: WARGA (UPSERT)
-    // ==========================================
-    async function saveWarga(e) {
-      e.preventDefault();
-      document.getElementById('btn-submit-warga').innerText = "Menyimpan...";
-      document.getElementById('btn-submit-warga').disabled = true;
-      
-      // Deteksi ID yang tepat agar tidak crash ke Supabase
-      const formIdVal = document.getElementById('w_id').value;
-      const isNewRecord = (!formIdVal || formIdVal.trim() === "");
-      const id = isNewRecord ? (IS_PREVIEW || !supabase ? 'd-' + Date.now().toString() : undefined) : formIdVal;
-
-      const data = {
-        nik: document.getElementById('w_nik').value,
-        nama: document.getElementById('w_nama').value,
-        alamat: document.getElementById('w_alamat').value,
-        status_kk: document.getElementById('w_status_kk').value,
-        hp: document.getElementById('w_hp').value,
-        label: document.getElementById('w_label').value,
-        foto_ktp: document.getElementById('w_ktp_base64').value,
-        foto_kk: document.getElementById('w_kk_base64').value,
-        foto_rumah: document.getElementById('w_rumah_base64').value
-      };
-      
-      // Adaptasi map agar sinkron dengan CamelCase pada frontend & SnakeCase pada Supabase
-      data.statusKk = data.status_kk;
-
-      if(IS_PREVIEW || !supabase) {
-        if(isNewRecord) {
-          data.id = id;
-          dataWarga.push(data);
-        } else {
-          const idx = dataWarga.findIndex(x => x.id === id);
-          if(idx > -1) {
-            data.id = id;
-            dataWarga[idx] = data;
-          }
-        }
-        finalizeSaveWarga();
-      } else {
-        if(!isNewRecord) {
-          data.id = id; // Hanya sisipkan id saat melakukan Update/Edit
-        }
-        const { error } = await supabase.from('data_warga').upsert(data);
-        if(error) { 
-          Swal.fire('Database Eror', error.message, 'error'); 
-          document.getElementById('btn-submit-warga').innerText = "Simpan Data";
-          document.getElementById('btn-submit-warga').disabled = false;
-          return; 
-        }
-        await fetchDataFromSupabase();
-        finalizeSaveWarga();
+    document.addEventListener("click", (event) => {
+      if (!mobilePanel.contains(event.target) && !menuBtn.contains(event.target)) {
+        closeMobileMenu();
       }
-    }
-
-    function finalizeSaveWarga() {
-      closeModal('modal-form-warga'); 
-      updateDashboard(); 
-      renderWarga();
-      document.getElementById('btn-submit-warga').innerText = "Simpan Data";
-      document.getElementById('btn-submit-warga').disabled = false;
-      Swal.fire({ icon: 'success', title: 'Data Warga Disimpan', text: 'Arsip kependudukan telah berhasil diperbarui.', confirmButtonColor: '#4f46e5' });
-    }
-
-    function editWarga(id) {
-      const w = dataWarga.find(x => x.id === id);
-      if(w) {
-        document.getElementById('w_id').value = w.id; 
-        document.getElementById('w_nik').value = w.nik;
-        document.getElementById('w_nama').value = w.nama; 
-        document.getElementById('w_alamat').value = w.alamat;
-        document.getElementById('w_status_kk').value = w.statusKk || w.status_kk; 
-        document.getElementById('w_hp').value = w.hp || '';
-        document.getElementById('w_label').value = w.label || 'Warga';
-        
-        document.getElementById('w_ktp_base64').value = w.foto_ktp || '';
-        document.getElementById('w_kk_base64').value = w.foto_kk || '';
-        document.getElementById('w_rumah_base64').value = w.foto_rumah || '';
-        
-        // Reset file inputs
-        document.getElementById('scan-ktp-file').value = '';
-        document.getElementById('w_file_kk').value = '';
-        document.getElementById('w_file_rumah').value = '';
-
-        // Tampilkan foto preview jika ada data eksis
-        showPreviewInForm('preview-form-kk', w.foto_kk);
-        showPreviewInForm('preview-form-rumah', w.foto_rumah);
-
-        document.getElementById('form-warga-title').innerText = "Edit Data Penduduk";
-        document.getElementById('modal-form-warga').classList.remove('hidden');
-      }
-    }
-
-    async function deleteWarga(id) {
-      Swal.fire({
-        title: 'Hapus Data Warga?',
-        text: 'Tindakan ini permanen. Seluruh arsip berkas warga ini akan dihapus.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#ef4444',
-        cancelButtonColor: '#64748b',
-        confirmButtonText: 'Ya, Hapus Data!'
-      }).then(async r => {
-        if(r.isConfirmed) {
-          if(IS_PREVIEW || !supabase) {
-            dataWarga = dataWarga.filter(x => x.id !== id); 
-            updateDashboard(); renderWarga(); 
-            Swal.fire('Berhasil Terhapus', '', 'success');
-          } else {
-            const { error } = await supabase.from('data_warga').delete().eq('id', id);
-            if(!error) { 
-              await fetchDataFromSupabase(); 
-              Swal.fire('Berhasil Terhapus', '', 'success'); 
-            } else {
-              Swal.fire('Gagal Menghapus', error.message, 'error');
-            }
-          }
-        }
-      });
-    }
-
-    // ==========================================
-    // SAVE DATA ACTION: INVENTARIS
-    // ==========================================
-    async function saveInventaris(e) {
-      e.preventDefault();
-      const formIdVal = document.getElementById('i_id').value;
-      const isNewRecord = (!formIdVal || formIdVal.trim() === "");
-      const id = isNewRecord ? (IS_PREVIEW || !supabase ? 'i-' + Date.now().toString() : undefined) : formIdVal;
-
-      const data = {
-        nama: document.getElementById('i_nama').value, 
-        jumlah: parseInt(document.getElementById('i_jumlah').value),
-        kondisi: document.getElementById('i_kondisi').value, 
-        lokasi: document.getElementById('i_lokasi').value,
-        ket: document.getElementById('i_ket').value
-      };
-
-      if(IS_PREVIEW || !supabase) {
-        if(isNewRecord) {
-          data.id = id;
-          dataInventaris.push(data);
-        } else {
-          const idx = dataInventaris.findIndex(x => x.id === id);
-          if(idx > -1) {
-            data.id = id;
-            dataInventaris[idx] = data;
-          }
-        }
-        closeModal('modal-form-inventaris'); updateDashboard(); renderInventaris();
-        Swal.fire('Barang Disimpan', 'Data inventaris berhasil diubah.', 'success');
-      } else {
-        if(!isNewRecord) {
-          data.id = id;
-        }
-        const { error } = await supabase.from('data_inventaris').upsert(data);
-        if(!error) { 
-          await fetchDataFromSupabase(); 
-          closeModal('modal-form-inventaris');
-          Swal.fire('Barang Disimpan', 'Data inventaris berhasil disimpan ke server.', 'success');
-        } else {
-          Swal.fire('Database Eror', error.message, 'error');
-        }
-      }
-    }
-
-    function editInventaris(id) {
-      const i = dataInventaris.find(x => x.id === id);
-      if(i) {
-        document.getElementById('i_id').value = i.id; 
-        document.getElementById('i_nama').value = i.nama;
-        document.getElementById('i_jumlah').value = i.jumlah; 
-        document.getElementById('i_kondisi').value = i.kondisi;
-        document.getElementById('i_lokasi').value = i.lokasi; 
-        document.getElementById('i_ket').value = i.ket;
-        document.getElementById('modal-form-inventaris').classList.remove('hidden');
-      }
-    }
-
-    async function deleteInventaris(id) {
-      Swal.fire({
-        title: 'Hapus Barang Inventaris?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#ef4444',
-        cancelButtonColor: '#64748b',
-        confirmButtonText: 'Ya, Hapus!'
-      }).then(async r => {
-        if(r.isConfirmed) {
-          if(IS_PREVIEW || !supabase) {
-            dataInventaris = dataInventaris.filter(x => x.id !== id); 
-            updateDashboard(); renderInventaris();
-            Swal.fire('Berhasil Terhapus', '', 'success');
-          } else {
-            const { error } = await supabase.from('data_inventaris').delete().eq('id', id);
-            if(!error) {
-              fetchDataFromSupabase();
-              Swal.fire('Berhasil Terhapus', '', 'success');
-            } else {
-              Swal.fire('Gagal Menghapus', error.message, 'error');
-            }
-          }
-        }
-      });
-    }
+    });
   </script>
-</div>
+</body>
+</html>
