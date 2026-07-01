@@ -13,101 +13,158 @@
     html, body { margin: 0; padding: 0; width: 100%; height: 100%; }
     #rt-app-container {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background-color: #f3f4f6; z-index: 9999999; overflow-y: auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8fafc; z-index: 9999999; overflow-y: auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    .glass-nav { background: rgba(31, 41, 55, 0.95); backdrop-filter: blur(10px); }
-    .fade-in { animation: fadeIn 0.3s ease-in-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .copy-btn { cursor: pointer; transition: color 0.2s; }
-    .copy-btn:hover { color: #3b82f6; }
+    .glass-nav { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); }
+    .fade-in { animation: fadeIn 0.25s ease-out forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     .hidden-section { display: none; }
-    .img-preview { max-width: 100%; height: auto; border-radius: 0.5rem; margin-top: 0.5rem; }
+    .img-preview-card { transition: transform 0.2s; }
+    .img-preview-card:hover { transform: scale(1.03); }
   </style>
 
-  <nav class="glass-nav sticky top-0 z-50 text-white shadow-lg">
+  <!-- Navigation Bar -->
+  <nav class="glass-nav sticky top-0 z-40 text-white shadow-md border-b border-slate-700">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center space-x-3">
-          <i class="fa-solid fa-users-rectangle text-2xl text-blue-400"></i>
+          <div class="p-2 bg-indigo-600 rounded-lg shadow-inner">
+            <i class="fa-solid fa-users-rectangle text-xl text-white"></i>
+          </div>
           <div>
-            <h1 class="font-bold text-lg leading-tight">Sistem Informasi RT 012/009</h1>
-            <p class="text-xs text-gray-300">Grogol Selatan, Kebayoran Lama, Jaksel</p>
+            <h1 class="font-bold text-base md:text-lg leading-tight tracking-wide">SI-RT 012/009</h1>
+            <p class="text-[10px] text-slate-300">Grogol Selatan, Kebayoran Lama, Jaksel</p>
           </div>
         </div>
-        <div class="flex space-x-4">
-          <button onclick="navTo('dashboard')" class="hover:text-blue-400 transition"><i class="fa-solid fa-chart-pie"></i> <span class="hidden md:inline">Dashboard</span></button>
-          <button onclick="navTo('warga')" class="hover:text-blue-400 transition"><i class="fa-solid fa-users"></i> <span class="hidden md:inline">Data Warga</span></button>
-          <button onclick="navTo('inventaris')" class="hover:text-blue-400 transition"><i class="fa-solid fa-box"></i> <span class="hidden md:inline">Inventaris</span></button>
-          <button id="btnLoginLogout" onclick="toggleLogin()" class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm transition shadow">
-            <i class="fa-solid fa-lock"></i> Login Admin
+        <div class="flex items-center space-x-1 md:space-x-4">
+          <button onclick="navTo('dashboard')" class="px-3 py-2 text-sm rounded-md hover:bg-slate-800 hover:text-indigo-400 transition flex items-center space-x-1">
+            <i class="fa-solid fa-chart-pie text-xs"></i> <span class="hidden md:inline">Dashboard</span>
+          </button>
+          <button onclick="navTo('warga')" class="px-3 py-2 text-sm rounded-md hover:bg-slate-800 hover:text-indigo-400 transition flex items-center space-x-1">
+            <i class="fa-solid fa-users text-xs"></i> <span class="hidden md:inline">Data Warga</span>
+          </button>
+          <button onclick="navTo('inventaris')" class="px-3 py-2 text-sm rounded-md hover:bg-slate-800 hover:text-indigo-400 transition flex items-center space-x-1">
+            <i class="fa-solid fa-box text-xs"></i> <span class="hidden md:inline">Inventaris</span>
+          </button>
+          <button id="btnLoginLogout" onclick="toggleLogin()" class="ml-2 bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 rounded-md text-xs font-semibold transition shadow-md flex items-center space-x-1">
+            <i class="fa-solid fa-lock text-[10px]"></i> <span>Login Admin</span>
           </button>
         </div>
       </div>
     </div>
   </nav>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 fade-in" id="main-content">
+  <!-- Main Container -->
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 fade-in">
     
+    <!-- SECTION 1: DASHBOARD -->
     <div id="sec-dashboard" class="space-y-6">
-      <div class="bg-white p-6 rounded-xl shadow border-l-4 border-blue-500">
-        <h2 class="text-2xl font-bold text-gray-800">Selamat Datang di Portal Warga</h2>
-        <p class="text-gray-600 mt-2">Pusat informasi dan transparansi data warga serta inventaris RT 012 RW 009.</p>
+      <div class="bg-gradient-to-r from-slate-900 to-indigo-950 p-6 md:p-8 rounded-2xl shadow-lg text-white">
+        <h2 class="text-2xl md:text-3xl font-bold">Portal Informasi RT 012/009</h2>
+        <p class="text-slate-300 mt-2 text-sm md:text-base max-w-2xl">Transparansi tata kelola data warga, kepengurusan donasi, serta pengawasan inventaris rukun tetangga secara digital.</p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-xl shadow flex items-center space-x-4">
-          <div class="p-4 bg-blue-100 text-blue-600 rounded-full"><i class="fa-solid fa-users text-2xl"></i></div>
-          <div><p class="text-gray-500 text-sm">Total Warga</p><h3 class="text-2xl font-bold" id="stat-warga">0</h3></div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center space-x-4">
+          <div class="p-3 bg-blue-50 text-blue-600 rounded-lg"><i class="fa-solid fa-users text-2xl"></i></div>
+          <div>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Total Jiwa Terdata</p>
+            <h3 class="text-2xl font-bold text-slate-800" id="stat-warga">0</h3>
+          </div>
         </div>
-        <div class="bg-white p-6 rounded-xl shadow flex items-center space-x-4">
-          <div class="p-4 bg-green-100 text-green-600 rounded-full"><i class="fa-solid fa-box-open text-2xl"></i></div>
-          <div><p class="text-gray-500 text-sm">Total Inventaris</p><h3 class="text-2xl font-bold" id="stat-inventaris">0</h3></div>
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center space-x-4">
+          <div class="p-3 bg-emerald-50 text-emerald-600 rounded-lg"><i class="fa-solid fa-box-open text-2xl"></i></div>
+          <div>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Total Barang Inventaris</p>
+            <h3 class="text-2xl font-bold text-slate-800" id="stat-inventaris">0</h3>
+          </div>
         </div>
-        <div class="bg-white p-6 rounded-xl shadow flex items-center space-x-4">
-          <div class="p-4 bg-yellow-100 text-yellow-600 rounded-full"><i class="fa-solid fa-hand-holding-heart text-2xl"></i></div>
-          <div><p class="text-gray-500 text-sm">Donatur Aktif</p><h3 class="text-2xl font-bold" id="stat-donatur">0</h3></div>
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex items-center space-x-4">
+          <div class="p-3 bg-amber-50 text-amber-600 rounded-lg"><i class="fa-solid fa-hand-holding-heart text-2xl"></i></div>
+          <div>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Donatur Aktif</p>
+            <h3 class="text-2xl font-bold text-slate-800" id="stat-donatur">0</h3>
+          </div>
         </div>
       </div>
     </div>
 
+    <!-- SECTION 2: DATA WARGA -->
     <div id="sec-warga" class="hidden-section space-y-4">
-      <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow">
-        <h2 class="text-xl font-bold text-gray-800">Data Warga & Donatur</h2>
-        <button id="btn-add-warga" onclick="openModalWarga()" class="hidden bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-          <i class="fa-solid fa-plus"></i> Tambah Warga
+      <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+        <div>
+          <h2 class="text-lg font-bold text-slate-800">Database Data Warga</h2>
+          <p class="text-xs text-slate-400">Kelola informasi kepatuhan data penduduk dan klasifikasi donatur.</p>
+        </div>
+        <button id="btn-add-warga" onclick="openModalWarga()" class="hidden bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition flex items-center space-x-1.5 self-start sm:self-auto">
+          <i class="fa-solid fa-plus text-xs"></i> <span>Tambah Warga</span>
         </button>
       </div>
-      <div class="bg-white p-4 rounded-xl shadow">
-        <div class="relative mb-4">
-          <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i>
-          <input type="text" id="search-warga" onkeyup="renderWarga()" placeholder="Cari nama warga, NIK, atau label..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+
+      <!-- Search & Filters -->
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-3">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="relative">
+            <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400 text-sm"></i>
+            <input type="text" id="search-warga" onkeyup="renderWarga()" placeholder="Cari nama, NIK..." class="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <select id="filter-label" onchange="renderWarga()" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+              <option value="">Semua Label</option>
+              <option value="Warga">Warga Biasa</option>
+              <option value="Donatur (Warga)">Donatur (Warga RT)</option>
+              <option value="Donatur (Luar)">Donatur (Luar RT)</option>
+            </select>
+          </div>
+          <div>
+            <select id="filter-kk" onchange="renderWarga()" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+              <option value="">Semua Status Keluarga</option>
+              <option value="Kepala Keluarga">Kepala Keluarga</option>
+              <option value="Istri">Istri</option>
+              <option value="Anak">Anak</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
         </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
+
+        <!-- Desktop View (Table) -->
+        <div class="overflow-x-auto hidden md:block">
+          <table class="w-full text-left border-collapse text-sm">
             <thead>
-              <tr class="bg-gray-100 text-gray-700">
-                <th class="p-3 border-b">Nama Lengkap</th>
-                <th class="p-3 border-b">Status Klg</th>
-                <th class="p-3 border-b">Label</th>
-                <th class="p-3 border-b text-center">Aksi</th>
+              <tr class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
+                <th class="p-3">Nama Lengkap</th>
+                <th class="p-3">NIK</th>
+                <th class="p-3">Hubungan Keluarga</th>
+                <th class="p-3">Klasifikasi</th>
+                <th class="p-3 text-center">Aksi</th>
               </tr>
             </thead>
             <tbody id="table-warga"></tbody>
           </table>
         </div>
+
+        <!-- Mobile View Grid -->
+        <div id="mobile-warga-list" class="grid grid-cols-1 gap-3 md:hidden"></div>
       </div>
     </div>
 
+    <!-- SECTION 3: INVENTARIS -->
     <div id="sec-inventaris" class="hidden-section space-y-4">
-      <div class="flex justify-between items-center bg-white p-4 rounded-xl shadow">
-        <h2 class="text-xl font-bold text-gray-800">Inventaris RT</h2>
-        <button id="btn-add-inventaris" onclick="openModalInventaris()" class="hidden bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
-          <i class="fa-solid fa-plus"></i> Tambah Barang
+      <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+        <div>
+          <h2 class="text-lg font-bold text-slate-800">Daftar Inventaris Lingkungan</h2>
+          <p class="text-xs text-slate-400 font-medium">Penggunaan prasarana publik RT demi kepentingan warga bersama.</p>
+        </div>
+        <button id="btn-add-inventaris" onclick="openModalInventaris()" class="hidden bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-emerald-700 transition flex items-center space-x-1.5 self-start sm:self-auto">
+          <i class="fa-solid fa-plus text-xs"></i> <span>Tambah Barang</span>
         </button>
       </div>
-      <div class="bg-white p-4 rounded-xl shadow">
+
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
         <div class="relative mb-4">
-          <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i>
-          <input type="text" id="search-inventaris" onkeyup="renderInventaris()" placeholder="Cari bangku hajatan, keranda, speaker..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
+          <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400 text-sm"></i>
+          <input type="text" id="search-inventaris" onkeyup="renderInventaris()" placeholder="Cari tenda, kursi, speaker..." class="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="grid-inventaris"></div>
       </div>
@@ -115,121 +172,181 @@
 
   </main>
 
-  <div id="modal-detail-warga" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  <!-- MODAL: DETAIL WARGA -->
+  <div id="modal-detail-warga" class="hidden fixed inset-0 bg-slate-900 bg-opacity-60 flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto fade-in">
-      <div class="flex justify-between items-center p-4 border-b sticky top-0 bg-white">
-        <h3 class="text-xl font-bold">Detail Data Warga</h3>
-        <button onclick="closeModal('modal-detail-warga')" class="text-gray-500 hover:text-red-500"><i class="fa-solid fa-times text-xl"></i></button>
+      <div class="flex justify-between items-center p-4 border-b border-slate-100 sticky top-0 bg-white z-10">
+        <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-id-card text-indigo-600 mr-1"></i> Detail Data Warga</h3>
+        <button onclick="closeModal('modal-detail-warga')" class="text-slate-400 hover:text-rose-500 transition"><i class="fa-solid fa-times text-lg"></i></button>
       </div>
-      <div class="p-6 space-y-4 text-sm" id="detail-warga-content">
-        </div>
+      <div class="p-6 space-y-5 text-sm" id="detail-warga-content"></div>
     </div>
   </div>
 
-  <div id="modal-form-warga" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  <!-- MODAL: FORM ADD/EDIT WARGA -->
+  <div id="modal-form-warga" class="hidden fixed inset-0 bg-slate-900 bg-opacity-60 flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto fade-in">
-      <div class="flex justify-between items-center p-4 border-b sticky top-0 bg-white z-10">
-        <h3 class="text-xl font-bold" id="form-warga-title">Tambah Warga</h3>
-        <button onclick="closeModal('modal-form-warga')" class="text-gray-500 hover:text-red-500"><i class="fa-solid fa-times text-xl"></i></button>
+      <div class="flex justify-between items-center p-4 border-b border-slate-100 sticky top-0 bg-white z-20">
+        <h3 class="text-lg font-bold text-slate-800" id="form-warga-title">Form Data Warga</h3>
+        <button onclick="closeModal('modal-form-warga')" class="text-slate-400 hover:text-rose-500 transition"><i class="fa-solid fa-times text-lg"></i></button>
       </div>
       <div class="p-6">
-        <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <label class="block text-sm font-semibold mb-2">Scan & Kompres KTP (OCR)</label>
-          <input type="file" id="scan-ktp-file" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
-          <p class="text-xs text-gray-500 mt-1">*Gambar akan di-scan untuk NIK, lalu otomatis dikompres hingga < 30KB untuk database.</p>
+        <!-- OCR Engine Header -->
+        <div class="mb-5 p-4 bg-indigo-50 border border-indigo-100 rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex-1">
+            <label class="block text-sm font-semibold text-indigo-900 mb-1"><i class="fa-solid fa-expand text-indigo-600 mr-1"></i> Scan & Kompres KTP (OCR Otomatis)</label>
+            <p class="text-[11px] text-indigo-600 leading-relaxed">Ekstraksi nomor NIK menggunakan AI Tesseract OCR sebelum foto dikompresi &lt;30KB secara otomatis.</p>
+          </div>
+          <div class="relative">
+            <input type="file" id="scan-ktp-file" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer">
+          </div>
           <input type="hidden" id="w_ktp_base64">
         </div>
         
         <form id="form-warga" class="grid grid-cols-1 md:grid-cols-2 gap-4" onsubmit="saveWarga(event)">
           <input type="hidden" id="w_id">
-          <div><label class="block text-xs font-semibold">NIK</label><input type="text" id="w_nik" required class="w-full border p-2 rounded"></div>
-          <div><label class="block text-xs font-semibold">Nama Lengkap</label><input type="text" id="w_nama" required class="w-full border p-2 rounded"></div>
-          <div class="md:col-span-2"><label class="block text-xs font-semibold">Alamat Lengkap</label><textarea id="w_alamat" required class="w-full border p-2 rounded"></textarea></div>
-          <div><label class="block text-xs font-semibold">Status Keluarga</label>
-            <select id="w_status_kk" class="w-full border p-2 rounded">
-              <option value="Kepala Keluarga">Kepala Keluarga</option><option value="Istri">Istri</option><option value="Anak">Anak</option><option value="Lainnya">Lainnya</option>
+          
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Nomor Induk Kependudukan (NIK)</label>
+            <input type="text" id="w_nik" required pattern="\d{16}" title="NIK harus terdiri dari 16 digit angka" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Nama Lengkap</label>
+            <input type="text" id="w_nama" required class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Alamat Lengkap</label>
+            <textarea id="w_alamat" required rows="2" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Status Keluarga</label>
+            <select id="w_status_kk" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+              <option value="Kepala Keluarga">Kepala Keluarga</option>
+              <option value="Istri">Istri</option>
+              <option value="Anak">Anak</option>
+              <option value="Lainnya">Lainnya</option>
             </select>
           </div>
-          <div><label class="block text-xs font-semibold">Nomor HP</label><input type="text" id="w_hp" class="w-full border p-2 rounded"></div>
-          <div><label class="block text-xs font-semibold">Label Khusus</label>
-            <select id="w_label" class="w-full border p-2 rounded">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Nomor Handphone</label>
+            <input type="text" id="w_hp" placeholder="Contoh: 0812xxxxxxxx" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Label Khusus (Klasifikasi)</label>
+            <select id="w_label" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
               <option value="Warga">Warga Biasa</option>
               <option value="Donatur (Warga)">Donatur (Warga RT)</option>
               <option value="Donatur (Luar)">Donatur (Luar RT)</option>
             </select>
           </div>
-          <div>
-            <label class="block text-xs font-semibold">Upload Foto KK (< 30KB)</label>
-            <input type="file" id="w_file_kk" accept="image/*" class="w-full border p-1 rounded text-xs">
+
+          <!-- Upload Inputs with Live Preview -->
+          <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Foto Kartu Keluarga (&lt;30KB)</label>
+            <input type="file" id="w_file_kk" accept="image/*" class="w-full border p-1 rounded-md text-xs bg-white mb-2">
+            <div id="preview-form-kk" class="hidden border rounded p-1 bg-white inline-block"></div>
             <input type="hidden" id="w_kk_base64">
           </div>
-          <div>
-            <label class="block text-xs font-semibold">Upload Foto Depan Rumah (< 30KB)</label>
-            <input type="file" id="w_file_rumah" accept="image/*" class="w-full border p-1 rounded text-xs">
+          
+          <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Foto Depan Rumah (&lt;30KB)</label>
+            <input type="file" id="w_file_rumah" accept="image/*" class="w-full border p-1 rounded-md text-xs bg-white mb-2">
+            <div id="preview-form-rumah" class="hidden border rounded p-1 bg-white inline-block"></div>
             <input type="hidden" id="w_rumah_base64">
           </div>
+
           <div class="md:col-span-2 mt-4 text-right">
-            <button type="submit" id="btn-submit-warga" class="bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700">Simpan Data</button>
+            <button type="submit" id="btn-submit-warga" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition shadow-md">Simpan Data</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <div id="modal-form-inventaris" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  <!-- MODAL: FORM INVENTARIS -->
+  <div id="modal-form-inventaris" class="hidden fixed inset-0 bg-slate-900 bg-opacity-60 flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto fade-in">
-      <div class="flex justify-between items-center p-4 border-b sticky top-0 bg-white z-10">
-        <h3 class="text-xl font-bold">Data Inventaris</h3>
-        <button onclick="closeModal('modal-form-inventaris')" class="text-gray-500 hover:text-red-500"><i class="fa-solid fa-times text-xl"></i></button>
+      <div class="flex justify-between items-center p-4 border-b border-slate-100 sticky top-0 bg-white z-10">
+        <h3 class="text-lg font-bold text-slate-800">Form Inventaris Barang</h3>
+        <button onclick="closeModal('modal-form-inventaris')" class="text-slate-400 hover:text-rose-500 transition"><i class="fa-solid fa-times text-lg"></i></button>
       </div>
       <div class="p-6">
         <form id="form-inventaris" class="space-y-4" onsubmit="saveInventaris(event)">
           <input type="hidden" id="i_id">
-          <div><label class="block text-xs font-semibold">Nama Barang</label><input type="text" id="i_nama" required class="w-full border p-2 rounded"></div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Nama Barang</label>
+            <input type="text" id="i_nama" required class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+          </div>
           <div class="flex space-x-4">
-            <div class="w-1/2"><label class="block text-xs font-semibold">Jumlah (Qty)</label><input type="number" id="i_jumlah" required class="w-full border p-2 rounded"></div>
-            <div class="w-1/2"><label class="block text-xs font-semibold">Kondisi</label>
-              <select id="i_kondisi" class="w-full border p-2 rounded"><option>Baik</option><option>Rusak</option></select>
+            <div class="w-1/2">
+              <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Jumlah Unit (Qty)</label>
+              <input type="number" id="i_jumlah" required min="1" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+            </div>
+            <div class="w-1/2">
+              <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Kondisi Fisik</label>
+              <select id="i_kondisi" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                <option>Baik</option>
+                <option>Rusak Ringan</option>
+                <option>Rusak Berat</option>
+              </select>
             </div>
           </div>
-          <div><label class="block text-xs font-semibold">Lokasi Penyimpanan</label><input type="text" id="i_lokasi" required class="w-full border p-2 rounded"></div>
-          <div><label class="block text-xs font-semibold">Keterangan Tambahan</label><textarea id="i_ket" class="w-full border p-2 rounded"></textarea></div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Lokasi Penyimpanan</label>
+            <input type="text" id="i_lokasi" required class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Keterangan Tambahan</label>
+            <textarea id="i_ket" rows="2" class="w-full border border-slate-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
+          </div>
           <div class="mt-4 text-right">
-            <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded shadow hover:bg-green-700">Simpan Barang</button>
+            <button type="submit" class="bg-emerald-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-emerald-700 transition shadow-md">Simpan Barang</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 text-center text-xs mt-12">
+    <div class="max-w-7xl mx-auto px-4">
+      <p>&copy; 2026 Pengurus RT 012/009 Grogol Selatan. Semua hak dilindungi.</p>
+    </div>
+  </footer>
+
   <script>
     // ==========================================
-    // KONFIGURASI SUPABASE & APLIKASI
+    // CONFIGURATION & GLOBAL STATE
     // ==========================================
-    const IS_PREVIEW = true; // Set false jika URL dan KEY Supabase sudah diisi
+    const IS_PREVIEW = true; // Set FALSE jika parameter URL dan Key Supabase di bawah telah diisi
     const SUPABASE_URL = "https://dzzujgfjnfeuyrrhxdph.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6enVqZ2ZqbmZldXlycmh4ZHBoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1ODMzMDcsImV4cCI6MjA5MDE1OTMwN30.66AGjSrddnyuNiUjJTMsn4Zrrp4LenpkTOlaOc90DZI";
     
-    // Inisialisasi Supabase Client
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // Inisialisasi Supabase Client Secara Aman (Mencegah peramban crash jika URL belum diisi)
+    if (window.supabase && SUPABASE_URL && SUPABASE_URL.startsWith("http")) {
+      try {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      } catch (err) {
+        console.warn("Klien Supabase gagal diinisialisasi secara otomatis:", err);
+      }
+    }
 
     let currentUser = null; 
     let dataWarga = [];
     let dataInventaris = [];
 
-    // DUMMY DATA UNTUK PREVIEW
+    // DUMMY DATA FOR PREVIEW MODE
     const dummyWarga = [
-      { id: '1', nik: '3174012345678901', nama: 'Budi Santoso', alamat: 'Jl. Pahlawan No.10 RT 012/009', statusKk: 'Kepala Keluarga', hp: '08123456789', label: 'Donatur (Warga)', foto_ktp: '', foto_kk: '', foto_rumah: '' },
-      { id: '2', nik: '3174012345678902', nama: 'Siti Aminah', alamat: 'Jl. Pahlawan No.10 RT 012/009', statusKk: 'Istri', hp: '08129876543', label: 'Warga', foto_ktp: '', foto_kk: '', foto_rumah: '' }
+      { id: 'd-1', nik: '3174012345678901', nama: 'Budi Santoso', alamat: 'Jl. Pahlawan No.10 RT 012/009', statusKk: 'Kepala Keluarga', status_kk: 'Kepala Keluarga', hp: '08123456789', label: 'Donatur (Warga)', foto_ktp: '', foto_kk: '', foto_rumah: '' },
+      { id: 'd-2', nik: '3174012345678902', nama: 'Siti Aminah', alamat: 'Jl. Pahlawan No.10 RT 012/009', statusKk: 'Istri', status_kk: 'Istri', hp: '08129876543', label: 'Warga', foto_ktp: '', foto_kk: '', foto_rumah: '' }
     ];
     const dummyInventaris = [
-      { id: '1', nama: 'Tenda Hajatan 4x6', jumlah: '2', kondisi: 'Baik', lokasi: 'Gudang RT', ket: 'Besi galvanis lengkap' },
-      { id: '2', nama: 'Speaker Portable', jumlah: '1', kondisi: 'Baik', lokasi: 'Rumah Pak RT', ket: 'Merk Baretone' }
+      { id: 'i-1', nama: 'Tenda Hajatan 4x6', jumlah: 2, kondisi: 'Baik', lokasi: 'Gudang RT', ket: 'Besi galvanis lengkap' },
+      { id: 'i-2', nama: 'Speaker Portable', jumlah: 1, kondisi: 'Baik', lokasi: 'Rumah Pak RT', ket: 'Merk Baretone' }
     ];
 
-    // INIT
     window.onload = () => {
-      if(IS_PREVIEW) {
+      if(IS_PREVIEW || !supabase) {
         dataWarga = [...dummyWarga];
         dataInventaris = [...dummyInventaris];
         updateDashboard(); renderWarga(); renderInventaris();
@@ -238,7 +355,9 @@
       }
     };
 
-    // ALGORITMA KOMPRESI GAMBAR (< 30KB) MENGGUNAKAN HTML5 CANVAS
+    // ==========================================
+    // IMAGE HANDLING & CANVAS COMPRESSION
+    // ==========================================
     async function compressImage(file, maxSizeKB = 30) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -250,10 +369,9 @@
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             
-            // Resize dimensi awal untuk mengurangi beban kerja kompresi
             let width = img.width;
             let height = img.height;
-            const maxDim = 800; // Maksimal resolusi aman agar tetap bisa dibaca (terutama dokumen)
+            const maxDim = 800; // Resolusi optimal agar dokumen tetap dapat terbaca
             
             if (width > maxDim || height > maxDim) {
               if (width > height) { height = Math.round((height * maxDim) / width); width = maxDim; } 
@@ -262,40 +380,97 @@
             canvas.width = width; canvas.height = height;
             ctx.drawImage(img, 0, 0, width, height);
             
-            let quality = 0.9;
+            let quality = 0.85;
             let dataUrl = canvas.toDataURL('image/jpeg', quality);
             
-            // Loop menurunkan kualitas hingga ukuran Base64 string setara dengan < 30KB
-            // Estimasi ukuran byte base64: length * (3/4)
-            while (Math.round((dataUrl.length * 3) / 4) / 1024 > maxSizeKB && quality > 0.1) {
+            // Loop interaktif menurunkan tingkat kualitas kompresi secara bertahap
+            let iterations = 0;
+            while (Math.round((dataUrl.length * 3) / 4) / 1024 > maxSizeKB && quality > 0.15 && iterations < 8) {
               quality -= 0.1;
               dataUrl = canvas.toDataURL('image/jpeg', quality);
+              iterations++;
             }
-            resolve(dataUrl); // Mengembalikan string Base64 yang sudah di kompres
+            resolve(dataUrl);
           };
         };
         reader.onerror = error => reject(error);
       });
     }
 
-    // LISTENER UNTUK AUTO-COMPRESS SAAT FILE DIPILIH
+    // LISTENER AUTOMATED COMPRESSION
     document.getElementById('w_file_kk').addEventListener('change', async (e) => {
-      if(e.target.files[0]) document.getElementById('w_kk_base64').value = await compressImage(e.target.files[0]);
-    });
-    document.getElementById('w_file_rumah').addEventListener('change', async (e) => {
-      if(e.target.files[0]) document.getElementById('w_rumah_base64').value = await compressImage(e.target.files[0]);
+      if(e.target.files[0]) {
+        showLoadingState('Sedang memproses dan mengompresi Foto KK...');
+        try {
+          const base64 = await compressImage(e.target.files[0]);
+          document.getElementById('w_kk_base64').value = base64;
+          showPreviewInForm('preview-form-kk', base64);
+          Swal.close();
+        } catch (err) {
+          Swal.fire('Gagal', 'Gagal memproses file foto KK.', 'error');
+        }
+      }
     });
 
-    // FETCH DATA DARI SUPABASE
-    async function fetchDataFromSupabase() {
-      const { data: wData, error: wErr } = await supabase.from('data_warga').select('*');
-      const { data: iData, error: iErr } = await supabase.from('data_inventaris').select('*');
-      if(!wErr && wData) dataWarga = wData;
-      if(!iErr && iData) dataInventaris = iData;
-      updateDashboard(); renderWarga(); renderInventaris();
+    document.getElementById('w_file_rumah').addEventListener('change', async (e) => {
+      if(e.target.files[0]) {
+        showLoadingState('Sedang memproses dan mengompresi Foto Rumah...');
+        try {
+          const base64 = await compressImage(e.target.files[0]);
+          document.getElementById('w_rumah_base64').value = base64;
+          showPreviewInForm('preview-form-rumah', base64);
+          Swal.close();
+        } catch (err) {
+          Swal.fire('Gagal', 'Gagal memproses file foto rumah.', 'error');
+        }
+      }
+    });
+
+    function showPreviewInForm(divId, base64) {
+      const container = document.getElementById(divId);
+      if (base64) {
+        container.innerHTML = `<img src="${base64}" class="h-14 w-auto rounded object-cover">`;
+        container.classList.remove('hidden');
+      } else {
+        container.innerHTML = '';
+        container.classList.add('hidden');
+      }
     }
 
-    // NAVIGASI
+    // LOADING ALERT WRAPPER
+    function showLoadingState(message) {
+      Swal.fire({
+        title: 'Harap Tunggu',
+        html: `<div class="flex flex-col items-center space-y-3 p-2">
+                 <i class="fa-solid fa-circle-notch fa-spin text-indigo-600 text-3xl"></i>
+                 <span class="text-sm font-medium text-slate-600">${message}</span>
+               </div>`,
+        showConfirmButton: false,
+        allowOutsideClick: false
+      });
+    }
+
+    // ==========================================
+    // DATABASE HANDLER (SUPABASE)
+    // ==========================================
+    async function fetchDataFromSupabase() {
+      if (!supabase) return;
+      showLoadingState('Sinkronisasi data dari cloud database...');
+      try {
+        const { data: wData, error: wErr } = await supabase.from('data_warga').select('*').order('created_at', { ascending: false });
+        const { data: iData, error: iErr } = await supabase.from('data_inventaris').select('*').order('created_at', { ascending: false });
+        
+        if (wData) dataWarga = wData;
+        if (iData) dataInventaris = iData;
+        
+        updateDashboard(); renderWarga(); renderInventaris();
+        Swal.close();
+      } catch (err) {
+        Swal.fire('Gagal Sinkronisasi', 'Tidak dapat mengambil data dari database Supabase.', 'error');
+      }
+    }
+
+    // NAVIGATION SWITCH
     function navTo(section) {
       document.getElementById('sec-dashboard').classList.add('hidden-section');
       document.getElementById('sec-warga').classList.add('hidden-section');
@@ -311,81 +486,156 @@
 
     function copyText(text) {
       navigator.clipboard.writeText(text).then(() => {
-        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Data tersalin', showConfirmButton: false, timer: 1500 });
+        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Data tersalin', showConfirmButton: false, timer: 1200 });
       });
     }
 
-    // RENDER UI WARGA
+    // ==========================================
+    // RENDER UI: WARGA & DONATUR
+    // ==========================================
     function renderWarga() {
       const query = document.getElementById('search-warga').value.toLowerCase();
+      const filterLabel = document.getElementById('filter-label').value;
+      const filterKk = document.getElementById('filter-kk').value;
+      
       const tbody = document.getElementById('table-warga');
+      const mobileGrid = document.getElementById('mobile-warga-list');
+      
       tbody.innerHTML = '';
+      mobileGrid.innerHTML = '';
       
-      const filtered = dataWarga.filter(w => w.nama.toLowerCase().includes(query) || w.nik.includes(query) || (w.label && w.label.toLowerCase().includes(query)));
-      
+      // Filter Logic
+      const filtered = dataWarga.filter(w => {
+        const matchesQuery = w.nama.toLowerCase().includes(query) || w.nik.includes(query);
+        const matchesLabel = filterLabel === "" || w.label === filterLabel;
+        const statusKkValue = w.statusKk || w.status_kk || '';
+        const matchesKk = filterKk === "" || statusKkValue === filterKk;
+        return matchesQuery && matchesLabel && matchesKk;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 text-xs">Tidak ada data warga ditemukan.</td></tr>`;
+        mobileGrid.innerHTML = `<p class="text-center text-slate-400 text-xs py-4">Tidak ada data warga ditemukan.</p>`;
+        return;
+      }
+
       filtered.forEach(w => {
-        let badge = w.label === 'Warga' ? '<span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs">Warga</span>' : 
-                    '<span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-bold"><i class="fa-solid fa-star"></i> ' + w.label + '</span>';
+        const badgeLabel = w.label === 'Warga' ? 
+          `<span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full text-[11px] font-medium border border-slate-200">Warga</span>` : 
+          `<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-[11px] font-semibold border border-amber-200"><i class="fa-solid fa-star text-[9px] mr-0.5"></i> ${w.label}</span>`;
         
-        let actionBtn = `<button onclick="viewWarga('${w.id}')" class="text-blue-600 hover:text-blue-800"><i class="fa-solid fa-eye"></i> Detail</button>`;
+        const statusKkVal = w.statusKk || w.status_kk || 'Lainnya';
+
+        // Action buttons
+        let actionBtnHtml = `<button onclick="viewWarga('${w.id}')" class="text-indigo-600 hover:text-indigo-800 text-xs font-semibold mr-2 transition"><i class="fa-solid fa-eye mr-0.5"></i> Detail</button>`;
         if(currentUser?.role === 'admin') {
-          actionBtn += ` <button onclick="editWarga('${w.id}')" class="text-orange-500 hover:text-orange-700 ml-2"><i class="fa-solid fa-pen"></i></button>`;
-          actionBtn += ` <button onclick="deleteWarga('${w.id}')" class="text-red-500 hover:text-red-700 ml-2"><i class="fa-solid fa-trash"></i></button>`;
+          actionBtnHtml += `<button onclick="editWarga('${w.id}')" class="text-amber-500 hover:text-amber-700 text-xs font-semibold mr-2 transition"><i class="fa-solid fa-pen"></i></button>`;
+          actionBtnHtml += `<button onclick="deleteWarga('${w.id}')" class="text-rose-500 hover:text-rose-700 text-xs font-semibold transition"><i class="fa-solid fa-trash"></i></button>`;
         }
+
+        // 1. Desktop Table Row
         tbody.innerHTML += `
-          <tr class="border-b hover:bg-blue-50">
-            <td class="p-3 font-semibold">${w.nama}</td><td class="p-3 text-sm">${w.statusKk || w.status_kk}</td>
-            <td class="p-3">${badge}</td><td class="p-3 text-center whitespace-nowrap">${actionBtn}</td>
+          <tr class="border-b border-slate-100 hover:bg-slate-50 transition">
+            <td class="p-3 font-semibold text-slate-700">${w.nama}</td>
+            <td class="p-3 text-slate-500 font-mono text-xs">${w.nik}</td>
+            <td class="p-3 text-slate-600 text-xs">${statusKkVal}</td>
+            <td class="p-3">${badgeLabel}</td>
+            <td class="p-3 text-center whitespace-nowrap">${actionBtnHtml}</td>
           </tr>
+        `;
+
+        // 2. Mobile Card layout
+        mobileGrid.innerHTML += `
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+            <div class="flex justify-between items-start">
+              <div>
+                <h4 class="font-bold text-slate-800 text-sm">${w.nama}</h4>
+                <p class="text-slate-400 font-mono text-[11px] mt-0.5">${w.nik}</p>
+              </div>
+              ${badgeLabel}
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-200/60 pt-2">
+              <span>Status: <strong class="text-slate-600">${statusKkVal}</strong></span>
+              <div class="flex space-x-1">${actionBtnHtml}</div>
+            </div>
+          </div>
         `;
       });
     }
 
-    // DETAIL WARGA DENGAN GAMBAR
+    // MODAL VIEW DETAIL WARGA
     function viewWarga(id) {
       const w = dataWarga.find(x => x.id == id);
       if(!w) return;
       
       let imagesHtml = '';
-      if(w.foto_ktp) imagesHtml += `<div><p class="font-bold text-xs">Foto KTP</p><img src="${w.foto_ktp}" class="img-preview"></div>`;
-      if(w.foto_kk) imagesHtml += `<div><p class="font-bold text-xs">Foto KK</p><img src="${w.foto_kk}" class="img-preview"></div>`;
-      if(w.foto_rumah) imagesHtml += `<div><p class="font-bold text-xs">Foto Rumah</p><img src="${w.foto_rumah}" class="img-preview"></div>`;
+      if(w.foto_ktp) imagesHtml += `<div class="img-preview-card border p-2 bg-slate-50 rounded-xl"><p class="font-semibold text-slate-500 text-[10px] uppercase mb-1">Foto KTP</p><img src="${w.foto_ktp}" class="w-full h-28 object-cover rounded shadow-sm"></div>`;
+      if(w.foto_kk) imagesHtml += `<div class="img-preview-card border p-2 bg-slate-50 rounded-xl"><p class="font-semibold text-slate-500 text-[10px] uppercase mb-1">Foto KK</p><img src="${w.foto_kk}" class="w-full h-28 object-cover rounded shadow-sm"></div>`;
+      if(w.foto_rumah) imagesHtml += `<div class="img-preview-card border p-2 bg-slate-50 rounded-xl"><p class="font-semibold text-slate-500 text-[10px] uppercase mb-1">Foto Rumah</p><img src="${w.foto_rumah}" class="w-full h-28 object-cover rounded shadow-sm"></div>`;
+
+      if(!imagesHtml) imagesHtml = `<p class="col-span-3 text-center text-slate-400 text-xs italic bg-slate-50 py-3 rounded border border-dashed">Dokumen berkas gambar belum dilampirkan.</p>`;
 
       const content = `
-        <table class="w-full text-left">
-          <tr class="border-b"><th class="py-2 w-1/3">NIK</th><td>${w.nik} <i class="fa-solid fa-copy copy-btn ml-2" onclick="copyText('${w.nik}')"></i></td></tr>
-          <tr class="border-b"><th class="py-2">Nama Lengkap</th><td>${w.nama} <i class="fa-solid fa-copy copy-btn ml-2" onclick="copyText('${w.nama}')"></i></td></tr>
-          <tr class="border-b"><th class="py-2">Status Keluarga</th><td>${w.statusKk || w.status_kk}</td></tr>
-          <tr class="border-b"><th class="py-2">Label</th><td>${w.label}</td></tr>
-          <tr class="border-b"><th class="py-2">Nomor HP</th><td>${w.hp} <i class="fa-solid fa-copy copy-btn ml-2" onclick="copyText('${w.hp}')"></i></td></tr>
-          <tr class="border-b"><th class="py-2 align-top">Alamat</th><td>${w.alamat} <i class="fa-solid fa-copy copy-btn ml-2" onclick="copyText('${w.alamat}')"></i></td></tr>
+        <table class="w-full text-left text-xs border-collapse">
+          <tr class="border-b border-slate-100"><th class="py-2.5 w-1/3 text-slate-400 uppercase font-medium">Nomor NIK</th><td class="font-mono text-slate-700">${w.nik} <i class="fa-solid fa-copy text-indigo-500 cursor-pointer ml-1 hover:text-indigo-700" onclick="copyText('${w.nik}')"></i></td></tr>
+          <tr class="border-b border-slate-100"><th class="py-2.5 text-slate-400 uppercase font-medium">Nama Lengkap</th><td class="font-semibold text-slate-700">${w.nama} <i class="fa-solid fa-copy text-indigo-500 cursor-pointer ml-1 hover:text-indigo-700" onclick="copyText('${w.nama}')"></i></td></tr>
+          <tr class="border-b border-slate-100"><th class="py-2.5 text-slate-400 uppercase font-medium">Hubungan Keluarga</th><td class="text-slate-700">${w.statusKk || w.status_kk}</td></tr>
+          <tr class="border-b border-slate-100"><th class="py-2.5 text-slate-400 uppercase font-medium">Klasifikasi Label</th><td class="text-slate-700 font-semibold">${w.label}</td></tr>
+          <tr class="border-b border-slate-100"><th class="py-2.5 text-slate-400 uppercase font-medium">Nomor Handphone</th><td class="text-slate-700">${w.hp || '-'} <i class="fa-solid fa-copy text-indigo-500 cursor-pointer ml-1 hover:text-indigo-700" onclick="copyText('${w.hp}')"></i></td></tr>
+          <tr class="border-b border-slate-100"><th class="py-2.5 text-slate-400 uppercase font-medium align-top">Alamat Domisili</th><td class="text-slate-600 leading-relaxed">${w.alamat} <i class="fa-solid fa-copy text-indigo-500 cursor-pointer ml-1 hover:text-indigo-700" onclick="copyText('${w.alamat}')"></i></td></tr>
         </table>
-        <div class="grid grid-cols-3 gap-2 mt-4">${imagesHtml}</div>
+        <div class="mt-4 pt-2 border-t border-slate-100">
+          <h4 class="font-semibold text-slate-700 text-xs mb-3">Arsip Berkas Digital</h4>
+          <div class="grid grid-cols-3 gap-3">${imagesHtml}</div>
+        </div>
       `;
       document.getElementById('detail-warga-content').innerHTML = content;
       document.getElementById('modal-detail-warga').classList.remove('hidden');
     }
 
-    // RENDER UI INVENTARIS
+    // ==========================================
+    // RENDER UI: INVENTARIS
+    // ==========================================
     function renderInventaris() {
       const query = document.getElementById('search-inventaris').value.toLowerCase();
       const grid = document.getElementById('grid-inventaris');
       grid.innerHTML = '';
+      
       const filtered = dataInventaris.filter(i => i.nama.toLowerCase().includes(query) || i.ket.toLowerCase().includes(query));
 
+      if (filtered.length === 0) {
+        grid.innerHTML = `<p class="col-span-3 text-center text-slate-400 text-xs py-8">Tidak ada barang inventaris ditemukan.</p>`;
+        return;
+      }
+
       filtered.forEach(i => {
+        let badgeKondisi = '';
+        if (i.kondisi === 'Baik') {
+          badgeKondisi = `<span class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-semibold border border-emerald-200">Kondisi Baik</span>`;
+        } else if (i.kondisi.includes('Rusak Ringan')) {
+          badgeKondisi = `<span class="bg-amber-100 text-amber-800 text-[10px] px-2 py-0.5 rounded-full font-semibold border border-amber-200">Rusak Ringan</span>`;
+        } else {
+          badgeKondisi = `<span class="bg-rose-100 text-rose-800 text-[10px] px-2 py-0.5 rounded-full font-semibold border border-rose-200">Rusak Berat</span>`;
+        }
+
         let adminActions = currentUser?.role === 'admin' ? `
-          <div class="mt-3 pt-3 border-t flex justify-end space-x-2">
-            <button onclick="editInventaris('${i.id}')" class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded"><i class="fa-solid fa-pen"></i> Edit</button>
-            <button onclick="deleteInventaris('${i.id}')" class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded"><i class="fa-solid fa-trash"></i> Hapus</button>
+          <div class="mt-3 pt-3 border-t border-slate-100 flex justify-end space-x-2">
+            <button onclick="editInventaris('${i.id}')" class="text-[11px] bg-slate-100 hover:bg-amber-100 hover:text-amber-700 text-slate-600 px-2.5 py-1 rounded transition"><i class="fa-solid fa-pen"></i> Edit</button>
+            <button onclick="deleteInventaris('${i.id}')" class="text-[11px] bg-slate-100 hover:bg-rose-100 hover:text-rose-700 text-slate-600 px-2.5 py-1 rounded transition"><i class="fa-solid fa-trash"></i> Hapus</button>
           </div>` : '';
+
         grid.innerHTML += `
-          <div class="border rounded-xl p-4 shadow-sm hover:shadow-md transition bg-gray-50">
-            <h4 class="font-bold text-gray-800 text-lg">${i.nama}</h4>
-            <p class="text-xs text-gray-500 mb-2">${i.ket}</p>
-            <div class="flex justify-between items-center text-sm">
-              <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded font-bold">Qty: ${i.jumlah}</span>
-              <span class="text-gray-600"><i class="fa-solid fa-location-dot"></i> ${i.lokasi}</span>
+          <div class="border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-md transition bg-white flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-start mb-1">
+                <h4 class="font-bold text-slate-800 text-base leading-tight">${i.nama}</h4>
+                ${badgeKondisi}
+              </div>
+              <p class="text-xs text-slate-400 line-clamp-2 min-h-[2rem]">${i.ket || 'Tidak ada catatan tambahan.'}</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-50 flex justify-between items-center text-xs">
+              <span class="bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md font-bold">Qty: ${i.jumlah} unit</span>
+              <span class="text-slate-500 font-medium"><i class="fa-solid fa-location-dot text-indigo-500 mr-1"></i> ${i.lokasi}</span>
             </div>
             ${adminActions}
           </div>
@@ -393,186 +643,343 @@
       });
     }
 
-    // LOGIN SYSTEM SUPABASE
+    // ==========================================
+    // AUTHENTICATION SYSTEM
+    // ==========================================
     function toggleLogin() {
       if(currentUser) {
         currentUser = null;
-        document.getElementById('btnLoginLogout').innerHTML = '<i class="fa-solid fa-lock"></i> Login Admin';
-        document.getElementById('btnLoginLogout').classList.replace('bg-red-600', 'bg-blue-600');
+        document.getElementById('btnLoginLogout').innerHTML = '<i class="fa-solid fa-lock text-[10px]"></i> <span>Login Admin</span>';
+        document.getElementById('btnLoginLogout').className = 'ml-2 bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 rounded-md text-xs font-semibold transition shadow-md flex items-center space-x-1';
+        
         document.getElementById('btn-add-warga').classList.add('hidden');
         document.getElementById('btn-add-inventaris').classList.add('hidden');
-        Swal.fire('Logout Berhasil', 'Anda kembali ke mode publik', 'info');
+        
+        Swal.fire({ icon: 'info', title: 'Logout Berhasil', text: 'Sistem kembali ke mode akses publik.', confirmButtonColor: '#4f46e5' });
         renderWarga(); renderInventaris();
       } else {
         Swal.fire({
-          title: 'Login Admin',
-          html: `<input type="text" id="swal-user" class="swal2-input" placeholder="Username">
-                 <input type="password" id="swal-pass" class="swal2-input" placeholder="Password">
-                 <p class="text-xs mt-2 text-gray-500">Preview Mode: admin / edudigital</p>`,
-          confirmButtonText: 'Masuk',
+          title: 'Login Admin RT',
+          html: `
+            <div class="flex flex-col text-left space-y-3 mt-4">
+              <div>
+                <label class="text-xs font-semibold text-slate-500 uppercase">Username</label>
+                <input type="text" id="swal-user" class="w-full mt-1 border p-2.5 rounded-lg text-sm outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Ketik username admin">
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500 uppercase">Password</label>
+                <input type="password" id="swal-pass" class="w-full mt-1 border p-2.5 rounded-lg text-sm outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Ketik kata sandi">
+              </div>
+              <p class="text-[10px] text-slate-400 mt-2 italic text-center">*Demo: admin / admin2026</p>
+            </div>
+          `,
+          confirmButtonText: 'Masuk Sistem',
+          confirmButtonColor: '#4f46e5',
+          showCancelButton: true,
+          cancelButtonText: 'Batal',
           showLoaderOnConfirm: true,
           preConfirm: async () => {
             const u = document.getElementById('swal-user').value;
             const p = document.getElementById('swal-pass').value;
-            if(IS_PREVIEW) {
-              if(u === 'admin' && p === 'edudigital') return {role: 'admin'};
-              Swal.showValidationMessage('Login gagal! Cek username/password.');
+            
+            if(IS_PREVIEW || !supabase) {
+              if(u === 'admin' && p === 'admin2026') return {role: 'admin'};
+              Swal.showValidationMessage('Kombinasi autentikasi admin tidak tepat.');
             } else {
-              const { data, error } = await supabase.from('users').select('*').eq('username', u).eq('password', p).single();
-              if (error || !data) { Swal.showValidationMessage('Kredensial salah atau database tidak merespon.'); }
+              const { data, error } = await supabase.from('users').select('*').eq('username', u).eq('password', p).maybeSingle();
+              if (error || !data) { 
+                Swal.showValidationMessage('Autentikasi gagal! Cek data kredensial Anda.'); 
+              }
               return data;
             }
           }
         }).then((result) => {
           if (result.isConfirmed && result.value) {
             currentUser = result.value;
-            document.getElementById('btnLoginLogout').innerHTML = '<i class="fa-solid fa-sign-out-alt"></i> Logout';
-            document.getElementById('btnLoginLogout').classList.replace('bg-blue-600', 'bg-red-600');
+            document.getElementById('btnLoginLogout').innerHTML = '<i class="fa-solid fa-sign-out-alt text-[10px]"></i> <span>Logout</span>';
+            document.getElementById('btnLoginLogout').className = 'ml-2 bg-rose-600 hover:bg-rose-700 px-3 py-1.5 rounded-md text-xs font-semibold transition shadow-md flex items-center space-x-1';
+            
             document.getElementById('btn-add-warga').classList.remove('hidden');
             document.getElementById('btn-add-inventaris').classList.remove('hidden');
-            Swal.fire('Berhasil!', 'Selamat datang Admin.', 'success');
+            
+            Swal.fire({ icon: 'success', title: 'Berhasil Masuk', text: 'Akses pengelolaan admin telah dibuka.', confirmButtonColor: '#4f46e5', timer: 1500 });
             renderWarga(); renderInventaris();
           }
         });
       }
     }
 
-    // MODALS
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-    function openModalWarga() { document.getElementById('form-warga').reset(); document.getElementById('w_id').value=''; document.getElementById('modal-form-warga').classList.remove('hidden'); }
-    function openModalInventaris() { document.getElementById('form-inventaris').reset(); document.getElementById('i_id').value=''; document.getElementById('modal-form-inventaris').classList.remove('hidden'); }
+    // MODAL CONTROL UTILITIES
+    function closeModal(id) { 
+      document.getElementById(id).classList.add('hidden'); 
+    }
+    
+    function openModalWarga() { 
+      document.getElementById('form-warga').reset(); 
+      document.getElementById('w_id').value = ''; 
+      
+      // Clear base64 values
+      document.getElementById('w_ktp_base64').value = '';
+      document.getElementById('w_kk_base64').value = '';
+      document.getElementById('w_rumah_base64').value = '';
+      
+      // Clear forms input value
+      document.getElementById('scan-ktp-file').value = '';
+      document.getElementById('w_file_kk').value = '';
+      document.getElementById('w_file_rumah').value = '';
 
-    // OCR KTP LOGIC (Dilakukan sebelum file dikompres agar teks bisa terbaca AI)
+      // Reset live previews
+      showPreviewInForm('preview-form-kk', '');
+      showPreviewInForm('preview-form-rumah', '');
+      
+      document.getElementById('form-warga-title').innerText = "Tambah Warga Baru";
+      document.getElementById('modal-form-warga').classList.remove('hidden'); 
+    }
+    
+    function openModalInventaris() { 
+      document.getElementById('form-inventaris').reset(); 
+      document.getElementById('i_id').value = ''; 
+      document.getElementById('modal-form-inventaris').classList.remove('hidden'); 
+    }
+
+    // ==========================================
+    // AI OCR INTEGRATION (TESSERACT)
+    // ==========================================
     document.getElementById('scan-ktp-file').addEventListener('change', async function(e) {
       if(!e.target.files.length) return;
       const file = e.target.files[0];
       
-      Swal.fire({title: 'Memindai KTP...', text: 'Menggunakan AI OCR. Harap tunggu...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
+      showLoadingState('Mesin AI sedang memindai berkas KTP...');
       
       try {
-        // Tesseract menggunakan file asli (resolusi tinggi) agar akurat
         const worker = await Tesseract.createWorker('ind');
         const ret = await worker.recognize(file);
         const text = ret.data.text;
         await worker.terminate();
 
         const nikMatch = text.match(/\b\d{16}\b/);
-        if(nikMatch) document.getElementById('w_nik').value = nikMatch[0];
+        if(nikMatch) {
+          document.getElementById('w_nik').value = nikMatch[0];
+        }
         
-        // Setelah discan, file dikompres <30KB dan disimpan sebagai base64 untuk database
+        // Kompresi setelah ekstraksi teks agar kualitas piksel tinggi saat dianalisis OCR
         const compressedKTP = await compressImage(file, 30);
         document.getElementById('w_ktp_base64').value = compressedKTP;
 
-        Swal.fire('Scan Selesai!', nikMatch ? 'NIK berhasil ditemukan. Foto KTP otomatis dikompres ke <30KB.' : 'NIK tidak jelas, silakan input manual. Foto KTP tetap disimpan (terkompresi).', 'success');
+        Swal.close();
+        
+        if (nikMatch) {
+          Swal.fire({ icon: 'success', title: 'Ekstraksi Berhasil', text: `NIK ditemukan: ${nikMatch[0]}. Foto KTP berhasil dikompresi <30KB.`, confirmButtonColor: '#4f46e5' });
+        } else {
+          Swal.fire({ icon: 'warning', title: 'Pemindaian Terbatas', text: 'Gagal mengekstrak NIK dari gambar secara otomatis. Mohon ketik manual. Foto KTP tetap disimpan & dikompresi.', confirmButtonColor: '#eab308' });
+        }
       } catch (err) {
-        Swal.fire('Error', 'Gagal memproses OCR.', 'error');
+        Swal.fire('Eror OCR', 'Mesin pemindai Tesseract gagal memproses gambar ini.', 'error');
       }
     });
 
-    // SIMPAN WARGA (SUPABASE)
+    // ==========================================
+    // SAVE DATA ACTION: WARGA (UPSERT)
+    // ==========================================
     async function saveWarga(e) {
       e.preventDefault();
       document.getElementById('btn-submit-warga').innerText = "Menyimpan...";
+      document.getElementById('btn-submit-warga').disabled = true;
       
-      const id = document.getElementById('w_id').value || (IS_PREVIEW ? Date.now().toString() : undefined);
+      // Deteksi ID yang tepat agar tidak crash ke Supabase
+      const formIdVal = document.getElementById('w_id').value;
+      const isNewRecord = (!formIdVal || formIdVal.trim() === "");
+      const id = isNewRecord ? (IS_PREVIEW || !supabase ? 'd-' + Date.now().toString() : undefined) : formIdVal;
+
       const data = {
-        nik: document.getElementById('w_nik').value, nama: document.getElementById('w_nama').value,
-        alamat: document.getElementById('w_alamat').value, status_kk: document.getElementById('w_status_kk').value, // Supabase format snake_case
-        hp: document.getElementById('w_hp').value, label: document.getElementById('w_label').value,
+        nik: document.getElementById('w_nik').value,
+        nama: document.getElementById('w_nama').value,
+        alamat: document.getElementById('w_alamat').value,
+        status_kk: document.getElementById('w_status_kk').value,
+        hp: document.getElementById('w_hp').value,
+        label: document.getElementById('w_label').value,
         foto_ktp: document.getElementById('w_ktp_base64').value,
         foto_kk: document.getElementById('w_kk_base64').value,
         foto_rumah: document.getElementById('w_rumah_base64').value
       };
       
-      // Adaptasi untuk frontend dummy JS (camelCase mapping untuk view preview)
+      // Adaptasi map agar sinkron dengan CamelCase pada frontend & SnakeCase pada Supabase
       data.statusKk = data.status_kk;
 
-      if(IS_PREVIEW) {
-        if(id) data.id = id;
-        const idx = dataWarga.findIndex(x => x.id == id);
-        if(idx > -1) dataWarga[idx] = data; else dataWarga.push(data);
+      if(IS_PREVIEW || !supabase) {
+        if(isNewRecord) {
+          data.id = id;
+          dataWarga.push(data);
+        } else {
+          const idx = dataWarga.findIndex(x => x.id === id);
+          if(idx > -1) {
+            data.id = id;
+            dataWarga[idx] = data;
+          }
+        }
         finalizeSaveWarga();
       } else {
-        if(id) data.id = id; // Update mode
+        if(!isNewRecord) {
+          data.id = id; // Hanya sisipkan id saat melakukan Update/Edit
+        }
         const { error } = await supabase.from('data_warga').upsert(data);
-        if(error) { Swal.fire('Error Database', error.message, 'error'); document.getElementById('btn-submit-warga').innerText = "Simpan Data"; return; }
+        if(error) { 
+          Swal.fire('Database Eror', error.message, 'error'); 
+          document.getElementById('btn-submit-warga').innerText = "Simpan Data";
+          document.getElementById('btn-submit-warga').disabled = false;
+          return; 
+        }
         await fetchDataFromSupabase();
         finalizeSaveWarga();
       }
     }
 
     function finalizeSaveWarga() {
-      closeModal('modal-form-warga'); updateDashboard(); renderWarga();
+      closeModal('modal-form-warga'); 
+      updateDashboard(); 
+      renderWarga();
       document.getElementById('btn-submit-warga').innerText = "Simpan Data";
-      Swal.fire('Tersimpan', 'Data warga (dan gambar <30KB) berhasil disimpan.', 'success');
+      document.getElementById('btn-submit-warga').disabled = false;
+      Swal.fire({ icon: 'success', title: 'Data Warga Disimpan', text: 'Arsip kependudukan telah berhasil diperbarui.', confirmButtonColor: '#4f46e5' });
     }
 
     function editWarga(id) {
-      const w = dataWarga.find(x => x.id == id);
+      const w = dataWarga.find(x => x.id === id);
       if(w) {
-        document.getElementById('w_id').value = w.id; document.getElementById('w_nik').value = w.nik;
-        document.getElementById('w_nama').value = w.nama; document.getElementById('w_alamat').value = w.alamat;
-        document.getElementById('w_status_kk').value = w.statusKk || w.status_kk; document.getElementById('w_hp').value = w.hp;
-        document.getElementById('w_label').value = w.label;
+        document.getElementById('w_id').value = w.id; 
+        document.getElementById('w_nik').value = w.nik;
+        document.getElementById('w_nama').value = w.nama; 
+        document.getElementById('w_alamat').value = w.alamat;
+        document.getElementById('w_status_kk').value = w.statusKk || w.status_kk; 
+        document.getElementById('w_hp').value = w.hp || '';
+        document.getElementById('w_label').value = w.label || 'Warga';
+        
         document.getElementById('w_ktp_base64').value = w.foto_ktp || '';
         document.getElementById('w_kk_base64').value = w.foto_kk || '';
         document.getElementById('w_rumah_base64').value = w.foto_rumah || '';
+        
+        // Reset file inputs
+        document.getElementById('scan-ktp-file').value = '';
+        document.getElementById('w_file_kk').value = '';
+        document.getElementById('w_file_rumah').value = '';
+
+        // Tampilkan foto preview jika ada data eksis
+        showPreviewInForm('preview-form-kk', w.foto_kk);
+        showPreviewInForm('preview-form-rumah', w.foto_rumah);
+
+        document.getElementById('form-warga-title').innerText = "Edit Data Penduduk";
         document.getElementById('modal-form-warga').classList.remove('hidden');
       }
     }
 
     async function deleteWarga(id) {
-      Swal.fire({title: 'Hapus Data?', icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya, Hapus!'}).then(async r => {
+      Swal.fire({
+        title: 'Hapus Data Warga?',
+        text: 'Tindakan ini permanen. Seluruh arsip berkas warga ini akan dihapus.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Ya, Hapus Data!'
+      }).then(async r => {
         if(r.isConfirmed) {
-          if(IS_PREVIEW) {
-            dataWarga = dataWarga.filter(x => x.id != id); updateDashboard(); renderWarga(); Swal.fire('Terhapus!', '', 'success');
+          if(IS_PREVIEW || !supabase) {
+            dataWarga = dataWarga.filter(x => x.id !== id); 
+            updateDashboard(); renderWarga(); 
+            Swal.fire('Berhasil Terhapus', '', 'success');
           } else {
             const { error } = await supabase.from('data_warga').delete().eq('id', id);
-            if(!error) { await fetchDataFromSupabase(); Swal.fire('Terhapus!', '', 'success'); }
+            if(!error) { 
+              await fetchDataFromSupabase(); 
+              Swal.fire('Berhasil Terhapus', '', 'success'); 
+            } else {
+              Swal.fire('Gagal Menghapus', error.message, 'error');
+            }
           }
         }
       });
     }
 
-    // SIMPAN INVENTARIS (SUPABASE)
+    // ==========================================
+    // SAVE DATA ACTION: INVENTARIS
+    // ==========================================
     async function saveInventaris(e) {
       e.preventDefault();
-      const id = document.getElementById('i_id').value || (IS_PREVIEW ? Date.now().toString() : undefined);
+      const formIdVal = document.getElementById('i_id').value;
+      const isNewRecord = (!formIdVal || formIdVal.trim() === "");
+      const id = isNewRecord ? (IS_PREVIEW || !supabase ? 'i-' + Date.now().toString() : undefined) : formIdVal;
+
       const data = {
-        nama: document.getElementById('i_nama').value, jumlah: document.getElementById('i_jumlah').value,
-        kondisi: document.getElementById('i_kondisi').value, lokasi: document.getElementById('i_lokasi').value,
+        nama: document.getElementById('i_nama').value, 
+        jumlah: parseInt(document.getElementById('i_jumlah').value),
+        kondisi: document.getElementById('i_kondisi').value, 
+        lokasi: document.getElementById('i_lokasi').value,
         ket: document.getElementById('i_ket').value
       };
 
-      if(IS_PREVIEW) {
-        if(id) data.id = id;
-        const idx = dataInventaris.findIndex(x => x.id == id);
-        if(idx > -1) dataInventaris[idx] = data; else dataInventaris.push(data);
+      if(IS_PREVIEW || !supabase) {
+        if(isNewRecord) {
+          data.id = id;
+          dataInventaris.push(data);
+        } else {
+          const idx = dataInventaris.findIndex(x => x.id === id);
+          if(idx > -1) {
+            data.id = id;
+            dataInventaris[idx] = data;
+          }
+        }
         closeModal('modal-form-inventaris'); updateDashboard(); renderInventaris();
+        Swal.fire('Barang Disimpan', 'Data inventaris berhasil diubah.', 'success');
       } else {
-        if(id) data.id = id;
+        if(!isNewRecord) {
+          data.id = id;
+        }
         const { error } = await supabase.from('data_inventaris').upsert(data);
-        if(!error) { await fetchDataFromSupabase(); closeModal('modal-form-inventaris'); }
+        if(!error) { 
+          await fetchDataFromSupabase(); 
+          closeModal('modal-form-inventaris');
+          Swal.fire('Barang Disimpan', 'Data inventaris berhasil disimpan ke server.', 'success');
+        } else {
+          Swal.fire('Database Eror', error.message, 'error');
+        }
       }
     }
 
     function editInventaris(id) {
-      const i = dataInventaris.find(x => x.id == id);
+      const i = dataInventaris.find(x => x.id === id);
       if(i) {
-        document.getElementById('i_id').value = i.id; document.getElementById('i_nama').value = i.nama;
-        document.getElementById('i_jumlah').value = i.jumlah; document.getElementById('i_kondisi').value = i.kondisi;
-        document.getElementById('i_lokasi').value = i.lokasi; document.getElementById('i_ket').value = i.ket;
+        document.getElementById('i_id').value = i.id; 
+        document.getElementById('i_nama').value = i.nama;
+        document.getElementById('i_jumlah').value = i.jumlah; 
+        document.getElementById('i_kondisi').value = i.kondisi;
+        document.getElementById('i_lokasi').value = i.lokasi; 
+        document.getElementById('i_ket').value = i.ket;
         document.getElementById('modal-form-inventaris').classList.remove('hidden');
       }
     }
 
     async function deleteInventaris(id) {
-      Swal.fire({title: 'Hapus Barang?', icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya!'}).then(async r => {
+      Swal.fire({
+        title: 'Hapus Barang Inventaris?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Ya, Hapus!'
+      }).then(async r => {
         if(r.isConfirmed) {
-          if(IS_PREVIEW) {
-            dataInventaris = dataInventaris.filter(x => x.id != id); updateDashboard(); renderInventaris();
+          if(IS_PREVIEW || !supabase) {
+            dataInventaris = dataInventaris.filter(x => x.id !== id); 
+            updateDashboard(); renderInventaris();
+            Swal.fire('Berhasil Terhapus', '', 'success');
           } else {
-            await supabase.from('data_inventaris').delete().eq('id', id); fetchDataFromSupabase();
+            const { error } = await supabase.from('data_inventaris').delete().eq('id', id);
+            if(!error) {
+              fetchDataFromSupabase();
+              Swal.fire('Berhasil Terhapus', '', 'success');
+            } else {
+              Swal.fire('Gagal Menghapus', error.message, 'error');
+            }
           }
         }
       });
